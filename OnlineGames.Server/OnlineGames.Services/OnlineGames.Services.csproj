@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OnlineGames.Data\OnlineGames.Data.csproj" />
+    <ProjectReference Include="..\OnlineGames.Logic\OnlineGames.Logic.csproj" />
+  </ItemGroup>
+
+</Project>
