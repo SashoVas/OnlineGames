@@ -1,0 +1,16 @@
+<div >
+    <h1>Connect4</h1>
+    <div >
+        <div class="row" *ngFor="let rowval of board;let row=index">
+            <div class="d-flex">
+                <div *ngFor="let colval of rowval;let col=index;" class="w-100 h-100">
+                    <app-board-cell (makeMove)="makeMove(col)" [row]="row" [col]="col" [value]="colval"></app-board-cell>
+                </div>
+            </div>  
+        </div>
+        
+    </div>
+    <button  class="w-50 mt-3 btn btn-secondary" ><span class="display-6">New Game</span> </button>    
+    <h1>Result</h1>
+    <h3> 0:0</h3>
+</div>

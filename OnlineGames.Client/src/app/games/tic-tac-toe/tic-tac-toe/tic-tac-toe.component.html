@@ -1,0 +1,24 @@
+<div >
+    <h1>Tic Tac Toe</h1>
+    <div class="d-flex justify-content-around mb-2">
+        <div>
+            <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" [disabled]="inGame" #checkedFirst checked>
+            <label class="btn btn-outline-secondary" for="success-outlined">First</label>
+        </div>
+        <div>
+            <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" [disabled]="inGame" #checedSecond (click)="playSecond()">
+            <label class="btn btn-outline-secondary" for="danger-outlined">Second</label>
+        </div>
+    </div>
+    <div >
+        <div class="row" *ngFor="let rowval of board; let row=index">
+            <div class="d-flex">
+                <div *ngFor="let colval of rowval;let col=index" class="w-100 h-100">
+                    <app-board-cell (makeMove)="makeMove(row,col)" [col]="col"[row]="row" [value]="colval"></app-board-cell>
+                </div>
+            </div>  
+        </div>
+    </div>
+    <h1 *ngIf="gameEnded">Game Ended</h1>
+    <button (click)="clear()" class="w-50 mt-3 btn btn-secondary" ><span class="display-6">New Game</span> </button>    
+</div>
