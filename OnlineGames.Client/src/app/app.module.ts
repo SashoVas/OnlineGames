@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { GamesModule } from './games/games.module';
+import { IdentityModule } from './identity/identity.module';
 import { LandingComponent } from './landing/landing.component';
 
 @NgModule({
@@ -16,7 +17,8 @@ import { LandingComponent } from './landing/landing.component';
     BrowserModule,
     AppRoutingModule,
     CoreModule,
-    GamesModule
+    GamesModule,
+    IdentityModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -5,6 +5,7 @@ import { TicTacToeModule } from '../tic-tac-toe/tic-tac-toe.module';
 
 
 
+
 @NgModule({
   declarations: [
     Connect4GameComponent
@@ -12,6 +13,7 @@ import { TicTacToeModule } from '../tic-tac-toe/tic-tac-toe.module';
   imports: [
     CommonModule,
     TicTacToeModule
+
   ]
 })
 export class Connect4Module { }

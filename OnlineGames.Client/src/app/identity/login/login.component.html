@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+        <h1 class="text-center">Login</h1>
+        <div class="form-group">
+            <label >Username</label>
+            <input class="form-control" type="text" formControlName="username">
+        </div>
+        <div class="alert alert-danger p-2 mt-2" *ngIf="username?.touched && username?.errors?.['required']">
+            Required
+        </div>
+        <div class="form-group">
+            <label >Password</label>
+            <input class="form-control" type="password" formControlName="password">
+        </div>
+        <div class="alert alert-danger p-2 mt-2" *ngIf="password?.touched && password?.errors?.['required']">
+            Required
+        </div>
+        <div class="mt-2">
+            <button class="btn btn-secondary" type="submit">Submit</button>
+        </div>
+    </form>
+</div>

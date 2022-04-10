@@ -12,6 +12,10 @@ const routes: Routes = [
   {
     path:"games",
     loadChildren:()=>import("./games/games-routing.module").then(m=>m.GamesRouting)
+  },
+  {
+    path:"identity",
+    loadChildren:()=>import("./identity/identity-routing.module").then(i=>i.IdentityRouting)
   }
 
 ]; 

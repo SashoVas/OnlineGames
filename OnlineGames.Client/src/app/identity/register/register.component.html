@@ -1,0 +1,31 @@
+<div class="container-fluid">
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+        
+        <h1 class="text-center">Register</h1>
+        <div class="form-group">
+            <label >Username</label>
+            <input class="form-control" type="text" formControlName="username">
+        </div>
+        <div class="alert alert-danger p-2 mt-2" *ngIf="username?.touched && username?.errors?.['required']">
+            Required
+        </div>
+        <div class="form-group">
+            <label >Password</label>
+            <input class="form-control" type="password" formControlName="password">
+        </div>
+        <div class="alert alert-danger p-2 mt-2" *ngIf="password?.touched && password?.errors?.['required']">
+            Required
+        </div>
+        <div class="form-group">
+            <label >Confirm Password</label>
+            <input class="form-control" type="password" formControlName="confirmPassword">
+        </div>
+        <div class="alert alert-danger p-2 mt-2" *ngIf="confirmPassword?.touched && confirmPassword?.errors?.['required']">
+            Required
+        </div>
+        <div class="alert alert-danger p-2" *ngIf="confirmPassword?.touched && password?.touched && confirmPassword?.value!=password?.value">
+            Passwords Dont Match
+        </div>
+        <button class="btn btn-secondary mt-2">Submit</button>
+    </form>
+</div>
