@@ -9,7 +9,5 @@ namespace OnlineGames.Data.Models
 {
     public class User:IdentityUser
     {
-        public int GameId { get; set; }
-        public Game Game { get; set; }
     }
 }

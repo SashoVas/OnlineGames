@@ -69,13 +69,13 @@ builder.Services.AddTransient<ITicTacToeService, TicTacToeService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-//using (var serviceScope = app.Services.CreateScope())//app.ApplicationServices.CreateScope())
-//{
-//    using (var context = serviceScope.ServiceProvider.GetRequiredService<OnlineGamesDbContext>())
-//    {
-//        context.Database.EnsureCreated();
-//    }
-//}
+using (var serviceScope = app.Services.CreateScope())//app.ApplicationServices.CreateScope())
+{
+    using (var context = serviceScope.ServiceProvider.GetRequiredService<OnlineGamesDbContext>())
+    {
+        context.Database.EnsureCreated();
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {

@@ -37,7 +37,7 @@ namespace OnlineGames.Web.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<string>> Login(LoginInputModel input)
+        public async Task<ActionResult<LoginReturnModel>> Login(LoginInputModel input)
         {
             var user = await userManager.FindByNameAsync(input.UserName);
             if (user == null)
@@ -46,10 +46,13 @@ namespace OnlineGames.Web.Controllers
             }
             var isValidPassword = await userManager.CheckPasswordAsync(user, input.Password);
 
-            return GetJwt(user);
+            return new LoginReturnModel
+            {
+                Token= GetJwt(user) 
+            };
         }
         [HttpPost("Register")]
-        public async Task<ActionResult> Register([FromBody] RegisterInputModel input)
+        public async Task<ActionResult<object>> Register([FromBody] RegisterInputModel input)
         {
             var user = new User
             {
@@ -60,7 +63,10 @@ namespace OnlineGames.Web.Controllers
             {
                 return this.BadRequest(result.Errors);
             }
-            return this.Ok("Reginster");
+            return new 
+            { 
+                Id=user.Id 
+            };
         }
     }
 }

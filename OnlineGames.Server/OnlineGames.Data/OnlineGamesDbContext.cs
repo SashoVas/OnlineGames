@@ -6,7 +6,6 @@ namespace OnlineGames.Data
 {
     public class OnlineGamesDbContext : IdentityDbContext<User>
     {
-        public DbSet<Game> Games { get; set; }
         public OnlineGamesDbContext(DbContextOptions<OnlineGamesDbContext> options)
             : base(options)
         {
@@ -14,10 +13,6 @@ namespace OnlineGames.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<Game>()
-                .HasMany(g=>g.Players)
-                .WithOne(u=>u.Game)
-                .HasForeignKey(u=>u.Id);
 
         }
     }
