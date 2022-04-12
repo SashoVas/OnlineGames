@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using OnlineGames.Data.Models;
+using OnlineGames.Services.Contracts;
 using OnlineGames.Web.Infrastructure;
 using OnlineGames.Web.Models.Identity;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,59 +15,46 @@ namespace OnlineGames.Web.Controllers
     [ApiController]
     public class IdentityController : ControllerBase
     {
-        private UserManager<User> userManager;
-        private AppSettings appSettings;
+        private IIdentityService identityService;
+        private readonly AppSettings appSettings;
 
-        public IdentityController(UserManager<User> userManager, IOptions<AppSettings> appSettings)
+        public IdentityController(IIdentityService identityService, IOptions<AppSettings> appSettings)
         {
-            this.userManager = userManager;
+            this.identityService = identityService;
             this.appSettings = appSettings.Value;
         }
-        private string GetJwt(User user)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-                Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
+        
         [HttpPost("Login")]
         public async Task<ActionResult<LoginReturnModel>> Login(LoginInputModel input)
         {
-            var user = await userManager.FindByNameAsync(input.UserName);
-            if (user == null)
+            try
             {
-                return Unauthorized();
+                return new LoginReturnModel
+                {
+                    Token =await identityService.Login(input.UserName, input.Password, this.appSettings.Secret)
+                };
             }
-            var isValidPassword = await userManager.CheckPasswordAsync(user, input.Password);
-
-            return new LoginReturnModel
+            catch (Exception)
             {
-                Token= GetJwt(user) 
-            };
+                return this.Unauthorized("Invalid password");
+            }
+            
         }
         [HttpPost("Register")]
         public async Task<ActionResult<object>> Register([FromBody] RegisterInputModel input)
         {
-            var user = new User
+            try
             {
-                UserName = input.UserName
-            };
-            var result = await this.userManager.CreateAsync(user, input.Password);
-            if (!result.Succeeded)
-            {
-                return this.BadRequest(result.Errors);
+                return new
+                {
+                    Id =  await this.identityService.Register(input.UserName, input.Password, input.ConfirmPassword)
+                };
             }
-            return new 
-            { 
-                Id=user.Id 
-            };
+            catch (Exception)
+            {
+                return this.BadRequest("Invalid data");
+            }
+            
         }
     }
 }

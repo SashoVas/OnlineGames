@@ -12,11 +12,9 @@ namespace OnlineGames.Services
 {
     public class TicTacToeService : ITicTacToeService
     {
-        //private readonly OnlineGamesDbContext dbContext;
         private readonly TicTacToe ticTacToe;
         public TicTacToeService(OnlineGamesDbContext dbContext)
         {
-            //this.dbContext = dbContext;
             this.ticTacToe=new TicTacToe();
         }
         public async Task<BoardCoordinates> MakeMove(string boardSring,int currentPlayer)

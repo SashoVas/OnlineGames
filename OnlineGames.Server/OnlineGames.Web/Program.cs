@@ -66,6 +66,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSignalR();
 
 builder.Services.AddTransient<ITicTacToeService, TicTacToeService>();
+builder.Services.AddTransient<IIdentityService, IdentityService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
