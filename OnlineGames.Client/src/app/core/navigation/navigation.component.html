@@ -5,7 +5,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <a class="nav-link active text-light" aria-current="page" routerLink="">Home</a>
           </li>
@@ -18,14 +18,23 @@
               <li><a class="dropdown-item" routerLink="/games/connect4/connect4game">Connect Four</a></li>
             </ul>
           </li>
-          <li class="justify-content-end">
+        </ul>
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li *ngIf="!isLoged()" class="justify-content-end">
             <a class="nav-link active text-light" routerLink="/identity/login" >Login</a>
           </li>
-          <li class="justify-content-end">
+          <li *ngIf="!isLoged()" class="justify-content-end">
             <a class="nav-link active text-light" routerLink="/identity/register" >Register</a>
           </li>
+          <li *ngIf="isLoged()" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Settings
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item"  (click)="logOut()">Log Out</a></li>
+            </ul>
+          </li>
         </ul>
-        
 
       </div>
     </div>

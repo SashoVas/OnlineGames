@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { IdentityGuard } from './identity/guards/identity.guard';
 import { LandingComponent } from './landing/landing.component';
 
 
@@ -15,7 +16,8 @@ const routes: Routes = [
   },
   {
     path:"identity",
-    loadChildren:()=>import("./identity/identity-routing.module").then(i=>i.IdentityRouting)
+    loadChildren:()=>import("./identity/identity-routing.module").then(i=>i.IdentityRouting),
+    canActivate:[IdentityGuard]
   }
 
 ]; 

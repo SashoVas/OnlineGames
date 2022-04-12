@@ -2,11 +2,11 @@
     <h1>Tic Tac Toe</h1>
     <div class="d-flex justify-content-around mb-2">
         <div>
-            <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" [disabled]="inGame" #checkedFirst checked>
+            <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" [disabled]="inGame" #checkedFirst [checked]="first">
             <label class="btn btn-outline-secondary" for="success-outlined">First</label>
         </div>
         <div>
-            <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" [disabled]="inGame" #checedSecond (click)="playSecond()">
+            <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" [disabled]="inGame" #checedSecond [checked]="!first" (click)="playSecond()">
             <label class="btn btn-outline-secondary" for="danger-outlined">Second</label>
         </div>
     </div>

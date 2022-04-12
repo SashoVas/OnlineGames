@@ -10,7 +10,7 @@ import { TicTacToeSignalRServiceService } from '../services/tic-tac-toe-signal-r
   styleUrls: ['./tic-tac-toe.component.css']
 })
 export class TicTacToeComponent implements OnInit ,OnDestroy {
-
+  first:boolean=true;
   board:string[][]=[];
   moveSubscription!:Subscription;
   gameEnded:boolean;
@@ -46,12 +46,14 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
     .subscribe();
   }
   playSecond(){
+    this.first=false;
     this.inGame=true;
     this.moveSubscription=this.ticTacToeSignalRService
     .tellOponent(this.ticTacToeService.currentPlayer)
     .subscribe();
   }
   clear(){
+    this.first=true;
     this.ticTacToeService.clear();
     this.board=this.ticTacToeService.board;
     this.gameEnded=false;
