@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace OnlineGames.Web.Controllers
 {
@@ -21,6 +22,7 @@ namespace OnlineGames.Web.Controllers
         [HttpGet("")]
         public IEnumerable<WeatherForecast> Get()
         {
+            var a = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),

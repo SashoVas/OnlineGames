@@ -9,5 +9,6 @@ namespace OnlineGames.Data.Models
 {
     public class User:IdentityUser
     {
+        public string? RoomName { get; set; }
     }
 }

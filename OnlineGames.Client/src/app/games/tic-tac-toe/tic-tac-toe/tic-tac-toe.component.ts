@@ -1,5 +1,6 @@
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges,ViewChild } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { map, Observable, Subscription } from 'rxjs';
 import { IBoardCoordinates } from 'src/app/core/interfaces/IBoardCoordinates';
 import { TicTacToeServiceService } from '../services/tic-tac-toe-service.service';
 import { TicTacToeSignalRServiceService } from '../services/tic-tac-toe-signal-rservice.service';
@@ -15,16 +16,26 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
   moveSubscription!:Subscription;
   gameEnded:boolean;
   inGame:boolean=false;
-
-  constructor(private ticTacToeService: TicTacToeServiceService,private ticTacToeSignalRService:TicTacToeSignalRServiceService) {
+  roomName:string="";
+  constructor(private ticTacToeService: TicTacToeServiceService,private ticTacToeSignalRService:TicTacToeSignalRServiceService,private route:ActivatedRoute) {
     this.board=ticTacToeService.board;
-
+    
     this.ticTacToeSignalRService
       .addDataListeners((coordinates:IBoardCoordinates)=>{
         this.ticTacToeService.makeMove(coordinates.row,coordinates.col);
         this.gameEnded=this.ticTacToeService.gameEnded;
       });
-
+      
+    this.route.queryParams.subscribe(params=>{
+      this.roomName=params['roomName'];
+      if(this.roomName!=null)
+      {
+        this.tellOponent=(row:number,col:number)=>ticTacToeSignalRService.tellOponenet(row,col);
+        this.ticTacToeSignalRService.addToRoom(this.roomName)
+        .subscribe();
+      }
+      
+    });
     this.gameEnded=this.ticTacToeService.gameEnded;
    }
 
@@ -37,19 +48,16 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
     this.inGame=true;
     this.ticTacToeService.makeMove(row,col);
     this.gameEnded=this.ticTacToeService.gameEnded;
-    this.gameEnded=this.ticTacToeService.gameEnded;
-    if(this.gameEnded){
-      return;
-    }
-    this.moveSubscription=this.ticTacToeSignalRService
-    .tellOponent(this.ticTacToeService.currentPlayer)
-    .subscribe();
+    this.tellOponent(row,col);
   }
   playSecond(){
     this.first=false;
     this.inGame=true;
+    this.tellOponent(0,0);
+  }
+  tellOponent=(row:number,col:number)=>{
     this.moveSubscription=this.ticTacToeSignalRService
-    .tellOponent(this.ticTacToeService.currentPlayer)
+    .tellOponentAI(this.ticTacToeService.currentPlayer)
     .subscribe();
   }
   clear(){
