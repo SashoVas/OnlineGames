@@ -1,12 +1,14 @@
 <div class="text-center">
     <h1>Tic Tac Toe</h1>
+    <h1>{{oponentTurn==true?"Oponent Turn":"My turn"}}</h1>
+
     <div class="d-flex justify-content-around mb-2">
         <div>
-            <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" [disabled]="inGame" #checkedFirst [checked]="first">
+            <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" [disabled]="inGame" #checkedFirst [checked]="!oponentTurn && !inGame">
             <label class="btn btn-outline-secondary" for="success-outlined">First</label>
         </div>
         <div>
-            <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" [disabled]="inGame" #checedSecond [checked]="!first" (click)="playSecond()">
+            <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" [disabled]="inGame" #checedSecond [checked]="oponentTurn && !inGame" (click)="playSecond()">
             <label class="btn btn-outline-secondary" for="danger-outlined">Second</label>
         </div>
     </div>
@@ -19,6 +21,6 @@
             </div>  
         </div>
     </div>
-    <h1 *ngIf="gameEnded">Game Ended</h1>
+    <h1 *ngIf="gameEnded()">Game Ended</h1>
     <button (click)="clear()" class="w-50 mt-3 btn btn-secondary" ><span class="display-6">New Game</span> </button>    
 </div>

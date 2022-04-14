@@ -4,19 +4,18 @@ import { from, Observable } from 'rxjs';
 import { IBoardCoordinates } from 'src/app/core/interfaces/IBoardCoordinates';
 import { TicTacToeServiceService } from './tic-tac-toe-service.service';
 import { environment } from 'src/environments/environment';
-import { AuthService } from 'src/app/identity/services/auth.service';
+import { AccountService } from 'src/app/core/services/account.service';
 @Injectable({
   providedIn: 'root'
 })
 export class TicTacToeSignalRServiceService {
 
-    constructor(private ticTacToeService:TicTacToeServiceService, private authService:AuthService) {
+    constructor(private ticTacToeService:TicTacToeServiceService, private accountService:AccountService) {
    }
 
   hubConnection!: signalR.HubConnection;
   startConnection():Observable<any>{
 
-    let token=this.authService.getToken();
     var options = {
       transport: signalR.HttpTransportType.WebSockets,
       logging: signalR.LogLevel.Information
@@ -24,13 +23,13 @@ export class TicTacToeSignalRServiceService {
     };
 
     this.hubConnection=new signalR.HubConnectionBuilder()
-      .withUrl(environment.apiUrl+'/TicTacToe/?token='+token,options)
+      .withUrl(environment.apiUrl+'/TicTacToe/?token='+this.accountService.getToken(),options)
       .build();
 
       return from(this.hubConnection.start());
   }
 
-  public tellOponentAI(player:number):Observable<any>{
+  public tellOponentAI(player:number){
     let boardString=this.ticTacToeService.board.map(x=>x.map(y=>{
       if (y==""){
         return "0";
@@ -40,15 +39,15 @@ export class TicTacToeSignalRServiceService {
       }
     })).join().replace(/,/g, '');
     console.log(boardString);
-    return from(this.hubConnection.invoke("MakeMoveAI",boardString,player));
+    this.hubConnection.invoke("MakeMoveAI",boardString,player);
   }
-  public addToRoom(roomName:string):Observable<any>{
-    return from(this.hubConnection.invoke("AddToGroup",roomName));
+  public addToRoom(roomName:string){
+    this.hubConnection.invoke("AddToGroup",roomName);
   }
-  public addDataListeners(func:(coordinates:IBoardCoordinates)=>void){
+  public addOponentMoveListener(func:(coordinates:IBoardCoordinates)=>void){
     this.hubConnection.on("OponentMove",func);
   }
   public tellOponenet(row:number,col:number){
-    return from(this.hubConnection.invoke("MakeMoveOponent",row,col))
+    this.hubConnection.invoke("MakeMoveOponent",row,col);
   }
 }

@@ -17,13 +17,4 @@ export class AuthService {
   login(user:ILoginUser):Observable<any>{
     return this.http.post(environment.apiUrl+'/login',user);
   }
-  logOut(){
-    localStorage.removeItem('token');
-  }
-  getToken(){
-    return localStorage.getItem('token'); 
-  }
-  saveToken(token:string){
-    localStorage.setItem('token',token);
-  }
 }

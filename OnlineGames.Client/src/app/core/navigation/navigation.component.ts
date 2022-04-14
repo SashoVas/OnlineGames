@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/identity/services/auth.service';
+import { AccountService } from '../services/account.service';
 
 @Component({
   selector: 'app-navigation',
@@ -9,15 +9,15 @@ import { AuthService } from 'src/app/identity/services/auth.service';
 })
 export class NavigationComponent implements OnInit {
   
-  constructor(private authService:AuthService,private router:Router) {}
+  constructor(private accountService:AccountService,private router:Router) {}
 
   ngOnInit(): void {
   }
   isLoged(){
-    return this.authService.getToken()!=null;
+    return this.accountService.getToken()!=null;
   }
   logOut(){
-    this.authService.logOut();
+    this.accountService.logOut();
     this.router.navigate([""]);
   }
 }

@@ -18,6 +18,7 @@ export class TicTacToeServiceService {
   {
     this.board=[["","",""],["","",""],["","",""]];
     this.currentPlayer=1;
+    this.gameEnded=false;
   }
   checkWin():boolean{
     let playerAvatar=((this.currentPlayer==1)?'X':'O');
