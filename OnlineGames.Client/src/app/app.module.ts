@@ -8,12 +8,11 @@ import { CoreModule } from './core/core.module';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { GamesModule } from './games/games.module';
 import { IdentityModule } from './identity/identity.module';
-import { LandingComponent } from './landing/landing.component';
+import { LandingComponent } from './core/landing/landing.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LandingComponent,
   ],
   imports: [
     BrowserModule,

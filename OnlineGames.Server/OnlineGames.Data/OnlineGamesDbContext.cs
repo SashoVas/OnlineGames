@@ -6,6 +6,7 @@ namespace OnlineGames.Data
 {
     public class OnlineGamesDbContext : IdentityDbContext<User>
     {
+        public DbSet<TicTacToeRoom> TicTacToeRooms { get; set; }
         public OnlineGamesDbContext(DbContextOptions<OnlineGamesDbContext> options)
             : base(options)
         {
@@ -13,7 +14,11 @@ namespace OnlineGames.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
+            builder.Entity<User>()
+                .HasOne(u => u.TicTacToeRoom)
+                .WithMany(t => t.Users)
+                .HasForeignKey(u => u.TicTacToeRoomId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

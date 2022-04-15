@@ -17,16 +17,18 @@ namespace OnlineGames.Services
         private readonly TicTacToe ticTacToe;
         private readonly UserManager<User> userManager;
         private readonly OnlineGamesDbContext dbContext;
-        public TicTacToeService(OnlineGamesDbContext dbContext, UserManager<User> userManager)
+        private readonly IRoomService roomService;
+        public TicTacToeService(OnlineGamesDbContext dbContext, UserManager<User> userManager, IRoomService roomService)
         {
             this.ticTacToe=new TicTacToe();
             this.userManager = userManager;
             this.dbContext = dbContext;
+            this.roomService = roomService;
         }
 
         public async Task<string> GetRoomName(string userId)
         {
-            return (await this.userManager.FindByIdAsync(userId)).RoomName;
+            return (await this.userManager.FindByIdAsync(userId)).TicTacToeRoomId;
         }
 
         public async Task<BoardCoordinates> MakeMove(string boardSring,int currentPlayer)
@@ -43,10 +45,9 @@ namespace OnlineGames.Services
         public async Task SetRoomName(string userId,string roomName)
         {
             var user = await this.userManager.FindByIdAsync(userId);
-            user.RoomName = roomName;
+            await roomService.SetTicTacToeRoomToUser(user,roomName);
             await userManager.UpdateAsync(user);
             await dbContext.SaveChangesAsync();
-
         }
     }
 }

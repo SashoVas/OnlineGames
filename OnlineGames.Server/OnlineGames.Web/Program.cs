@@ -85,6 +85,7 @@ builder.Services.AddSignalR();
 
 builder.Services.AddTransient<ITicTacToeService, TicTacToeService>();
 builder.Services.AddTransient<IIdentityService, IdentityService>();
+builder.Services.AddTransient<IRoomService, RoomService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

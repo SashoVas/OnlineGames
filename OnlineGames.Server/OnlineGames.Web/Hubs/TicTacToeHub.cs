@@ -11,10 +11,11 @@ namespace OnlineGames.Web.Hubs
     public class TicTacToeHub:Hub
     {
         private readonly ITicTacToeService ticTacToeService;
-
-        public TicTacToeHub(ITicTacToeService ticTacToeService)
+        private readonly IRoomService roomService;
+        public TicTacToeHub(ITicTacToeService ticTacToeService, IRoomService roomService)
         {
             this.ticTacToeService = ticTacToeService;
+            this.roomService = roomService;
         }
 
         public async Task TestAll()
@@ -42,6 +43,11 @@ namespace OnlineGames.Web.Hubs
                     Col=col
                 });
             
+        }
+        public override async Task OnDisconnectedAsync(Exception exception)
+        {
+            await this.roomService.RemoveTicTacToeRoom(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }
