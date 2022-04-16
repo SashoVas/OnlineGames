@@ -41,7 +41,7 @@ export class TicTacToeSignalRServiceService {
     console.log(boardString);
     this.hubConnection.invoke("MakeMoveAI",boardString,player);
   }
-  public addToRoom(roomName:string){
+  public addToRoom(roomName?:string){
     this.hubConnection.invoke("AddToGroup",roomName);
   }
   public addOponentMoveListener(func:(coordinates:IBoardCoordinates)=>void){
@@ -49,5 +49,8 @@ export class TicTacToeSignalRServiceService {
   }
   public tellOponenet(row:number,col:number){
     this.hubConnection.invoke("MakeMoveOponent",row,col);
+  }
+  public clearBoard(){
+    this.hubConnection.invoke("ClearBoard");
   }
 }

@@ -25,24 +25,34 @@ namespace OnlineGames.Web.Hubs
         public async Task MakeMoveAI(string boardString,int currentPlayer)
         {
             var output =await this.ticTacToeService.MakeMove(boardString,currentPlayer);
+            await roomService.UpdateBoard(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),output.Row,output.Col);
             await this.Clients.Caller.SendAsync("OponentMove", output);
         }
         public async Task AddToGroup(string groupName)
         {
             var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (groupName==null)
+            {
+                groupName =await this.roomService.CreateTicTacToeRoom(this.Context.User.Identity.Name);
+            }
             await this.ticTacToeService.SetRoomName(userId,groupName);
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);
         }
         public async Task MakeMoveOponent(int row,int col)
         {
             var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            this.Clients.OthersInGroup(await this.ticTacToeService.GetRoomName(userId)).SendAsync("OponentMove",
+            await roomService.UpdateBoard(userId,row,col);
+            await this.Clients.OthersInGroup(await this.ticTacToeService.GetRoomName(userId)).SendAsync("OponentMove",
                 new BoardCoordinates 
                 { 
                     Row = row,
                     Col=col
                 });
-            
+        }
+        public async Task ClearBoard()
+        {
+            var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await this.roomService.ClearBoard(userId);
         }
         public override async Task OnDisconnectedAsync(Exception exception)
         {

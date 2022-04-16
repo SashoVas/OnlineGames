@@ -10,8 +10,6 @@ import { Connect4Module } from './connect4/connect4.module';
   declarations: [],
   imports: [
     CommonModule,
-    TicTacToeModule,
-    Connect4Module
   ]
 })
 export class GamesModule { }

@@ -17,9 +17,7 @@ import { LandingComponent } from './core/landing/landing.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    CoreModule,
-    GamesModule,
-    IdentityModule
+    CoreModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },],
   bootstrap: [AppComponent]

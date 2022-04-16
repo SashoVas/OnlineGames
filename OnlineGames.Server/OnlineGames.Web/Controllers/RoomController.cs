@@ -18,7 +18,7 @@ namespace OnlineGames.Web.Controllers
         public async Task<ActionResult<object>>CreateTicTacToeRoom()
         {
             return new  { 
-             RoomId=await this.roomService.CreateTicTacToeRoom()
+             RoomId=await this.roomService.CreateTicTacToeRoom(this.User.Identity.Name)
             };
         }
     }

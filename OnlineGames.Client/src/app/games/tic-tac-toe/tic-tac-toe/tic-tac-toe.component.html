@@ -23,4 +23,13 @@
     </div>
     <h1 *ngIf="gameEnded()">Game Ended</h1>
     <button (click)="clear()" class="w-50 mt-3 btn btn-secondary" ><span class="display-6">New Game</span> </button>    
+    <br>
+    <a *ngIf="roomId" class="btn btn-secondary mt-2" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Show Room Id</a>
+    <div *ngIf="roomId" class="col">
+        <div class="collapse multi-collapse bg-dark" id="multiCollapseExample1">
+          <div class="card card-body bg-dark text-light">
+              {{roomId}}
+          </div>
+        </div>
+      </div>
 </div>
