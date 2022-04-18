@@ -13,6 +13,10 @@ namespace OnlineGames.Services.Contracts
         Task RemoveTicTacToeRoom(string userId);
         Task SetTicTacToeRoomToUser(User user,string roomId);
         Task UpdateBoard(string userId, int row, int col);
+        Task UpdateBoardAI(string userId, int row, int col);
         Task ClearBoard(string userId);
+        Task<string> GetUserRoom(string userId);
+        Task<int> GetTurn(string userId);
+
     }
 }

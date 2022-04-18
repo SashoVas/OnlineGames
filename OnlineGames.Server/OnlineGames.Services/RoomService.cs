@@ -92,5 +92,53 @@ namespace OnlineGames.Services
             dbContext.TicTacToeRooms.Update(room);
             await dbContext.SaveChangesAsync();
         }
+
+        public async Task<string> GetUserRoom(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user==null)
+            {
+                throw new ArgumentException();
+            }
+            var room = await dbContext.TicTacToeRooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+            if (room==null)
+            {
+                throw new ArgumentException();
+            }
+            return room.BoardString;
+        }
+
+        public async Task<int> GetTurn(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new ArgumentException();
+            }
+            var room = await dbContext.TicTacToeRooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+            if (room == null)
+            {
+                throw new ArgumentException();
+            }
+            return room.FirstPlayerTurn?1:-1;
+        }
+
+        public async Task UpdateBoardAI(string userId, int row, int col)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            var room = await dbContext.TicTacToeRooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+
+            if (room.FirstPlayerTurn)
+            {
+                room.BoardString = room.BoardString[0..((3 * row) + col)] + "1" + room.BoardString[((3 * row) + col + 1)..^0];
+            }
+            else
+            {
+                room.BoardString = room.BoardString[0..((3 * row) + col)] + "2" + room.BoardString[((3 * row) + col + 1)..^0];
+            }
+            room.FirstPlayerTurn = !room.FirstPlayerTurn;
+            dbContext.TicTacToeRooms.Update(room);
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

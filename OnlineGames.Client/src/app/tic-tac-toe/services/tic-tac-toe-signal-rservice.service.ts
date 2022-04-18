@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
 import { from, Observable } from 'rxjs';
 import { IBoardCoordinates } from 'src/app/core/interfaces/IBoardCoordinates';
-import { TicTacToeServiceService } from './tic-tac-toe-service.service';
 import { environment } from 'src/environments/environment';
 import { AccountService } from 'src/app/core/services/account.service';
 @Injectable({
@@ -29,9 +28,9 @@ export class TicTacToeSignalRServiceService {
       return from(this.hubConnection.start());
   }
 
-  public tellOponentAI(player:number){
+  public tellOponentAI(row:number,col:number){
     
-    this.hubConnection.invoke("MakeMoveAI",player);
+    this.hubConnection.invoke("MakeMoveAI",row,col);
   }
   public addToRoom(roomName?:string){
     this.hubConnection.invoke("AddToGroup",roomName);

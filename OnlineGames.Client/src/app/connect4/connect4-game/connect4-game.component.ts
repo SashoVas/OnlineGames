@@ -4,7 +4,8 @@ import { Connect4ServiceService } from '../services/connect4-service.service';
 @Component({
   selector: 'app-connect4-game',
   templateUrl: './connect4-game.component.html',
-  styleUrls: ['./connect4-game.component.css']
+  styleUrls: ['./connect4-game.component.css'],
+  providers:[Connect4ServiceService]
 })
 export class Connect4GameComponent implements OnInit {
   board:string[][]=[[]];

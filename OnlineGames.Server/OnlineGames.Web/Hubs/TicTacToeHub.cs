@@ -22,10 +22,14 @@ namespace OnlineGames.Web.Hubs
         {
             await this.Clients.All.SendAsync("TestTicTacToeHub",5);
         }
-        public async Task MakeMoveAI(string boardString,int currentPlayer)
+        public async Task MakeMoveAI(int row,int col)
         {
+            var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await roomService.UpdateBoard(userId, row, col);
+            var boardString = await roomService.GetUserRoom(userId);
+            var currentPlayer = await roomService.GetTurn(userId);
             var output =await this.ticTacToeService.MakeMove(boardString,currentPlayer);
-            await roomService.UpdateBoard(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),output.Row,output.Col);
+            await roomService.UpdateBoardAI(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),output.Row,output.Col);
             await this.Clients.Caller.SendAsync("OponentMove", output);
         }
         public async Task AddToGroup(string groupName)

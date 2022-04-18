@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
 import { CoreModule } from '../core/core.module';
 import { TicTacToeRoutingModule } from './tic-tac-toe-routing.module';
+import { TicTacToeServiceService } from './services/tic-tac-toe-service.service';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,6 @@ import { TicTacToeRoutingModule } from './tic-tac-toe-routing.module';
     CoreModule
   ],
   exports:[],
-  providers:[]
+  providers:[TicTacToeServiceService]
 })
 export class TicTacToeModule { }

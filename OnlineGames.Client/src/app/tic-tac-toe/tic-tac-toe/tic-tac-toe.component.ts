@@ -23,7 +23,6 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
         this.ticTacToeService.makeMove(coordinates.row,coordinates.col);
         this.oponentTurn=false;
       });
-    console.log('here');
     this.route.queryParams.subscribe(params=>{
       if(params['roomName']!=null)
       {
@@ -53,7 +52,7 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
   }
   tellOponent=(row:number,col:number)=>{
     this.ticTacToeSignalRService
-    .tellOponentAI(this.ticTacToeService.currentPlayer);
+    .tellOponentAI(row,col);
   }
   clear(){
     this.ticTacToeSignalRService.clearBoard();
