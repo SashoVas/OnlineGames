@@ -18,4 +18,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
   })
-  export class Connect4Routing { }
+  export class Connect4RoutingModule { }

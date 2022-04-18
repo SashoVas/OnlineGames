@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Connect4GameComponent } from './connect4-game/connect4-game.component';
-import { TicTacToeModule } from '../tic-tac-toe/tic-tac-toe.module';
 
-
-
+import { CoreModule } from '../core/core.module';
+import { Connect4RoutingModule } from './connect4-routing.module';
 
 @NgModule({
   declarations: [
-    Connect4GameComponent
+    Connect4GameComponent,
+    
   ],
   imports: [
     CommonModule,
-    TicTacToeModule
-
+    CoreModule,
+    Connect4RoutingModule
   ]
 })
 export class Connect4Module { }

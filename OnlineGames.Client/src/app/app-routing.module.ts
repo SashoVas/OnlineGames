@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IdentityGuard } from './identity/guards/identity.guard';
 import { LandingComponent } from './core/landing/landing.component';
+import { TicTacToeResolver } from './tic-tac-toe/resolvers/tic-tac-toe.resolver';
 
 
 const routes: Routes = [
@@ -11,15 +12,23 @@ const routes: Routes = [
     component:LandingComponent,
   },
   {
-    path:"games",
-    loadChildren:()=>import("./games/games-routing.module").then(m=>m.GamesRouting)
+    path:"landing",
+    component:LandingComponent,
+  },
+  {
+    path:"tictactoe",
+    loadChildren:()=>import("./tic-tac-toe/tic-tac-toe.module").then(t=>t.TicTacToeModule),
+    resolve:[TicTacToeResolver]
+  },
+  {
+    path:"connect4",
+    loadChildren:()=>import("./connect4/connect4.module").then(c=>c.Connect4Module)
   },
   {
     path:"identity",
-    loadChildren:()=>import("./identity/identity-routing.module").then(i=>i.IdentityRouting),
+    loadChildren:()=>import("./identity/identity.module").then(i=>i.IdentityModule),
     canActivate:[IdentityGuard]
   }
-
 ]; 
 
 @NgModule({

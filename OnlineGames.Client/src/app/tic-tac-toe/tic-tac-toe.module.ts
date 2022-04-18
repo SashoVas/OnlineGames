@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BoardCellComponent } from '../board-cell/board-cell.component';
 import { TicTacToeComponent } from './tic-tac-toe/tic-tac-toe.component';
-
-
+import { CoreModule } from '../core/core.module';
+import { TicTacToeRoutingModule } from './tic-tac-toe-routing.module';
 
 @NgModule({
   declarations: [
-    BoardCellComponent,
-    TicTacToeComponent],
-  imports: [
-    CommonModule
+    TicTacToeComponent
   ],
-  exports:[BoardCellComponent]
+  imports: [
+    CommonModule,
+    TicTacToeRoutingModule,
+    CoreModule
+  ],
+  exports:[],
+  providers:[]
 })
 export class TicTacToeModule { }

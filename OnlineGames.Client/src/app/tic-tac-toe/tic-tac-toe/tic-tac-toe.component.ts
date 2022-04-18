@@ -7,7 +7,8 @@ import { TicTacToeSignalRServiceService } from '../services/tic-tac-toe-signal-r
 @Component({
   selector: 'app-tic-tac-toe',
   templateUrl: './tic-tac-toe.component.html',
-  styleUrls: ['./tic-tac-toe.component.css']
+  styleUrls: ['./tic-tac-toe.component.css'],
+  providers:[TicTacToeServiceService]
 })
 export class TicTacToeComponent implements OnInit ,OnDestroy {
   board:string[][]=[];
@@ -15,13 +16,14 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
   oponentTurn:boolean=false;
   roomId?:string=undefined;
   constructor(private ticTacToeService: TicTacToeServiceService,private ticTacToeSignalRService:TicTacToeSignalRServiceService,private route:ActivatedRoute) {
+    
     this.board=ticTacToeService.board;
     this.ticTacToeSignalRService
       .addOponentMoveListener((coordinates:IBoardCoordinates)=>{
         this.ticTacToeService.makeMove(coordinates.row,coordinates.col);
         this.oponentTurn=false;
       });
-      
+    console.log('here');
     this.route.queryParams.subscribe(params=>{
       if(params['roomName']!=null)
       {

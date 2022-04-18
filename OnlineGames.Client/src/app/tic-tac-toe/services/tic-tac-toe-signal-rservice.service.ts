@@ -10,7 +10,7 @@ import { AccountService } from 'src/app/core/services/account.service';
 })
 export class TicTacToeSignalRServiceService {
 
-    constructor(private ticTacToeService:TicTacToeServiceService, private accountService:AccountService) {
+    constructor(private accountService:AccountService) {
    }
 
   hubConnection!: signalR.HubConnection;
@@ -30,16 +30,8 @@ export class TicTacToeSignalRServiceService {
   }
 
   public tellOponentAI(player:number){
-    let boardString=this.ticTacToeService.board.map(x=>x.map(y=>{
-      if (y==""){
-        return "0";
-      }
-      else{
-        return y=='X'?'1':'2';
-      }
-    })).join().replace(/,/g, '');
-    console.log(boardString);
-    this.hubConnection.invoke("MakeMoveAI",boardString,player);
+    
+    this.hubConnection.invoke("MakeMoveAI",player);
   }
   public addToRoom(roomName?:string){
     this.hubConnection.invoke("AddToGroup",roomName);

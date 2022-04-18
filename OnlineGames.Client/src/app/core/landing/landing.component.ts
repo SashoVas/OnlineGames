@@ -20,11 +20,11 @@ export class LandingComponent implements OnInit {
 
   createRoom(){
     this.roomService.createRoom().subscribe((data)=>
-      this.router.navigate(['games/tictactoe/tictactoe'], { queryParams: { roomName: data['roomId'] ,first:true} }));
+      this.router.navigate(['tictactoe/tictactoe'], { queryParams: { roomName: data['roomId'] ,first:true} }));
     
   }
   joinRoom(){
     console.log(this.roomId);
-    this.router.navigate(['games/tictactoe/tictactoe'], { queryParams: { roomName: this.roomId?.nativeElement.value ,first:false} });
+    this.router.navigate(['tictactoe/tictactoe'], { queryParams: { roomName: this.roomId?.nativeElement.value ,first:false} });
   }
 }
