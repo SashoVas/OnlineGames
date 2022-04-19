@@ -15,7 +15,7 @@ namespace OnlineGames.Data.Models
         public string Id { get; set; }
         public string BoardString { get; set; } = "000000000";
         public bool FirstPlayerTurn { get; set; } = true;
-        public string FirstPlayerName { get; set; }
+        public string? FirstPlayerName { get; set; }
         public ICollection<User> Users { get; set; }
         
     }

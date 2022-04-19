@@ -25,7 +25,11 @@ namespace OnlineGames.Web.Hubs
         public async Task MakeMoveAI(int row,int col)
         {
             var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await roomService.UpdateBoard(userId, row, col);
+            //Skip update board if the ai is first
+            if (row!=-1 && col!=-1)
+            {
+                await roomService.UpdateBoard(userId, row, col);
+            }
             var boardString = await roomService.GetUserRoom(userId);
             var currentPlayer = await roomService.GetTurn(userId);
             var output =await this.ticTacToeService.MakeMove(boardString,currentPlayer);
@@ -37,6 +41,7 @@ namespace OnlineGames.Web.Hubs
             var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (groupName==null)
             {
+                //Here if the oponent is ai and we dont want our room id to be exposed
                 groupName =await this.roomService.CreateTicTacToeRoom(this.Context.User.Identity.Name);
             }
             await this.ticTacToeService.SetRoomName(userId,groupName);
@@ -57,6 +62,7 @@ namespace OnlineGames.Web.Hubs
         {
             var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             await this.roomService.ClearBoard(userId);
+            await this.Clients.Group(await this.ticTacToeService.GetRoomName(userId)).SendAsync("ClearBoard");
         }
         public override async Task OnDisconnectedAsync(Exception exception)
         {

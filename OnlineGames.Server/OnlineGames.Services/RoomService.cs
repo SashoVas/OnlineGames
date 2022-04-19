@@ -40,6 +40,7 @@ namespace OnlineGames.Services
             user.TicTacToeRoomId = null;
             if (room.Users.Count()==1)
             {
+                //The room is empty so we remove it
                 dbContext.TicTacToeRooms.Remove(room);
             }
             dbContext.Users.Update(user);
@@ -51,6 +52,7 @@ namespace OnlineGames.Services
             var room=await dbContext.TicTacToeRooms.FirstOrDefaultAsync(r => r.Id == roomId);
             if (room==null||room.Users.Count>=2)
             {
+                //Room is full or does not exist
                 throw new ArgumentException();
             }
             user.TicTacToeRoom = room;
@@ -62,14 +64,17 @@ namespace OnlineGames.Services
             var room = await dbContext.TicTacToeRooms.Include(r=>r.Users).FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
             if (room.BoardString[((3 * row) + col)]!='0')
             {
+                //The position is alredy taken
                 throw new ArgumentException();
             }
             if (room.FirstPlayerTurn && room.FirstPlayerName==user.UserName)
             {
+                //First player move
                 room.BoardString = room.BoardString[0..((3 * row) + col)]+"1"+ room.BoardString[((3 * row) + col+1) .. ^0];
             }
             else if (!room.FirstPlayerTurn && room.FirstPlayerName !=user.UserName)
             {
+                //Second player move
                 room.BoardString = room.BoardString[0..((3 * row) + col)] + "2" + room.BoardString[((3 * row) + col + 1)..^0];
             }
             else
@@ -83,11 +88,22 @@ namespace OnlineGames.Services
         public async Task ClearBoard(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
-            var room = await dbContext.TicTacToeRooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+            var room = await dbContext.TicTacToeRooms.Include(r=>r.Users).FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
             if (room==null)
             {
                 throw new ArgumentException();
             }
+            //Swap first turns
+            if (room.Users.Count()<=1)
+            {
+                //Here if oponent is ai or the room is not full
+                room.FirstPlayerName=room.FirstPlayerName!=null?null:user.UserName;
+            }
+            else
+            {
+                room.FirstPlayerName = room.Users.FirstOrDefault(r => r.UserName != room.FirstPlayerName).UserName;
+            }
+            room.FirstPlayerTurn=true;
             room.BoardString = "000000000";
             dbContext.TicTacToeRooms.Update(room);
             await dbContext.SaveChangesAsync();

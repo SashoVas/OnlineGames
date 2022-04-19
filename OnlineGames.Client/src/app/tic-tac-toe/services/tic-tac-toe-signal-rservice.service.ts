@@ -38,6 +38,9 @@ export class TicTacToeSignalRServiceService {
   public addOponentMoveListener(func:(coordinates:IBoardCoordinates)=>void){
     this.hubConnection.on("OponentMove",func);
   }
+  public addClearBoardListener(func:()=>void){
+    this.hubConnection.on("ClearBoard",func);
+  }
   public tellOponenet(row:number,col:number){
     this.hubConnection.invoke("MakeMoveOponent",row,col);
   }

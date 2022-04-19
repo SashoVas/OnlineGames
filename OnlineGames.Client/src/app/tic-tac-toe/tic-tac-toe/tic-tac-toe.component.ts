@@ -15,6 +15,7 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
   inGame:boolean=false;
   oponentTurn:boolean=false;
   roomId?:string=undefined;
+  startFirst:boolean=true;
   constructor(private ticTacToeService: TicTacToeServiceService,private ticTacToeSignalRService:TicTacToeSignalRServiceService,private route:ActivatedRoute) {
     
     this.board=ticTacToeService.board;
@@ -23,12 +24,15 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
         this.ticTacToeService.makeMove(coordinates.row,coordinates.col);
         this.oponentTurn=false;
       });
+    this.ticTacToeSignalRService.addClearBoardListener(()=>{this.clear();});
     this.route.queryParams.subscribe(params=>{
       if(params['roomName']!=null)
       {
         this.roomId=params['roomName'];
         this.tellOponent=(row:number,col:number)=>ticTacToeSignalRService.tellOponenet(row,col);
         this.oponentTurn=params['first']=='false';
+        this.startFirst=params['first']!='false';
+
       }
       this.ticTacToeSignalRService.addToRoom(this.roomId);
     });
@@ -45,21 +49,23 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
     this.ticTacToeService.makeMove(row,col);
     this.tellOponent(row,col);
   }
-  playSecond(){
-    this.oponentTurn=true;
-    this.inGame=true;
-    this.tellOponent(2,2);
-  }
   tellOponent=(row:number,col:number)=>{
     this.ticTacToeSignalRService
     .tellOponentAI(row,col);
   }
   clear(){
-    this.ticTacToeSignalRService.clearBoard();
-    this.oponentTurn=false;
     this.ticTacToeService.clear();
     this.board=this.ticTacToeService.board;
     this.inGame=false;
+    this.startFirst=!this.startFirst;
+    this.oponentTurn=!this.startFirst;
+    if(!this.startFirst && this.roomId==undefined){
+      this.ticTacToeSignalRService.tellOponentAI(-1,-1);
+    }
+  }
+  clearButtonClick()
+  {
+    this.ticTacToeSignalRService.clearBoard();
   }
   gameEnded(){
     return this.ticTacToeService.gameEnded;
