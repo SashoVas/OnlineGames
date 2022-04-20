@@ -47,6 +47,9 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
     this.oponentTurn=true;
     this.inGame=true;
     this.ticTacToeService.makeMove(row,col);
+    if(this.gameEnded()){
+      return;
+    }
     this.tellOponent(row,col);
   }
   tellOponent=(row:number,col:number)=>{
@@ -69,6 +72,13 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
   }
   gameEnded(){
     return this.ticTacToeService.gameEnded;
+  }
+  getWinner(){
+    if(this.ticTacToeService.draw)
+    {
+      return 'Draw';
+    }
+    return -this.ticTacToeService.currentPlayer==1?'X':'O';
   }
   ngOnDestroy():void{
     this.ticTacToeSignalRService.hubConnection.stop()

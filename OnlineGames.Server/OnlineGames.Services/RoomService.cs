@@ -143,7 +143,10 @@ namespace OnlineGames.Services
         {
             var user = await userManager.FindByIdAsync(userId);
             var room = await dbContext.TicTacToeRooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
-
+            if (room.BoardString[(3 * row) + col]!='0')
+            {
+                throw new ArgumentException();
+            }
             if (room.FirstPlayerTurn)
             {
                 room.BoardString = room.BoardString[0..((3 * row) + col)] + "1" + room.BoardString[((3 * row) + col + 1)..^0];
