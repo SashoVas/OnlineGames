@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineGames.Services.Contracts;
+using OnlineGames.Services.Models;
+using OnlineGames.Web.Models.Room;
+using System.Security.Claims;
 
 namespace OnlineGames.Web.Controllers
 {
@@ -17,9 +20,22 @@ namespace OnlineGames.Web.Controllers
         [HttpPost("CreateTicTacToeRoom")]
         public async Task<ActionResult<object>>CreateTicTacToeRoom()
         {
+            var roomId = await this.roomService.CreateTicTacToeRoom(this.User.Identity.Name);
+            await this.roomService.SetTicTacToeRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier),roomId);
             return new  { 
-             RoomId=await this.roomService.CreateTicTacToeRoom(this.User.Identity.Name)
+             RoomId= roomId
             };
+        }
+        [HttpPost("AddToRoom")]
+        public async Task<ActionResult<object>>AddToRoom([FromBody] AddToRoomInputModel input)
+        {
+            await this.roomService.SetTicTacToeRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier), input.RoomId);
+            return new {RoomId=input.RoomId };
+        }
+        [HttpGet("GetRooms")]
+        public async Task<IEnumerable<RoomsServiceModel>>GetRooms()
+        {
+            return await this.roomService.GetAvailableRooms();
         }
     }
 }

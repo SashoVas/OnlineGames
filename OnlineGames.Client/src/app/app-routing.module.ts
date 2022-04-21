@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IdentityGuard } from './identity/guards/identity.guard';
-import { LandingComponent } from './core/landing/landing.component';
+import { LandingComponent } from './home/landing/landing.component';
 import { TicTacToeResolver } from './tic-tac-toe/resolvers/tic-tac-toe.resolver';
 
 
@@ -9,11 +9,7 @@ const routes: Routes = [
   {
     path:"",
     pathMatch:"full",
-    component:LandingComponent,
-  },
-  {
-    path:"landing",
-    component:LandingComponent,
+    loadChildren:()=>import("./home/home.module").then(h=>h.HomeModule)
   },
   {
     path:"tictactoe",

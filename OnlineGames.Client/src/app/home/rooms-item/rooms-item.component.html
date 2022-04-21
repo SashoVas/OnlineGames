@@ -1,0 +1,12 @@
+<h3>Rooms</h3>
+<hr>
+<ul class="list-group list-group-flush bg-dark overflow-auto">
+    <li *ngFor="let room of (rooms$ |async)" class="list-group-item bg-dark text-white">
+        <div class="d-flex justify-content-between">
+            <a>{{room['userName']}}</a>
+            <a >{{room['gameName']}}</a>
+            <a>{{room['players']}}/{{room['capacity']}}</a>
+            <button (click)="joinRoom(room['roomId'])" class="btn btn-secondary" routerLink="/tictactoe/tictactoe" >Join</button>    
+        </div>
+    </li>
+</ul>

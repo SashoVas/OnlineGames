@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineGames.Data;
 using OnlineGames.Data.Models;
 using OnlineGames.Services.Contracts;
+using OnlineGames.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,8 +48,9 @@ namespace OnlineGames.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task SetTicTacToeRoomToUser(User user,string roomId)
+        public async Task SetTicTacToeRoomToUser(string userId, string roomId)
         {
+            var user =await userManager.FindByIdAsync(userId);
             var room=await dbContext.TicTacToeRooms.FirstOrDefaultAsync(r => r.Id == roomId);
             if (room==null||room.Users.Count>=2)
             {
@@ -56,6 +58,8 @@ namespace OnlineGames.Services
                 throw new ArgumentException();
             }
             user.TicTacToeRoom = room;
+            dbContext.Users.Update(user);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateBoard(string userId,int row, int col)
@@ -158,6 +162,21 @@ namespace OnlineGames.Services
             room.FirstPlayerTurn = !room.FirstPlayerTurn;
             dbContext.TicTacToeRooms.Update(room);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable< RoomsServiceModel>> GetAvailableRooms()
+        {
+            return await dbContext.TicTacToeRooms
+                .Where(r => r.Users.Count() < 2)
+                .Take(10)
+                .Select(r=> new RoomsServiceModel
+                {
+                    Capacity=2,
+                    Players=1,
+                    GameName="TicTacToe",
+                    UserName=r.Users.First().UserName,
+                    RoomId=r.Id
+                }).ToListAsync();
         }
     }
 }

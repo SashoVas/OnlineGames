@@ -47,10 +47,10 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
     this.oponentTurn=true;
     this.inGame=true;
     this.ticTacToeService.makeMove(row,col);
-    if(this.gameEnded()){
+    this.tellOponent(row,col);
+        if(this.gameEnded()){
       return;
     }
-    this.tellOponent(row,col);
   }
   tellOponent=(row:number,col:number)=>{
     this.ticTacToeSignalRService

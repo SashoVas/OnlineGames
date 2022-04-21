@@ -1,6 +1,8 @@
 
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { IRoom } from '../../core/interfaces/IRoom';
 import { RoomService } from '../services/room.service';
 
 
@@ -11,11 +13,11 @@ import { RoomService } from '../services/room.service';
 })
 export class LandingComponent implements OnInit {
 
-  constructor(private router:Router,private roomService:RoomService) { }
   @ViewChild('roomId')
   roomId?:ElementRef;
-  ngOnInit(): void {
 
+  constructor(private router:Router,private roomService:RoomService) { }
+  ngOnInit(): void {
   }
 
   createRoom(){
@@ -24,7 +26,8 @@ export class LandingComponent implements OnInit {
     
   }
   joinRoom(){
-    console.log(this.roomId);
-    this.router.navigate(['tictactoe/tictactoe'], { queryParams: { roomName: this.roomId?.nativeElement.value ,first:false} });
+    let roomId:string=this.roomId?.nativeElement.value;
+    this.roomService.setUserToRoom(roomId).subscribe();
+    this.router.navigate(['tictactoe/tictactoe'], { queryParams: { roomName:roomId ,first:false} });
   }
 }

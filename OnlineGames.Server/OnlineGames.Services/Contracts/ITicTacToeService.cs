@@ -10,7 +10,6 @@ namespace OnlineGames.Services.Contracts
     public interface ITicTacToeService
     {
         Task<BoardCoordinates> MakeMove(string boardSring,int currentPlayer);
-        Task SetRoomName(string userId, string roomName);
         Task<string> GetRoomName(string userId);
     }
 }
