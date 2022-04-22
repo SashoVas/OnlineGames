@@ -13,5 +13,6 @@ namespace OnlineGames.Services.Models
         public int Capacity { get; set; }
         public int Players { get; set; }
         public string RoomId { get; set; }
+        public bool First { get; set; }
     }
 }

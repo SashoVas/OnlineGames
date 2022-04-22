@@ -3,5 +3,6 @@ export interface IRoom{
     gameName:string,
     capacity:number,
     players:number,
-    roomId:string
+    roomId:string,
+    first:boolean
 }

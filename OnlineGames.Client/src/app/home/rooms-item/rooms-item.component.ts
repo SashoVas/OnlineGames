@@ -17,8 +17,8 @@ export class RoomsItemComponent implements OnInit {
   
   ngOnInit(): void {
   }
-  joinRoom(roomId:string){
+  joinRoom(roomId:string,first:boolean){
     this.roomService.setUserToRoom(roomId).subscribe();
-    this.router.navigate(['tictactoe/tictactoe'], { queryParams: { roomName:roomId ,first:false} });
+    this.router.navigate(['tictactoe/tictactoe'], { queryParams: { roomName:roomId ,first:first} });
   }
 }

@@ -6,7 +6,7 @@
             <a>{{room['userName']}}</a>
             <a >{{room['gameName']}}</a>
             <a>{{room['players']}}/{{room['capacity']}}</a>
-            <button (click)="joinRoom(room['roomId'])" class="btn btn-secondary" routerLink="/tictactoe/tictactoe" >Join</button>    
+            <button (click)="joinRoom(room['roomId'],room['first'])" class="btn btn-secondary" routerLink="/tictactoe/tictactoe" >Join</button>    
         </div>
     </li>
 </ul>

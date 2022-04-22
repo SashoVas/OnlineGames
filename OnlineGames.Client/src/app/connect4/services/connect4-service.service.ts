@@ -11,11 +11,85 @@ export class Connect4ServiceService {
     [ "", "", "", "", "", "", ""],
 ];
   currentPlayer=1;
+  gameEnded=false;
   constructor() { }
+
   makeMove(row:number):void
   {
-    this.board[5][row]= this.currentPlayer==1?"O":"X";
-    this.currentPlayer=-this.currentPlayer;
+    if(this.gameEnded)
+    {
+      return;
+    }
+    for(let i=5;i>=0;i--)
+    {
+      if(this.board[i][row]!="O"&&this.board[i][row]!="X")
+      {
+        this.board[i][row]= this.currentPlayer==1?"O":"X";
+        this.currentPlayer=-this.currentPlayer;
+        this.gameEnded=this.checkWin();
+        return;
+      }
+    }    
   }
+  newGame(){
+    this.board=[
+      [ "", "", "", "", "", "", ""],
+      [ "", "", "", "", "", "", ""],
+      [ "", "", "", "", "", "", ""],
+      [ "", "", "", "", "", "", ""],
+      [ "", "", "", "", "", "", ""],
+      [ "", "", "", "", "", "", ""]];
+    this.currentPlayer=1;
+    this.gameEnded=false;
+  }
+  checkWin():boolean{
+    let currentSymbol=this.currentPlayer!=1?"O":"X";
+    //horizontal
+    for (let i = 0; i < 6; i++)
+    {
+      
+        for (let j = 0; j < 7-3; j++)
+        {
+            if (this.board[i][j]==currentSymbol&&this.board[i][j+1]==currentSymbol&&this.board[i][j+2]==currentSymbol&&this.board[i][j+3]==currentSymbol)
+            {
+              return true;
+            }
 
+        }
+    }
+    //vertical
+    for (let i = 0; i < 6-3; i++)
+    {
+        for (let j = 0; j < 7 ; j++)
+        {
+            if (this.board[i][j]==currentSymbol&&this.board[i+1][j]==currentSymbol&&this.board[i+2][j]==currentSymbol&&this.board[i+3][j]==currentSymbol)
+            {
+              return true;
+            }
+        }
+    }
+    //diagonal right
+    for (let i = 0; i < 6 - 3; i++)
+    {
+        for (let j = 0; j < 7-3; j++)
+        {
+            if (this.board[i][j]==currentSymbol&&this.board[i+1][j+1]==currentSymbol&&this.board[i+2][j+2]==currentSymbol&&this.board[i+3][j+3]==currentSymbol)
+            {
+              return true;
+            }
+        }
+    }
+    //diagonal left
+    for (let i = 4; i < 6 ; i++)
+    {
+        for (let j = 0; j < 7 - 3; j++)
+        {
+            if (this.board[i][j]==currentSymbol&&this.board[i-1][j+1]==currentSymbol&&this.board[i-2][j+2]==currentSymbol&&this.board[i-3][j+3]==currentSymbol)
+            {
+              return true;
+            }
+        }
+    }
+    return false;
+  }
 }

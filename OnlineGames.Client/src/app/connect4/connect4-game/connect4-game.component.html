@@ -10,7 +10,9 @@
         </div>
         
     </div>
-    <button  class="w-50 mt-3 btn btn-secondary" ><span class="display-6">New Game</span> </button>    
+    <h1 *ngIf="gameEnded()">Game Ended</h1>
+    <h1 *ngIf="gameEnded()">Winner:{{getWinner()}}</h1>
+    <button  class="w-50 mt-3 btn btn-secondary" (click)="newGame()"><span class="display-6">New Game</span> </button>    
     <h1>Result</h1>
     <h3> 0:0</h3>
 </div>

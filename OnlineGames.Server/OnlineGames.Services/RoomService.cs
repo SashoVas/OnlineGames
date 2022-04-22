@@ -39,6 +39,11 @@ namespace OnlineGames.Services
             var room = await dbContext.TicTacToeRooms.Include(r=>r.Users).FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
             user.TicTacToeRoom = null;
             user.TicTacToeRoomId = null;
+            if (room.FirstPlayerName==user.UserName)
+            {
+                //The player that leves the room is first, so we set it to null
+                room.FirstPlayerName = null;
+            }
             if (room.Users.Count()==1)
             {
                 //The room is empty so we remove it
@@ -58,6 +63,11 @@ namespace OnlineGames.Services
                 throw new ArgumentException();
             }
             user.TicTacToeRoom = room;
+            if (room.FirstPlayerName==null)
+            {
+                //Here if the new join user is first
+                room.FirstPlayerName = user.UserName;
+            }
             dbContext.Users.Update(user);
             await dbContext.SaveChangesAsync();
         }
@@ -175,7 +185,8 @@ namespace OnlineGames.Services
                     Players=1,
                     GameName="TicTacToe",
                     UserName=r.Users.First().UserName,
-                    RoomId=r.Id
+                    RoomId=r.Id,
+                    First=r.FirstPlayerName==null
                 }).ToListAsync();
         }
     }
