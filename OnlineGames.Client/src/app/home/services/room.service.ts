@@ -10,8 +10,11 @@ import { IRoom } from '../../core/interfaces/IRoom';
 export class RoomService {
 
   constructor(private http:HttpClient) { }
-  createRoom():Observable<any>{
+  createRoomTicTacToe():Observable<any>{
     return this.http.post(environment.apiUrl+'/room/createtictactoeroom',null);
+  }
+  createRoomConnect4():Observable<any>{
+    return this.http.post(environment.apiUrl+'/room/createconnect4room',null);
   }
   getAvailableRooms():Observable<Array<IRoom>>{
     return this.http.get<Array<IRoom>>(environment.apiUrl+'/room/getrooms');

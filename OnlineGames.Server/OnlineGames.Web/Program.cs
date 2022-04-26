@@ -111,6 +111,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapHub<TicTacToeHub>("/TicTacToe");
+app.MapHub<Connect4Hub>("/Connect4");
 app.MapControllers();
 
 app.Run();

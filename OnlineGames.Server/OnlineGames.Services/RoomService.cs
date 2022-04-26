@@ -33,7 +33,7 @@ namespace OnlineGames.Services
             return room.Id;
         }
 
-        public async Task RemoveTicTacToeRoom(string userId)
+        public async Task RemoveRoom(string userId)
         {
             var user =await userManager.FindByIdAsync(userId);
             var room = await dbContext.TicTacToeRooms.Include(r=>r.Users).FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
@@ -53,7 +53,7 @@ namespace OnlineGames.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task SetTicTacToeRoomToUser(string userId, string roomId)
+        public async Task SetRoomToUser(string userId, string roomId)
         {
             var user =await userManager.FindByIdAsync(userId);
             var room=await dbContext.TicTacToeRooms.FirstOrDefaultAsync(r => r.Id == roomId);
@@ -123,7 +123,7 @@ namespace OnlineGames.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<string> GetUserRoom(string userId)
+        public async Task<string> GetUserBoard(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
             if (user==null)
@@ -188,6 +188,24 @@ namespace OnlineGames.Services
                     RoomId=r.Id,
                     First=r.FirstPlayerName==null
                 }).ToListAsync();
+        }
+
+        public async Task<string> CreateConnect4Room(string username)
+        {
+            var room = new TicTacToeRoom
+            {
+                Id = Guid.NewGuid().ToString(),
+                FirstPlayerName = username,
+                BoardString=new string('0',6*7)
+            };
+            await dbContext.TicTacToeRooms.AddAsync(room);
+            await dbContext.SaveChangesAsync();
+            return room.Id;
+        }
+
+        public async Task<string> GetRoomId(string userId)
+        {
+            return (await userManager.FindByIdAsync(userId)).TicTacToeRoomId;
         }
     }
 }

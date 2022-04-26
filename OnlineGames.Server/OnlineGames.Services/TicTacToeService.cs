@@ -26,10 +26,6 @@ namespace OnlineGames.Services
             this.roomService = roomService;
         }
 
-        public async Task<string> GetRoomName(string userId)
-        {
-            return (await this.userManager.FindByIdAsync(userId)).TicTacToeRoomId;
-        }
 
         public async Task<BoardCoordinates> MakeMove(string boardSring,int currentPlayer)
         {

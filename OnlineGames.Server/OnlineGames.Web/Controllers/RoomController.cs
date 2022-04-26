@@ -21,15 +21,26 @@ namespace OnlineGames.Web.Controllers
         public async Task<ActionResult<object>>CreateTicTacToeRoom()
         {
             var roomId = await this.roomService.CreateTicTacToeRoom(this.User.Identity.Name);
-            await this.roomService.SetTicTacToeRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier),roomId);
+            await this.roomService.SetRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier),roomId);
             return new  { 
              RoomId= roomId
+            };
+        }
+
+        [HttpPost("CreateConnect4Room")]
+        public async Task<ActionResult<object>> CreateConnect4Room()
+        {
+            var roomId = await this.roomService.CreateConnect4Room(this.User.Identity.Name);
+            await this.roomService.SetRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier), roomId);
+            return new
+            {
+                RoomId = roomId
             };
         }
         [HttpPost("AddToRoom")]
         public async Task<ActionResult<object>>AddToRoom([FromBody] AddToRoomInputModel input)
         {
-            await this.roomService.SetTicTacToeRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier), input.RoomId);
+            await this.roomService.SetRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier), input.RoomId);
             return new {RoomId=input.RoomId };
         }
         [HttpGet("GetRooms")]

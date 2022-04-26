@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { IdentityGuard } from './identity/guards/identity.guard';
-import { LandingComponent } from './home/landing/landing.component';
 import { TicTacToeResolver } from './tic-tac-toe/resolvers/tic-tac-toe.resolver';
+import { Connect4Resolver } from './connect4/resolvers/connect4.resolver';
 
 
 const routes: Routes = [
@@ -18,7 +18,8 @@ const routes: Routes = [
   },
   {
     path:"connect4",
-    loadChildren:()=>import("./connect4/connect4.module").then(c=>c.Connect4Module)
+    loadChildren:()=>import("./connect4/connect4.module").then(c=>c.Connect4Module),
+    resolve:[Connect4Resolver]
   },
   {
     path:"identity",
