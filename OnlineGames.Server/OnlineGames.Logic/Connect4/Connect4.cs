@@ -11,14 +11,20 @@ namespace OnlineGames.Logic.Connect4
     {
         public int Player1 { get; set; } = 1;
         public int Player2 { get; set; } = -1;
-        public int Depth { get; set; } = 8;
+        public int Depth { get; set; } = 6;
         public int[] TurnsOrder { get; set; } = new int[] { 3, 2, 4, 1, 5, 0, 6 };
         public Dictionary<string, CellCoordinates> Solver { get; set; }
         public Connect4()
         {
             this.Solver = new Dictionary<string, CellCoordinates>();
         }
+        public int GetBestMove(string boardString,int player)
+        {
+            var board = new Board(boardString, 6, 7);
 
+            var bestMove = FillSolver(board,player, 0, -999999999, 999999999, 0, -1, -1);
+            return bestMove;
+        }
         public void TestWithBoard(int[,] boardArr)
         {
             var board = new Board(boardArr);

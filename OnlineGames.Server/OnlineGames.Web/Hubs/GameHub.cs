@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using OnlineGames.Services.Contracts;
+using OnlineGames.Services.Models;
 using System.Security.Claims;
 
 namespace OnlineGames.Web.Hubs

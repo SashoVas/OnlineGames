@@ -84,6 +84,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSignalR();
 
 builder.Services.AddTransient<ITicTacToeService, TicTacToeService>();
+builder.Services.AddTransient<IConnect4Service, Connect4Service>();
 builder.Services.AddTransient<IIdentityService, IdentityService>();
 builder.Services.AddTransient<IRoomService, RoomService>();
 var app = builder.Build();

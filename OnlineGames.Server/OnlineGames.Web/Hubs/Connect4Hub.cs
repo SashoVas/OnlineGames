@@ -17,6 +17,12 @@ namespace OnlineGames.Web.Hubs
         {
             await this.Clients.OthersInGroup(await roomService.GetRoomId(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier))).SendAsync("Connect4HubTest", 5);
         }
+        public async Task MakeMoveOponent( int col)
+        {
+            var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            await roomService.UpdateBoardConnect4(userId, col);
+            await this.Clients.OthersInGroup(await this.roomService.GetRoomId(userId)).SendAsync("OponentMove", col);
+        }
 
     }
 }

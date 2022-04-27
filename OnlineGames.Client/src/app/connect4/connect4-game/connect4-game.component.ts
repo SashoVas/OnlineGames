@@ -39,10 +39,13 @@ export class Connect4GameComponent implements OnInit {
   ngOnInit(): void {
   }
   makeMove(col:number):void{
+    if(this.oponentTurn==true){
+      return ;
+    }
     this.connect4Service.makeMove(col);
     this.connect4SignalRService.concect4HubTestSend();
     this.oponentTurn=true;
-    //this.tellOponent(col);
+    this.tellOponent(col);
   }
   tellOponent=(col:number)=>{
     this.connect4SignalRService
@@ -51,6 +54,8 @@ export class Connect4GameComponent implements OnInit {
   clear(){
     this.connect4Service.newGame();
     this.board=this.connect4Service.board;
+    this.startFirst=!this.startFirst;
+    this.oponentTurn=!this.startFirst;
   }
   gameEnded(){
     return this.connect4Service.checkWin();

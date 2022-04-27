@@ -13,7 +13,21 @@ namespace OnlineGames.Logic.Connect4.Helper
         public int DimesionY { get => Matrix.GetLength(0) - 1; }
         public bool Win { get; set; } = false;
         public bool Lose { get; set; } = false;
-
+        public Board(string boardString, int x, int y)
+        {
+            this.Matrix = new int[x, y];
+            for (int i = 0; i < x; i++)
+            {
+                for (int j = 0; j < y; j++)
+                {
+                    if (boardString[(i * 3) + j] == '0')
+                    {
+                        continue;
+                    }
+                    this.Matrix[i, j] = boardString[(i * 3) + j] == '1' ? 1 : -1;
+                }
+            }
+        }
         public Board(int y, int x)
         {
             this.Matrix = new int[y, x];

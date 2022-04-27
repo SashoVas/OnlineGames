@@ -25,7 +25,7 @@ namespace OnlineGames.Web.Hubs
             //Skip update board if the ai is first
             if (row!=-1 && col!=-1)
             {
-                await roomService.UpdateBoard(userId, row, col);
+                await roomService.UpdateBoardTicTacToe(userId, row, col);
             }
             var boardString = await roomService.GetUserBoard(userId);
             if (!boardString.Contains("0"))
@@ -38,16 +38,15 @@ namespace OnlineGames.Web.Hubs
             await roomService.UpdateBoardAI(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),output.Row,output.Col);
             await this.Clients.Caller.SendAsync("OponentMove", output);
         }
-        
-        public async Task MakeMoveOponent(int row,int col)
+        public async Task MakeMoveOponent(int row, int col)
         {
             var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await roomService.UpdateBoard(userId,row,col);
+            await roomService.UpdateBoardTicTacToe(userId, row, col);
             await this.Clients.OthersInGroup(await this.roomService.GetRoomId(userId)).SendAsync("OponentMove",
-                new BoardCoordinates 
-                { 
+                new BoardCoordinates
+                {
                     Row = row,
-                    Col=col
+                    Col = col
                 });
         }
     }

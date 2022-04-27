@@ -14,7 +14,8 @@ namespace OnlineGames.Services.Contracts
         Task<string> CreateConnect4Room(string username);
         Task RemoveRoom(string userId);
         Task SetRoomToUser(string userId,string roomId);
-        Task UpdateBoard(string userId, int row, int col);
+        Task UpdateBoardTicTacToe(string userId, int row, int col);
+        Task UpdateBoardConnect4(string userId,int col);
         Task UpdateBoardAI(string userId, int row, int col);
         Task ClearBoard(string userId);
         Task<string> GetUserBoard(string userId);
