@@ -21,9 +21,9 @@ namespace OnlineGames.Logic.Connect4
         public int GetBestMove(string boardString,int player)
         {
             var board = new Board(boardString, 6, 7);
-
+            boardString = board.ToString();
             var bestMove = FillSolver(board,player, 0, -999999999, 999999999, 0, -1, -1);
-            return bestMove;
+            return this.Solver[boardString].Col;
         }
         public void TestWithBoard(int[,] boardArr)
         {
@@ -33,7 +33,7 @@ namespace OnlineGames.Logic.Connect4
             var score = FillSolver(board, 1, 0, -999999999, 999999999, 0, -1, -1);
             var solverOutput = this.Solver[board.ToString()];
             Console.WriteLine(score);
-            board.MakeAMove(1, solverOutput.X);
+            board.MakeAMove(1, solverOutput.Col);
             Print(board.Matrix, board.DimesionX, board.DimesionY);
         }
         public void PlayVsBot(Func<int> inputFunc, int player)
@@ -53,7 +53,7 @@ namespace OnlineGames.Logic.Connect4
                 {
                     this.Solver = new Dictionary<string, CellCoordinates>();
                     var score = FillSolver(board, currentPlayer, 0, -999999999, 999999999, 0, -1, -1);
-                    var solverOutput = this.Solver[board.ToString()].X;
+                    var solverOutput = this.Solver[board.ToString()].Col;
                     Console.WriteLine(this.Solver[board.ToString()].Score);
                     board.MakeAMove(currentPlayer, solverOutput);
                 }
@@ -133,7 +133,7 @@ namespace OnlineGames.Logic.Connect4
                         //First player
                         if (outcome > this.Solver[boardString].Score)
                         {
-                            this.Solver[boardString].X = i;
+                            this.Solver[boardString].Col = i;
                             this.Solver[boardString].Score = outcome;
                         }
                         alpha = Math.Max(alpha, outcome);
@@ -150,7 +150,7 @@ namespace OnlineGames.Logic.Connect4
                         //Second player
                         if (outcome < this.Solver[boardString].Score)
                         {
-                            this.Solver[boardString].X = i;
+                            this.Solver[boardString].Col = i;
                             this.Solver[boardString].Score = outcome;
                         }
                         beta = Math.Min(beta, outcome);

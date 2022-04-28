@@ -20,11 +20,11 @@ namespace OnlineGames.Logic.Connect4.Helper
             {
                 for (int j = 0; j < y; j++)
                 {
-                    if (boardString[(i * 3) + j] == '0')
+                    if (boardString[(i * 7) + j] == '0')
                     {
                         continue;
                     }
-                    this.Matrix[i, j] = boardString[(i * 3) + j] == '1' ? 1 : -1;
+                    this.Matrix[i, j] = boardString[(i * 7) + j] == '1' ? 1 : -1;
                 }
             }
         }

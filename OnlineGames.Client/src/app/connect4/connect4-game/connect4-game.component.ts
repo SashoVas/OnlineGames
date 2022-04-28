@@ -56,6 +56,9 @@ export class Connect4GameComponent implements OnInit {
     this.board=this.connect4Service.board;
     this.startFirst=!this.startFirst;
     this.oponentTurn=!this.startFirst;
+    if(!this.startFirst && this.roomId==undefined){
+      this.connect4SignalRService.tellOponentAI(-1);
+    }
   }
   gameEnded(){
     return this.connect4Service.checkWin();

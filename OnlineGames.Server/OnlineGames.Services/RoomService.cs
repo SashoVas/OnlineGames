@@ -155,7 +155,7 @@ namespace OnlineGames.Services
             return room.FirstPlayerTurn?1:-1;
         }
 
-        public async Task UpdateBoardAI(string userId, int row, int col)
+        public async Task UpdateBoardAITicTacToe(string userId, int row, int col)
         {
             var user = await userManager.FindByIdAsync(userId);
             var room = await dbContext.TicTacToeRooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
@@ -217,7 +217,7 @@ namespace OnlineGames.Services
             int row = -1;
             for (int i = 5; i >= 0; i--)
             {
-                if (room.BoardString[(i*6)+col]=='0')
+                if (room.BoardString[(i*7)+col]=='0')
                 {
                     row = i;
                     break;
@@ -231,16 +231,46 @@ namespace OnlineGames.Services
             if (room.FirstPlayerTurn && room.FirstPlayerName == user.UserName)
             {
                 //First player move
-                room.BoardString = room.BoardString[0..((6 * row) + col)] + "1" + room.BoardString[((6 * row) + col + 1)..^0];
+                room.BoardString = room.BoardString[0..((7 * row) + col)] + "1" + room.BoardString[((7 * row) + col + 1)..^0];
             }
             else if (!room.FirstPlayerTurn && room.FirstPlayerName != user.UserName)
             {
                 //Second player move
-                room.BoardString = room.BoardString[0..((6 * row) + col)] + "2" + room.BoardString[((6 * row) + col + 1)..^0];
+                room.BoardString = room.BoardString[0..((7 * row) + col)] + "2" + room.BoardString[((7 * row) + col + 1)..^0];
             }
             else
             {
                 throw new ArgumentException();
+            }
+            room.FirstPlayerTurn = !room.FirstPlayerTurn;
+            dbContext.TicTacToeRooms.Update(room);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateBoardAIConnect4(string userId, int col)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            var room = await dbContext.TicTacToeRooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+            int row = -1;
+            for (int i = 5; i >= 0; i--)
+            {
+                if (room.BoardString[(i * 7) + col] == '0')
+                {
+                    row = i;
+                    break;
+                }
+            }
+            if (row == -1)
+            {
+                throw new ArgumentException();
+            }
+            if (room.FirstPlayerTurn)
+            {
+                room.BoardString = room.BoardString[0..((7 * row) + col)] + "1" + room.BoardString[((7 * row) + col + 1)..^0];
+            }
+            else
+            {
+                room.BoardString = room.BoardString[0..((7 * row) + col)] + "2" + room.BoardString[((7 * row) + col + 1)..^0];
             }
             room.FirstPlayerTurn = !room.FirstPlayerTurn;
             dbContext.TicTacToeRooms.Update(room);

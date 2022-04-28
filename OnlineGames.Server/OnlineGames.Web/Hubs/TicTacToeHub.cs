@@ -35,7 +35,7 @@ namespace OnlineGames.Web.Hubs
             }
             var currentPlayer = await roomService.GetTurn(userId);
             var output =await this.ticTacToeService.MakeMove(boardString,currentPlayer);
-            await roomService.UpdateBoardAI(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),output.Row,output.Col);
+            await roomService.UpdateBoardAITicTacToe(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),output.Row,output.Col);
             await this.Clients.Caller.SendAsync("OponentMove", output);
         }
         public async Task MakeMoveOponent(int row, int col)
@@ -48,6 +48,17 @@ namespace OnlineGames.Web.Hubs
                     Row = row,
                     Col = col
                 });
+        }
+        public async Task AddToGroup(string groupName)
+        {
+            var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (groupName == null)
+            {
+                //Here if the oponent is ai and we dont want our room id to be exposed
+                groupName = await this.roomService.CreateTicTacToeRoom(this.Context.User.Identity.Name);
+                await this.roomService.SetRoomToUser(userId, groupName);
+            }
+            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);
         }
     }
 }
