@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace OnlineGames.Data.Models
 {
-    public class TicTacToeRoom
+    public class Room
     {
-        public TicTacToeRoom()
+        public Room()
         {
             Users = new List<User>();
         }

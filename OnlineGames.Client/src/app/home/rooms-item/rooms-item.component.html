@@ -1,12 +1,17 @@
-<h3>Rooms</h3>
+<div class="d-flex justify-content-evenly">
+    <h3>Rooms</h3>
+    <button class="btn btn-secondary p-1" (click)="refreshRooms()">Refresh</button>
+</div>
+
 <hr>
-<ul class="list-group list-group-flush bg-dark overflow-auto">
-    <li *ngFor="let room of (rooms$ |async)" class="list-group-item bg-dark text-white">
+
+<ul  class="list-group list-group-flush bg-dark overflow-auto">
+    <li *ngFor="let room of rooms" class="list-group-item bg-dark text-white">
         <div class="d-flex justify-content-between">
             <a>{{room['userName']}}</a>
             <a >{{room['gameName']}}</a>
             <a>{{room['players']}}/{{room['capacity']}}</a>
-            <button (click)="joinRoom(room['roomId'],room['first'])" class="btn btn-secondary" routerLink="/tictactoe/tictactoe" >Join</button>    
+            <button (click)="joinRoom(room['roomId'],room['first'],room['gameName'])" class="btn btn-secondary" routerLink="/tictactoe/tictactoe" >Join</button>    
         </div>
     </li>
 </ul>

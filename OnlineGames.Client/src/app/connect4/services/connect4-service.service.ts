@@ -12,6 +12,7 @@ export class Connect4ServiceService {
 ];
   currentPlayer=1;
   gameEnded=false;
+  draw:boolean=false;
   constructor() { }
 
   makeMove(row:number):void
@@ -44,6 +45,7 @@ export class Connect4ServiceService {
   }
   checkWin():boolean{
     let currentSymbol=this.currentPlayer!=1?"O":"X";
+    let isFull:boolean=false;
     //horizontal
     for (let i = 0; i < 6; i++)
     {
@@ -56,6 +58,7 @@ export class Connect4ServiceService {
             }
 
         }
+        isFull=this.board[i].includes("")||isFull;
     }
     //vertical
     for (let i = 0; i < 6-3; i++)
@@ -90,6 +93,7 @@ export class Connect4ServiceService {
             }
         }
     }
-    return false;
+    this.draw=!isFull;
+    return !isFull;
   }
 }

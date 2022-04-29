@@ -15,10 +15,6 @@ namespace OnlineGames.Web.Hubs
         {
             this.ticTacToeService = ticTacToeService;
         }
-        public async Task TestAll()
-        {
-            await this.Clients.All.SendAsync("TestTicTacToeHub",5);
-        }
         public async Task MakeMoveAI(int row,int col)
         {
             var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);

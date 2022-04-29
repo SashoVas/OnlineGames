@@ -6,7 +6,7 @@ namespace OnlineGames.Data
 {
     public class OnlineGamesDbContext : IdentityDbContext<User>
     {
-        public DbSet<TicTacToeRoom> TicTacToeRooms { get; set; }
+        public DbSet<Room> TicTacToeRooms { get; set; }
         public OnlineGamesDbContext(DbContextOptions<OnlineGamesDbContext> options)
             : base(options)
         {

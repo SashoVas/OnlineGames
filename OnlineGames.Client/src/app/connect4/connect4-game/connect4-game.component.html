@@ -5,7 +5,7 @@
         <div class="row" *ngFor="let rowval of board;let row=index">
             <div class="d-flex">
                 <div *ngFor="let colval of rowval;let col=index;" class="w-100 h-100">
-                    <app-board-cell (makeMove)="makeMove(col)" [row]="row" [col]="col" [value]="colval"></app-board-cell>
+                    <app-board-cell (makeMove)="makeMove(col)"[roundedButton]="true" [row]="row" [col]="col" [value]="colval"></app-board-cell>
                 </div>
             </div>  
         </div>

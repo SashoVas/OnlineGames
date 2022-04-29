@@ -1,2 +1,2 @@
-<button (click)="buttonClick()" [disabled]="value!=''" class="w-100 h-100 display-1 btn-primary bg-dark border  border-white" >{{value!=""?value:"&nbsp;"}}</button>    
+<button (click)="buttonClick()" [disabled]="value!=''" [ngClass]="value=='O'? 'bg-primary' : value=='X'?'bg-danger':'bg-dark'" class="w-100 h-100 py-3 display-1 btn-primary border border-white {{roundedButton?'rounded-circle' : ''}}" >{{ value!=""?!roundedButton?value:"&nbsp;":"&nbsp;"}}</button>    
 

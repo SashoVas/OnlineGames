@@ -23,7 +23,7 @@ namespace OnlineGames.Services
         }
         public async Task<string> CreateTicTacToeRoom(string username)
         {
-            var room = new TicTacToeRoom
+            var room = new Room
             {
                 Id = Guid.NewGuid().ToString(),
                 FirstPlayerName=username
@@ -185,7 +185,7 @@ namespace OnlineGames.Services
                 {
                     Capacity=2,
                     Players=1,
-                    GameName="TicTacToe",
+                    GameName=r.BoardString.Length==9? "TicTacToe":"Connect4",
                     UserName=r.Users.First().UserName,
                     RoomId=r.Id,
                     First=r.FirstPlayerName==null
@@ -194,7 +194,7 @@ namespace OnlineGames.Services
 
         public async Task<string> CreateConnect4Room(string username)
         {
-            var room = new TicTacToeRoom
+            var room = new Room
             {
                 Id = Guid.NewGuid().ToString(),
                 FirstPlayerName = username,

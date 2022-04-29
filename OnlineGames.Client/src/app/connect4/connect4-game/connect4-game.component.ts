@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Connect4ServiceService } from '../services/connect4-service.service';
 import { Connect4SignalRService } from '../services/connect4-signal-r.service';
@@ -9,7 +9,7 @@ import { Connect4SignalRService } from '../services/connect4-signal-r.service';
   styleUrls: ['./connect4-game.component.css'],
   providers:[Connect4ServiceService]
 })
-export class Connect4GameComponent implements OnInit {
+export class Connect4GameComponent implements OnInit,OnDestroy {
   board:string[][];
   roomId?:string=undefined;
   oponentTurn:boolean=false;
@@ -23,7 +23,6 @@ export class Connect4GameComponent implements OnInit {
         this.oponentTurn=false;
       });
     this.connect4SignalRService.addClearBoardListener(()=>{this.clear();});
-    connect4SignalRService.connect4HubTest();
     this.route.queryParams.subscribe(params=>{
       if(params['roomName']!=null)
       {
@@ -35,15 +34,13 @@ export class Connect4GameComponent implements OnInit {
       this.connect4SignalRService.addToRoom(this.roomId);
     });
    }
-
   ngOnInit(): void {
   }
   makeMove(col:number):void{
-    if(this.oponentTurn==true){
+    if(this.oponentTurn||this.gameEnded()){
       return ;
     }
     this.connect4Service.makeMove(col);
-    this.connect4SignalRService.concect4HubTestSend();
     this.oponentTurn=true;
     this.tellOponent(col);
   }
@@ -64,9 +61,16 @@ export class Connect4GameComponent implements OnInit {
     return this.connect4Service.checkWin();
   }
   getWinner(){
-    return -this.connect4Service.currentPlayer==1?"O":"X";
+    if(this.connect4Service.draw)
+    {
+      return "Draw";
+    }
+    return -this.connect4Service.currentPlayer==1?"Blue":"Red";
   }
   newGameButtonClick(){
     this.connect4SignalRService.clearBoard();
+  }
+  ngOnDestroy(): void {
+    this.connect4SignalRService.hubConnection.stop();
   }
 }

@@ -9,8 +9,10 @@ export class BoardCellComponent implements OnInit {
   @Input() row:any;
   @Input() col:any;
   @Input() value:any;
+  @Input() roundedButton:any;
   @Output() makeMove:EventEmitter<number>=new EventEmitter();
-  constructor() { }
+  constructor() {
+   }
 
   ngOnInit(): void {
   }

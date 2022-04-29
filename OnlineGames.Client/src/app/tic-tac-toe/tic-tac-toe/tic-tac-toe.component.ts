@@ -12,12 +12,10 @@ import { TicTacToeSignalRServiceService } from '../services/tic-tac-toe-signal-r
 })
 export class TicTacToeComponent implements OnInit ,OnDestroy {
   board:string[][]=[];
-  inGame:boolean=false;
   oponentTurn:boolean=false;
   roomId?:string=undefined;
   startFirst:boolean=true;
-  constructor(private ticTacToeService: TicTacToeServiceService,private ticTacToeSignalRService:TicTacToeSignalRServiceService,private route:ActivatedRoute) {
-    
+  constructor(private ticTacToeService: TicTacToeServiceService,private ticTacToeSignalRService:TicTacToeSignalRServiceService,private route:ActivatedRoute) {    
     this.board=ticTacToeService.board;
     this.ticTacToeSignalRService
       .addOponentMoveListener((coordinates:IBoardCoordinates)=>{
@@ -32,12 +30,10 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
         this.tellOponent=(row:number,col:number)=>ticTacToeSignalRService.tellOponenet(row,col);
         this.oponentTurn=params['first']=='false';
         this.startFirst=params['first']!='false';
-
       }
       this.ticTacToeSignalRService.addToRoom(this.roomId);
     });
    }
-
   ngOnInit(): void {
   }
   makeMove(row:number,col:number){ 
@@ -45,12 +41,8 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
       return;
     }
     this.oponentTurn=true;
-    this.inGame=true;
     this.ticTacToeService.makeMove(row,col);
     this.tellOponent(row,col);
-        if(this.gameEnded()){
-      return;
-    }
   }
   tellOponent=(row:number,col:number)=>{
     this.ticTacToeSignalRService
@@ -59,7 +51,6 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
   clear(){
     this.ticTacToeService.clear();
     this.board=this.ticTacToeService.board;
-    this.inGame=false;
     this.startFirst=!this.startFirst;
     this.oponentTurn=!this.startFirst;
     if(!this.startFirst && this.roomId==undefined){

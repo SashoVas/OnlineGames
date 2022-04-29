@@ -28,12 +28,6 @@ export class Connect4SignalRService {
 
      return from(this.hubConnection.start());
  }
- public concect4HubTestSend(){
-  this.hubConnection.invoke("TestAll");
- }
- public connect4HubTest(){
-   this.hubConnection.on('Connect4HubTest',data=>console.log(data));
- }
  public tellOponentAI(col:number){
    
    this.hubConnection.invoke("MakeMoveAI",col);

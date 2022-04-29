@@ -14,11 +14,6 @@ namespace OnlineGames.Web.Hubs
         {
             this.connect4Service = connect4Service;
         }
-
-        public async Task TestAll()
-        {
-            await this.Clients.OthersInGroup(await roomService.GetRoomId(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier))).SendAsync("Connect4HubTest", 5);
-        }
         public async Task MakeMoveAI(int col)
         {
             var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
