@@ -21,12 +21,13 @@ namespace OnlineGames.Services
             this.dbContext = dbContext;
             this.userManager = userManager;
         }
-        public async Task<string> CreateTicTacToeRoom(string username)
+        public async Task<string> CreateTicTacToeRoom(string username, bool isPrivate)
         {
             var room = new Room
             {
                 Id = Guid.NewGuid().ToString(),
-                FirstPlayerName=username
+                FirstPlayerName=username,
+                Private=isPrivate
             };
             await dbContext.TicTacToeRooms.AddAsync(room);
             await dbContext.SaveChangesAsync();
@@ -179,7 +180,7 @@ namespace OnlineGames.Services
         public async Task<IEnumerable< RoomsServiceModel>> GetAvailableRooms()
         {
             return await dbContext.TicTacToeRooms
-                .Where(r => r.Users.Count() < 2)
+                .Where(r => r.Users.Count() < 2 && !r.Private)
                 .Take(10)
                 .Select(r=> new RoomsServiceModel
                 {
@@ -192,13 +193,14 @@ namespace OnlineGames.Services
                 }).ToListAsync();
         }
 
-        public async Task<string> CreateConnect4Room(string username)
+        public async Task<string> CreateConnect4Room(string username, bool isPrivate)
         {
             var room = new Room
             {
                 Id = Guid.NewGuid().ToString(),
                 FirstPlayerName = username,
-                BoardString=new string('0',6*7)
+                BoardString=new string('0',6*7),
+                Private=isPrivate
             };
             await dbContext.TicTacToeRooms.AddAsync(room);
             await dbContext.SaveChangesAsync();

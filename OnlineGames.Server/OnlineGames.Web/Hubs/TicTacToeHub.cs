@@ -52,7 +52,7 @@ namespace OnlineGames.Web.Hubs
             if (groupName == null)
             {
                 //Here if the oponent is ai and we dont want our room id to be exposed
-                groupName = await this.roomService.CreateTicTacToeRoom(this.Context.User.Identity.Name);
+                groupName = await this.roomService.CreateTicTacToeRoom(this.Context.User.Identity.Name,true);
                 await this.roomService.SetRoomToUser(userId, groupName);
             }
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);

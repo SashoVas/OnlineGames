@@ -20,7 +20,7 @@ namespace OnlineGames.Web.Controllers
         [HttpPost("CreateTicTacToeRoom")]
         public async Task<ActionResult<object>>CreateTicTacToeRoom()
         {
-            var roomId = await this.roomService.CreateTicTacToeRoom(this.User.Identity.Name);
+            var roomId = await this.roomService.CreateTicTacToeRoom(this.User.Identity.Name,false);
             await this.roomService.SetRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier),roomId);
             return new  { 
              RoomId= roomId
@@ -30,7 +30,7 @@ namespace OnlineGames.Web.Controllers
         [HttpPost("CreateConnect4Room")]
         public async Task<ActionResult<object>> CreateConnect4Room()
         {
-            var roomId = await this.roomService.CreateConnect4Room(this.User.Identity.Name);
+            var roomId = await this.roomService.CreateConnect4Room(this.User.Identity.Name,false);
             await this.roomService.SetRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier), roomId);
             return new
             {

@@ -17,6 +17,7 @@ namespace OnlineGames.Data.Models
         public bool FirstPlayerTurn { get; set; } = true;
         public string? FirstPlayerName { get; set; }
         public ICollection<User> Users { get; set; }
-        
+        public bool Private { get; set; } = false;
+
     }
 }

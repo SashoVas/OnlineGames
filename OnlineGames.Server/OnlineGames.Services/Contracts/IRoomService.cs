@@ -10,8 +10,8 @@ namespace OnlineGames.Services.Contracts
 {
     public interface IRoomService
     {
-        Task<string> CreateTicTacToeRoom(string username);
-        Task<string> CreateConnect4Room(string username);
+        Task<string> CreateTicTacToeRoom(string username,bool isPrivate);
+        Task<string> CreateConnect4Room(string username, bool isPrivate);
         Task RemoveRoom(string userId);
         Task SetRoomToUser(string userId,string roomId);
         Task UpdateBoardTicTacToe(string userId, int row, int col);
