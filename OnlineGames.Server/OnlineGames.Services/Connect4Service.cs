@@ -16,9 +16,9 @@ namespace OnlineGames.Services
         {
             this.connect4=new Connect4();
         }
-        public async Task<int> MakeMove(string boardSring, int currentPlayer)
+        public async Task<int> MakeMove(string boardSring, int currentPlayer,int difficulty)
         {
-            return this.connect4.GetBestMove(boardSring, currentPlayer);
+            return this.connect4.GetBestMove(boardSring, currentPlayer, difficulty);
         }
     }
 }

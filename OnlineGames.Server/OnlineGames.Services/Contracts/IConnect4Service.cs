@@ -8,6 +8,6 @@ namespace OnlineGames.Services.Contracts
 {
     public interface IConnect4Service
     {
-        Task<int> MakeMove(string boardSring, int currentPlayer);
+        Task<int> MakeMove(string boardSring, int currentPlayer,int difficulty);
     }
 }

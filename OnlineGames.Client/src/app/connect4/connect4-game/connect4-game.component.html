@@ -1,5 +1,10 @@
 <div class="text-center" >
     <h1>Connect4</h1>
+    <div *ngIf="!roomId">
+        <label>Difficulty</label>
+        <br>
+        <input #difficulty type="number"[min]="1"[max]="12" [value]="6">
+    </div>
     <h1>{{oponentTurn==true?"Oponent Turn":"My turn"}}</h1>
     <div >
         <div class="row" *ngFor="let rowval of board;let row=index">

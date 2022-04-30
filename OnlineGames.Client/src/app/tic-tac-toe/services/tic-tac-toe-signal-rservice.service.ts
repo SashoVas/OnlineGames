@@ -30,7 +30,7 @@ export class TicTacToeSignalRServiceService {
 
   public tellOponentAI(row:number,col:number){
     
-    this.hubConnection.invoke("MakeMoveAI",row,col);
+    this.hubConnection.invoke("MakeMoveAI",{row,col});
   }
   public addToRoom(roomName?:string){
     this.hubConnection.invoke("AddToGroup",roomName);

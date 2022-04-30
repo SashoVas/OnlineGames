@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
 import { from, Observable } from 'rxjs';
-import { IBoardCoordinates } from 'src/app/core/interfaces/IBoardCoordinates';
 import { AccountService } from 'src/app/core/services/account.service';
 import { environment } from 'src/environments/environment';
 
@@ -28,10 +27,10 @@ export class Connect4SignalRService {
 
      return from(this.hubConnection.start());
  }
- public tellOponentAI(col:number){
-   
-   this.hubConnection.invoke("MakeMoveAI",col);
- }
+ public tellOponentAI(col:number,difficulty:number){
+    
+  this.hubConnection.invoke("MakeMoveAI",{col,difficulty});
+}
  public addToRoom(roomName?:string){
    this.hubConnection.invoke("AddToGroup",roomName);
  }

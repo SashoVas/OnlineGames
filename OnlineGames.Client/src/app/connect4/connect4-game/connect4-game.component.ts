@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Connect4ServiceService } from '../services/connect4-service.service';
 import { Connect4SignalRService } from '../services/connect4-signal-r.service';
@@ -14,7 +14,8 @@ export class Connect4GameComponent implements OnInit,OnDestroy {
   roomId?:string=undefined;
   oponentTurn:boolean=false;
   startFirst:boolean=true;
-
+  @ViewChild('difficulty')
+  difficulty?:ElementRef;
   constructor(private connect4Service:Connect4ServiceService,private connect4SignalRService:Connect4SignalRService,private route:ActivatedRoute) {
     this.board=connect4Service.board;
     this.connect4SignalRService
@@ -46,7 +47,7 @@ export class Connect4GameComponent implements OnInit,OnDestroy {
   }
   tellOponent=(col:number)=>{
     this.connect4SignalRService
-    .tellOponentAI(col);
+    .tellOponentAI(col,Number(this.difficulty?.nativeElement.value));
   }
   clear(){
     this.connect4Service.newGame();
@@ -54,7 +55,7 @@ export class Connect4GameComponent implements OnInit,OnDestroy {
     this.startFirst=!this.startFirst;
     this.oponentTurn=!this.startFirst;
     if(!this.startFirst && this.roomId==undefined){
-      this.connect4SignalRService.tellOponentAI(-1);
+      this.connect4SignalRService.tellOponentAI(-1,Number(this.difficulty?.nativeElement.value));
     }
   }
   gameEnded(){
@@ -74,3 +75,7 @@ export class Connect4GameComponent implements OnInit,OnDestroy {
     this.connect4SignalRService.hubConnection.stop();
   }
 }
+function IConnect4MoveAI(col: number, arg1: { Col: number; Difficulty: ElementRef<any> | undefined; }, IConnect4MoveAI: any) {
+  throw new Error('Function not implemented.');
+}
+

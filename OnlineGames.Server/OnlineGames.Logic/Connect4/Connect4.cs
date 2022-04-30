@@ -18,8 +18,9 @@ namespace OnlineGames.Logic.Connect4
         {
             this.Solver = new Dictionary<string, CellCoordinates>();
         }
-        public int GetBestMove(string boardString,int player)
+        public int GetBestMove(string boardString,int player,int difficulty)
         {
+            this.Depth = difficulty;
             var board = new Board(boardString, 6, 7);
             boardString = board.ToString();
             var bestMove = FillSolver(board,player, 0, -999999999, 999999999, 0, -1, -1);

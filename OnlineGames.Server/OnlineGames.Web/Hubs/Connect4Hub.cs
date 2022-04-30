@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using OnlineGames.Services.Contracts;
+using OnlineGames.Web.Models.Connect4;
 using System.Security.Claims;
 
 namespace OnlineGames.Web.Hubs
@@ -14,13 +15,13 @@ namespace OnlineGames.Web.Hubs
         {
             this.connect4Service = connect4Service;
         }
-        public async Task MakeMoveAI(int col)
+        public async Task MakeMoveAI(Connect4MoveAIInput input)
         {
             var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             //Skip update board if the ai is first
-            if (col != -1)
+            if (input.Col != -1)
             {
-                await roomService.UpdateBoardConnect4(userId, col);
+                await roomService.UpdateBoardConnect4(userId, input.Col);
             }
             var boardString = await roomService.GetUserBoard(userId);
             if (!boardString.Contains("0"))
@@ -29,7 +30,7 @@ namespace OnlineGames.Web.Hubs
                 return;
             }
             var currentPlayer = await roomService.GetTurn(userId);
-            var output = await this.connect4Service.MakeMove(boardString, currentPlayer);
+            var output = await this.connect4Service.MakeMove(boardString, currentPlayer, input.Difficulty);
             await roomService.UpdateBoardAIConnect4(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), output);
             await this.Clients.Caller.SendAsync("OponentMove", output);
         }
