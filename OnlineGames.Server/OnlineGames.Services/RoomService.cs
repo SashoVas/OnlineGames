@@ -38,6 +38,10 @@ namespace OnlineGames.Services
         {
             var user =await userManager.FindByIdAsync(userId);
             var room = await dbContext.TicTacToeRooms.Include(r=>r.Users).FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+            if (room==null)
+            {
+                throw new ArgumentException();
+            }
             user.TicTacToeRoom = null;
             user.TicTacToeRoomId = null;
             if (room.FirstPlayerName==user.UserName)

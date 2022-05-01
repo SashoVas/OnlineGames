@@ -27,14 +27,17 @@ export class RoomsItemComponent implements OnInit,OnDestroy {
   }
   ngOnInit(): void {
   }
-  joinRoom(roomId:string,first:boolean,game:string){
-    this.roomService.setUserToRoom(roomId).subscribe();
-    if(game=="TicTacToe")
+  joinRoom(roomId:string,first?:boolean,game?:string){
+    this.roomService.setUserToRoom(roomId).subscribe((room:IRoom)=>{
+      if(game=="TicTacToe")
       {
-        this.router.navigate(['tictactoe/tictactoe'], { queryParams: { roomName:roomId ,first:first} });
+        this.router.navigate(['tictactoe/tictactoe'], { queryParams: { roomName:room['roomId'] ,first:first} });
       }
       else{
-        this.router.navigate(['connect4/connect4game'], { queryParams: { roomName:roomId ,first:first} });
+        this.router.navigate(['connect4/connect4game'], { queryParams: { roomName:room['roomId'] ,first:first} });
       }
+    },
+    (error)=>this.refreshRooms());
+    
   }
 }

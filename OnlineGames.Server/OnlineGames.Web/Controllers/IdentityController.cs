@@ -36,7 +36,7 @@ namespace OnlineGames.Web.Controllers
             }
             catch (Exception)
             {
-                return this.Unauthorized("Invalid password");
+                return this.BadRequest("Invalid password");
             }
             
         }

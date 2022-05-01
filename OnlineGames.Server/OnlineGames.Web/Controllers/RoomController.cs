@@ -40,8 +40,16 @@ namespace OnlineGames.Web.Controllers
         [HttpPost("AddToRoom")]
         public async Task<ActionResult<object>>AddToRoom([FromBody] AddToRoomInputModel input)
         {
-            await this.roomService.SetRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier), input.RoomId);
-            return new {RoomId=input.RoomId };
+            try
+            {
+                await this.roomService.SetRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier), input.RoomId);
+                return new {RoomId=input.RoomId };
+            }
+            catch (Exception)
+            {
+                return this.BadRequest();
+            }
+            
         }
         [HttpGet("GetRooms")]
         public async Task<IEnumerable<RoomsServiceModel>>GetRooms()

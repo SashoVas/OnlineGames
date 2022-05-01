@@ -2,10 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationComponent } from './navigation/navigation.component';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
 import { BoardCellComponent } from './board-cell/board-cell.component';
-
-
 
 
 @NgModule({
@@ -15,12 +12,12 @@ import { BoardCellComponent } from './board-cell/board-cell.component';
   ],
   imports: [
     CommonModule,
-    RouterModule,
-    HttpClientModule
+    RouterModule
   ],
   exports:[
     BoardCellComponent,
     NavigationComponent
-  ]
+  ],
+  providers: [],
 })
 export class CoreModule { }

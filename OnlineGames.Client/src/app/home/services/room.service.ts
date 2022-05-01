@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IRoom } from '../../core/interfaces/IRoom';
 
@@ -20,6 +20,6 @@ export class RoomService {
     return this.http.get<Array<IRoom>>(environment.apiUrl+'/room/getrooms');
   }
   setUserToRoom(roomId:string){
-    return this.http.post(environment.apiUrl+'/room/addtoroom',{roomId:roomId})
+    return this.http.post<IRoom>(environment.apiUrl+'/room/addtoroom',{roomId:roomId})
   }
 }
