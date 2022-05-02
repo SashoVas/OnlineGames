@@ -18,24 +18,24 @@ export class Connect4GameComponent implements OnInit,OnDestroy {
   difficulty?:ElementRef;
   constructor(private connect4Service:Connect4ServiceService,private connect4SignalRService:Connect4SignalRService,private route:ActivatedRoute) {
     this.board=connect4Service.board;
+   }
+  ngOnInit(): void {
     this.connect4SignalRService
-      .addOponentMoveListener((col:number)=>{
-        this.connect4Service.makeMove(col);
-        this.oponentTurn=false;
-      });
+    .addOponentMoveListener((col:number)=>{
+      this.connect4Service.makeMove(col);
+      this.oponentTurn=false;
+    });
     this.connect4SignalRService.addClearBoardListener(()=>{this.clear();});
     this.route.queryParams.subscribe(params=>{
       if(params['roomName']!=null)
       {
         this.roomId=params['roomName'];
-        this.tellOponent=(col:number)=>connect4SignalRService.tellOponenet(col);
+        this.tellOponent=(col:number)=>this.connect4SignalRService.tellOponenet(col);
         this.oponentTurn=params['first']=='false';
         this.startFirst=params['first']!='false';
       }
       this.connect4SignalRService.addToRoom(this.roomId);
     });
-   }
-  ngOnInit(): void {
   }
   makeMove(col:number):void{
     if(this.oponentTurn||this.gameEnded()){

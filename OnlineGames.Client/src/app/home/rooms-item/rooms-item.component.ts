@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component,  OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { IRoom } from 'src/app/core/interfaces/IRoom';
@@ -9,24 +9,22 @@ import { RoomService } from '../services/room.service';
   templateUrl: './rooms-item.component.html',
   styleUrls: ['./rooms-item.component.css']
 })
-export class RoomsItemComponent implements OnInit,OnDestroy {
+export class RoomsItemComponent implements OnInit {
   rooms!:Array<IRoom>;
-  roomsSubscribtion:Subscription;
   constructor(private router:Router,private roomService:RoomService) { 
-    this.roomsSubscribtion=this.roomService
-    .getAvailableRooms()
-    .subscribe(data=>this.rooms=data);
-  }
-  ngOnDestroy(): void {
-    this.roomsSubscribtion.unsubscribe();
-  }
-  refreshRooms(){
-    this.roomsSubscribtion=this.roomService
-    .getAvailableRooms()
-    .subscribe(data=>this.rooms=data);
   }
   ngOnInit(): void {
+    this.roomService
+    .getAvailableRooms()
+    .subscribe(data=>this.rooms=data);
   }
+
+  refreshRooms(){
+    this.roomService
+    .getAvailableRooms()
+    .subscribe(data=>this.rooms=data);
+  }
+
   joinRoom(roomId:string,first?:boolean,game?:string){
     this.roomService.setUserToRoom(roomId).subscribe((room:IRoom)=>{
       if(game=="TicTacToe")

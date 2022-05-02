@@ -17,6 +17,8 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
   startFirst:boolean=true;
   constructor(private ticTacToeService: TicTacToeServiceService,private ticTacToeSignalRService:TicTacToeSignalRServiceService,private route:ActivatedRoute) {    
     this.board=ticTacToeService.board;
+   }
+  ngOnInit(): void {
     this.ticTacToeSignalRService
       .addOponentMoveListener((coordinates:IBoardCoordinates)=>{
         this.ticTacToeService.makeMove(coordinates.row,coordinates.col);
@@ -27,14 +29,12 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
       if(params['roomName']!=null)
       {
         this.roomId=params['roomName'];
-        this.tellOponent=(row:number,col:number)=>ticTacToeSignalRService.tellOponenet(row,col);
+        this.tellOponent=(row:number,col:number)=>this.ticTacToeSignalRService.tellOponenet(row,col);
         this.oponentTurn=params['first']=='false';
         this.startFirst=params['first']!='false';
       }
       this.ticTacToeSignalRService.addToRoom(this.roomId);
     });
-   }
-  ngOnInit(): void {
   }
   makeMove(row:number,col:number){ 
     if(this.gameEnded() || this.oponentTurn){
