@@ -17,4 +17,7 @@ export class LandingComponent implements OnInit {
   games(){
     this.router.navigate(["home/games"])
   }
+  rooms(){
+    this.router.navigate(["home/rooms"])
+  }
 }

@@ -15,6 +15,7 @@ namespace OnlineGames.Web.Hubs
         
         public override async Task OnDisconnectedAsync(Exception exception)
         {
+            await this.ClearBoard();
             await this.roomService.RemoveRoom(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier));
             await base.OnDisconnectedAsync(exception);
         }

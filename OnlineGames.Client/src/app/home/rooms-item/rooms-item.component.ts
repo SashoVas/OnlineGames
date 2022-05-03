@@ -1,4 +1,4 @@
-import { Component,  OnInit } from '@angular/core';
+import { Component,  Input,  OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { IRoom } from 'src/app/core/interfaces/IRoom';
@@ -11,20 +11,23 @@ import { RoomService } from '../services/room.service';
 })
 export class RoomsItemComponent implements OnInit {
   rooms!:Array<IRoom>;
+  page:number=0;
+  @Input() game:string|null=null;
+  @Input() count:number=5;
   constructor(private router:Router,private roomService:RoomService) { 
   }
   ngOnInit(): void {
-    this.roomService
-    .getAvailableRooms()
-    .subscribe(data=>this.rooms=data);
+    this.fetchData();
   }
 
   refreshRooms(){
+    this.fetchData();
+  }
+  fetchData(){
     this.roomService
-    .getAvailableRooms()
+    .getAvailableRooms(this.game,this.count,this.page)
     .subscribe(data=>this.rooms=data);
   }
-
   joinRoom(roomId:string,first?:boolean,game?:string){
     this.roomService.setUserToRoom(roomId).subscribe((room:IRoom)=>{
       if(game=="TicTacToe")

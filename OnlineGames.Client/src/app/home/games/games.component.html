@@ -1,39 +1,47 @@
-<div class="row text-center">
-    <div class="col-lg-6 border p-2">
-        <h3 >TicTacToe</h3>
-        <hr class="mb-1">
-        <h4>Create</h4>
-        <button (click)="createRoomTicTacToe()" class="btn btn-secondary">Create Room</button>
-        <br>
-        <button routerLink="/tictactoe/tictactoe"  class="btn btn-secondary mt-3">VS AI</button>
-        <hr class="mb-1">
-        <h4>Join</h4>
-        <label >Room Id</label>
-        <br>
-        <input #ticTacToeRoomId type="text">
-        <br>
-        <button class="btn btn-secondary mt-3" (click)="joinRoomTicTacToe()">Join Room</button>
-    </div>
-    
-    <div class="col-lg-6 text-center border p-2">
-        <app-rooms-item></app-rooms-item>
-    </div>
-</div>
-<div class="row text-center border">
-    <h3 >Connect4</h3>
-    <div class="col-lg-6 border-end border-top">
-        <h3>Create</h3>
-        <div class="d-flex justify-content-around mt-4">
-            <button class="btn btn-secondary" (click)="createRoomConnect4()">Create</button>
-            <button class="btn btn-secondary" routerLink="/connect4/connect4game">VS AI</button>
+<div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6">
+        <div class="row text-center">
+            <div class="col-lg-5 py-3 dark-bg">
+                <h3 >TicTacToe</h3>
+                <hr class="">
+                <h4>Create</h4>
+                <button (click)="createRoomTicTacToe()" class="btn btn-secondary">Create Room</button>
+                <br>
+                <button routerLink="/tictactoe/tictactoe"  class="btn btn-secondary mt-3">VS AI</button>
+                <hr class="mb-1">
+                <h4>Join</h4>
+                <label >Room Id</label>
+                <br>
+                <input #ticTacToeRoomId type="text">
+                <br>
+                <button class="btn btn-secondary mt-3" (click)="joinRoomTicTacToe()">Join Room</button>
+            </div>
+            <div class="col-lg-2 row">
+
+            </div>
+            <div class="col-lg-5 text-center dark-bg">
+                <app-rooms-item [count]="5"></app-rooms-item>
+            </div>
+        </div>
+        <div class="row text-center dark-bg mt-5">
+            <h3 >Connect4</h3>
+            <div class="col-lg-6 border-end border-top p-1">
+                <h3>Create</h3>
+                <div class="d-flex justify-content-around mt-4">
+                    <button class="btn btn-secondary" (click)="createRoomConnect4()">Create</button>
+                    <button class="btn btn-secondary" routerLink="/connect4/connect4game">VS AI</button>
+                </div>
+            </div>
+            <div class="col-lg-6 border-start border-top p-1">
+                <h3>Join</h3>
+                <label>RoomId</label>
+                <br>
+                <input #connect4RoomId type="text">
+                <br>
+                <button class="btn btn-secondary mt-2"  (click)="joinRoomConnect4()">Join</button>
+            </div>
         </div>
     </div>
-    <div class="col-lg-6 border-start border-top">
-        <h3>Join</h3>
-        <label>RoomId</label>
-        <br>
-        <input #connect4RoomId type="text">
-        <br>
-        <button class="btn btn-secondary mt-2"  (click)="joinRoomConnect4()">Join</button>
-    </div>
+    <div class="col-lg-3"></div>
 </div>

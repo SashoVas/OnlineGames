@@ -7,11 +7,12 @@ import { LandingComponent } from './landing/landing.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { RoomsItemComponent } from './rooms-item/rooms-item.component';
 import { GamesComponent } from './games/games.component';
+import { RoomsComponent } from './rooms/rooms.component';
 
 
 
 @NgModule({
-  declarations: [LandingComponent, RoomsItemComponent, GamesComponent],
+  declarations: [LandingComponent, RoomsItemComponent, GamesComponent, RoomsComponent],
   imports: [
     CommonModule,
     RouterModule,

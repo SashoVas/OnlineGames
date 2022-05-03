@@ -16,8 +16,8 @@ export class RoomService {
   createRoomConnect4():Observable<any>{
     return this.http.post(environment.apiUrl+'/room/createconnect4room',null);
   }
-  getAvailableRooms():Observable<Array<IRoom>>{
-    return this.http.get<Array<IRoom>>(environment.apiUrl+'/room/getrooms');
+  getAvailableRooms(game:string|null,count:number,page:number):Observable<Array<IRoom>>{
+    return this.http.get<Array<IRoom>>(environment.apiUrl+'/room/getrooms?game='+game+'&count='+count+'&page='+page);
   }
   setUserToRoom(roomId:string){
     return this.http.post<IRoom>(environment.apiUrl+'/room/addtoroom',{roomId:roomId})

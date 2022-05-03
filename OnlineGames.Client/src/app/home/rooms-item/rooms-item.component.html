@@ -1,17 +1,20 @@
-<div class="d-flex justify-content-evenly">
-    <h3>Rooms</h3>
-    <button class="btn btn-secondary p-1" (click)="refreshRooms()">Refresh</button>
+<div class="dark-bg text-center rooms-panel">
+    <div class="d-flex justify-content-evenly p-1">
+        <button class="btn btn-secondary py-0 px-1">LoadMore</button>
+        <h3>Rooms</h3>
+        <button class="btn btn-secondary py-0 px-1" (click)="refreshRooms()">Refresh</button>
+    </div>
+    <hr>
+    <ul  class="list-group list-group-flush overflow-auto dark-bg">
+        <li *ngFor="let room of rooms" class="list-group-item text-white dark-bg">
+            <div class="d-flex justify-content-between dark-bg">
+                <a>{{room['userName']}}</a>
+                <a >{{room['gameName']}}</a>
+                <a>{{room['players']}}/{{room['capacity']}}</a>
+                <button (click)="joinRoom(room['roomId'],room['first'],room['gameName'])" class="btn btn-secondary" >Join</button>    
+            </div>
+            
+        </li>
+        <h5 *ngIf="rooms?.length==0">No Rooms</h5>
+    </ul>
 </div>
-
-<hr>
-
-<ul  class="list-group list-group-flush bg-dark overflow-auto">
-    <li *ngFor="let room of rooms" class="list-group-item bg-dark text-white">
-        <div class="d-flex justify-content-between">
-            <a>{{room['userName']}}</a>
-            <a >{{room['gameName']}}</a>
-            <a>{{room['players']}}/{{room['capacity']}}</a>
-            <button (click)="joinRoom(room['roomId'],room['first'],room['gameName'])" class="btn btn-secondary" >Join</button>    
-        </div>
-    </li>
-</ul>

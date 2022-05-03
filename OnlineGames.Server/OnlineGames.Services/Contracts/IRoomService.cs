@@ -21,7 +21,7 @@ namespace OnlineGames.Services.Contracts
         Task ClearBoard(string userId);
         Task<string> GetUserBoard(string userId);
         Task<int> GetTurn(string userId);
-        Task<IEnumerable<RoomsServiceModel>> GetAvailableRooms();
+        Task<IEnumerable<RoomsServiceModel>> GetAvailableRooms(string game, int count, int page);
         Task<string> GetRoomId(string userId);
 
     }

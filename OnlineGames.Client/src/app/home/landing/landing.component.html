@@ -1,8 +1,16 @@
-<div class="grid-container">   
-    <div (click)="games()" class="games grid-item">Games</div>
-    <div class="rooms grid-item">Rooms</div>
-    <div class="profile grid-item">Profile</div>
-    <div class="friends grid-item">Friends</div>
-    <div class="notifications grid-item">Notifications</div>
-    <div class="settings grid-item">Settings</div>
+<div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+        <div class="grid-container">   
+            <div (click)="games()" class="games grid-item">Games</div>
+            <div (click)="rooms()" class="rooms grid-item">Rooms</div>
+            <div class="profile grid-item">Profile</div>
+            <div class="friends grid-item">Friends</div>
+            <div class="notifications grid-item">Notifications</div>
+            <div class="settings grid-item">Settings</div>
+        </div>
+    </div>
+    <div class="col-lg-2"></div>
 </div>
+
+

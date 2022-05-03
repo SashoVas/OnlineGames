@@ -27,9 +27,10 @@ namespace OnlineGames.Services
             {
                 Id = Guid.NewGuid().ToString(),
                 FirstPlayerName=username,
-                Private=isPrivate
+                Private=isPrivate,
+                GameName="TicTacToe"
             };
-            await dbContext.TicTacToeRooms.AddAsync(room);
+            await dbContext.Rooms.AddAsync(room);
             await dbContext.SaveChangesAsync();
             return room.Id;
         }
@@ -37,7 +38,7 @@ namespace OnlineGames.Services
         public async Task RemoveRoom(string userId)
         {
             var user =await userManager.FindByIdAsync(userId);
-            var room = await dbContext.TicTacToeRooms.Include(r=>r.Users).FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+            var room = await dbContext.Rooms.Include(r=>r.Users).FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
             if (room==null)
             {
                 throw new ArgumentException();
@@ -52,7 +53,7 @@ namespace OnlineGames.Services
             if (room.Users.Count()==1)
             {
                 //The room is empty so we remove it
-                dbContext.TicTacToeRooms.Remove(room);
+                dbContext.Rooms.Remove(room);
             }
             dbContext.Users.Update(user);
             await dbContext.SaveChangesAsync();
@@ -61,7 +62,7 @@ namespace OnlineGames.Services
         public async Task SetRoomToUser(string userId, string roomId)
         {
             var user =await userManager.FindByIdAsync(userId);
-            var room=await dbContext.TicTacToeRooms.FirstOrDefaultAsync(r => r.Id == roomId);
+            var room=await dbContext.Rooms.FirstOrDefaultAsync(r => r.Id == roomId);
             if (room==null||room.Users.Count>=2)
             {
                 //Room is full or does not exist
@@ -80,7 +81,7 @@ namespace OnlineGames.Services
         public async Task UpdateBoardTicTacToe(string userId,int row, int col)
         {
             var user = await userManager.FindByIdAsync(userId);
-            var room = await dbContext.TicTacToeRooms.Include(r=>r.Users).FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+            var room = await dbContext.Rooms.Include(r=>r.Users).FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
             if (room.BoardString[((3 * row) + col)]!='0')
             {
                 //The position is alredy taken
@@ -101,13 +102,13 @@ namespace OnlineGames.Services
                 throw new ArgumentException();
             }
             room.FirstPlayerTurn = !room.FirstPlayerTurn;
-            dbContext.TicTacToeRooms.Update(room);
+            dbContext.Rooms.Update(room);
             await dbContext.SaveChangesAsync();
         }
         public async Task ClearBoard(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
-            var room = await dbContext.TicTacToeRooms
+            var room = await dbContext.Rooms
                 .Include(r=>r.Users)
                 .FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
             if (room==null)
@@ -126,7 +127,7 @@ namespace OnlineGames.Services
             }
             room.FirstPlayerTurn=true;
             room.BoardString =room.BoardString.Length==9?"000000000":new string('0',6*7);
-            dbContext.TicTacToeRooms.Update(room);
+            dbContext.Rooms.Update(room);
             await dbContext.SaveChangesAsync();
         }
 
@@ -137,7 +138,7 @@ namespace OnlineGames.Services
             {
                 throw new ArgumentException();
             }
-            var room = await dbContext.TicTacToeRooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+            var room = await dbContext.Rooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
             if (room==null)
             {
                 throw new ArgumentException();
@@ -152,7 +153,7 @@ namespace OnlineGames.Services
             {
                 throw new ArgumentException();
             }
-            var room = await dbContext.TicTacToeRooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+            var room = await dbContext.Rooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
             if (room == null)
             {
                 throw new ArgumentException();
@@ -163,7 +164,7 @@ namespace OnlineGames.Services
         public async Task UpdateBoardAITicTacToe(string userId, int row, int col)
         {
             var user = await userManager.FindByIdAsync(userId);
-            var room = await dbContext.TicTacToeRooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+            var room = await dbContext.Rooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
             if (room.BoardString[(3 * row) + col]!='0')
             {
                 throw new ArgumentException();
@@ -177,20 +178,21 @@ namespace OnlineGames.Services
                 room.BoardString = room.BoardString[0..((3 * row) + col)] + "2" + room.BoardString[((3 * row) + col + 1)..^0];
             }
             room.FirstPlayerTurn = !room.FirstPlayerTurn;
-            dbContext.TicTacToeRooms.Update(room);
+            dbContext.Rooms.Update(room);
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable< RoomsServiceModel>> GetAvailableRooms()
+        public async Task<IEnumerable< RoomsServiceModel>> GetAvailableRooms(string game, int count, int page)
         {
-            return await dbContext.TicTacToeRooms
-                .Where(r => r.Users.Count() < 2 && !r.Private)
-                .Take(10)
+            return await dbContext.Rooms
+                .Where(r => r.Users.Count() < 2 && !r.Private && game!=null? game == r.GameName:true)
+                .Skip(count*page)
+                .Take(count)
                 .Select(r=> new RoomsServiceModel
                 {
                     Capacity=2,
                     Players=1,
-                    GameName=r.BoardString.Length==9? "TicTacToe":"Connect4",
+                    GameName=r.GameName,
                     UserName=r.Users.First().UserName,
                     RoomId=r.Id,
                     First=r.FirstPlayerName==null
@@ -204,9 +206,10 @@ namespace OnlineGames.Services
                 Id = Guid.NewGuid().ToString(),
                 FirstPlayerName = username,
                 BoardString=new string('0',6*7),
-                Private=isPrivate
+                Private=isPrivate,
+                GameName="Connect4"
             };
-            await dbContext.TicTacToeRooms.AddAsync(room);
+            await dbContext.Rooms.AddAsync(room);
             await dbContext.SaveChangesAsync();
             return room.Id;
         }
@@ -219,7 +222,7 @@ namespace OnlineGames.Services
         public async Task UpdateBoardConnect4(string userId, int col)
         {
             var user = await userManager.FindByIdAsync(userId);
-            var room = await dbContext.TicTacToeRooms.Include(r => r.Users).FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+            var room = await dbContext.Rooms.Include(r => r.Users).FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
             int row = -1;
             for (int i = 5; i >= 0; i--)
             {
@@ -249,14 +252,14 @@ namespace OnlineGames.Services
                 throw new ArgumentException();
             }
             room.FirstPlayerTurn = !room.FirstPlayerTurn;
-            dbContext.TicTacToeRooms.Update(room);
+            dbContext.Rooms.Update(room);
             await dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateBoardAIConnect4(string userId, int col)
         {
             var user = await userManager.FindByIdAsync(userId);
-            var room = await dbContext.TicTacToeRooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
+            var room = await dbContext.Rooms.FirstOrDefaultAsync(t => t.Id == user.TicTacToeRoomId);
             int row = -1;
             for (int i = 5; i >= 0; i--)
             {
@@ -279,7 +282,7 @@ namespace OnlineGames.Services
                 room.BoardString = room.BoardString[0..((7 * row) + col)] + "2" + room.BoardString[((7 * row) + col + 1)..^0];
             }
             room.FirstPlayerTurn = !room.FirstPlayerTurn;
-            dbContext.TicTacToeRooms.Update(room);
+            dbContext.Rooms.Update(room);
             await dbContext.SaveChangesAsync();
         }
     }

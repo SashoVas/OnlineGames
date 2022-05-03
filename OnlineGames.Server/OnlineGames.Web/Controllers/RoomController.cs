@@ -52,9 +52,10 @@ namespace OnlineGames.Web.Controllers
             
         }
         [HttpGet("GetRooms")]
-        public async Task<IEnumerable<RoomsServiceModel>>GetRooms()
+        public async Task<IEnumerable<RoomsServiceModel>>GetRooms(string game,int count,int page)
         {
-            return await this.roomService.GetAvailableRooms();
+            game=game=="null"?null:game;
+            return await this.roomService.GetAvailableRooms(game,  count,  page);
         }
     }
 }

@@ -18,6 +18,8 @@ namespace OnlineGames.Data.Models
         public string? FirstPlayerName { get; set; }
         public ICollection<User> Users { get; set; }
         public bool Private { get; set; } = false;
+        public string GameName { get; set; }
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
 
     }
 }
