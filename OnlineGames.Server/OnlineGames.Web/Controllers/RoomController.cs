@@ -17,27 +17,29 @@ namespace OnlineGames.Web.Controllers
         {
             this.roomService = roomService;
         }
-        [HttpPost("CreateTicTacToeRoom")]
-        public async Task<ActionResult<object>>CreateTicTacToeRoom()
+        [HttpPost]
+        public async Task<ActionResult<object>> CreateRoom(CreateRoomInputModel input)
         {
-            var roomId = await this.roomService.CreateTicTacToeRoom(this.User.Identity.Name,false);
-            await this.roomService.SetRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier),roomId);
-            return new  { 
-             RoomId= roomId
-            };
-        }
-
-        [HttpPost("CreateConnect4Room")]
-        public async Task<ActionResult<object>> CreateConnect4Room()
-        {
-            var roomId = await this.roomService.CreateConnect4Room(this.User.Identity.Name,false);
+            string roomId;
+            switch (input.Game)
+            {
+                case ("TicTacToe"):
+                    roomId=await this.roomService.CreateTicTacToeRoom(this.User.Identity.Name, false);
+                    break;
+                case ("Connect4"):
+                    roomId= await this.roomService.CreateConnect4Room(this.User.Identity.Name, false);
+                    break;
+                default:
+                    return this.BadRequest();
+            }
             await this.roomService.SetRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier), roomId);
             return new
             {
                 RoomId = roomId
             };
         }
-        [HttpPost("AddToRoom")]
+
+        [HttpPut]
         public async Task<ActionResult<object>>AddToRoom([FromBody] AddToRoomInputModel input)
         {
             try
@@ -51,11 +53,10 @@ namespace OnlineGames.Web.Controllers
             }
             
         }
-        [HttpGet("GetRooms")]
-        public async Task<IEnumerable<RoomsServiceModel>>GetRooms(string game,int count,int page)
+        [HttpGet]
+        public async Task<IEnumerable<RoomsServiceModel>>GetRooms(GetRoomsInputModel input)
         {
-            game=game=="null"?null:game;
-            return await this.roomService.GetAvailableRooms(game,  count,  page);
+            return await this.roomService.GetAvailableRooms(input.Game=="null"?null: input.Game,input.Count,input.Page);
         }
     }
 }

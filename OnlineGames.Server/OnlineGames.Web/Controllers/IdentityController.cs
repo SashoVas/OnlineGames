@@ -27,6 +27,10 @@ namespace OnlineGames.Web.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<LoginReturnModel>> Login(LoginInputModel input)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 return new LoginReturnModel
@@ -43,6 +47,10 @@ namespace OnlineGames.Web.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<object>> Register([FromBody] RegisterInputModel input)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
             try
             {
                 return new
@@ -54,7 +62,6 @@ namespace OnlineGames.Web.Controllers
             {
                 return this.BadRequest("Invalid data");
             }
-            
         }
     }
 }

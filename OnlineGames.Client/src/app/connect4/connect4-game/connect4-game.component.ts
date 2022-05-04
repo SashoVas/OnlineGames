@@ -75,7 +75,3 @@ export class Connect4GameComponent implements OnInit,OnDestroy {
     this.connect4SignalRService.hubConnection.stop();
   }
 }
-function IConnect4MoveAI(col: number, arg1: { Col: number; Difficulty: ElementRef<any> | undefined; }, IConnect4MoveAI: any) {
-  throw new Error('Function not implemented.');
-}
-

@@ -40,22 +40,11 @@ namespace OnlineGames.Web.Hubs
             var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
             await roomService.UpdateBoardTicTacToe(userId, row, col);
             await this.Clients.OthersInGroup(await this.roomService.GetRoomId(userId)).SendAsync("OponentMove",
-                new BoardCoordinates
-                {
-                    Row = row,
-                    Col = col
-                });
-        }
-        public async Task AddToGroup(string groupName)
-        {
-            var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (groupName == null)
+            new BoardCoordinates
             {
-                //Here if the oponent is ai and we dont want our room id to be exposed
-                groupName = await this.roomService.CreateTicTacToeRoom(this.Context.User.Identity.Name,true);
-                await this.roomService.SetRoomToUser(userId, groupName);
-            }
-            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);
+                Row = row,
+                Col = col
+            });
         }
     }
 }

@@ -24,7 +24,7 @@ export class TicTacToeComponent implements OnInit ,OnDestroy {
         this.ticTacToeService.makeMove(coordinates.row,coordinates.col);
         this.oponentTurn=false;
       });
-    this.ticTacToeSignalRService.addClearBoardListener(()=>{this.clear();});
+    this.ticTacToeSignalRService.addClearBoardListener(()=>this.clear());
     this.route.queryParams.subscribe(params=>{
       if(params['roomName']!=null)
       {

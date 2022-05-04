@@ -10,16 +10,14 @@ import { IRoom } from '../../core/interfaces/IRoom';
 export class RoomService {
 
   constructor(private http:HttpClient) { }
-  createRoomTicTacToe():Observable<any>{
-    return this.http.post(environment.apiUrl+'/room/createtictactoeroom',null);
-  }
-  createRoomConnect4():Observable<any>{
-    return this.http.post(environment.apiUrl+'/room/createconnect4room',null);
+
+  createRoom(game:string):Observable<any>{
+    return this.http.post(environment.apiUrl+'/room',{game:game});
   }
   getAvailableRooms(game:string|null,count:number,page:number):Observable<Array<IRoom>>{
-    return this.http.get<Array<IRoom>>(environment.apiUrl+'/room/getrooms?game='+game+'&count='+count+'&page='+page);
+    return this.http.get<Array<IRoom>>(environment.apiUrl+'/room?game='+game+'&count='+count+'&page='+page);
   }
   setUserToRoom(roomId:string){
-    return this.http.post<IRoom>(environment.apiUrl+'/room/addtoroom',{roomId:roomId})
+    return this.http.put<IRoom>(environment.apiUrl+'/room',{roomId:roomId})
   }
 }

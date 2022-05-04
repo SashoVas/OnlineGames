@@ -24,7 +24,7 @@ export class TicTacToeServiceService {
     let isFull:boolean=false;
     for(let i=0;i<3;i++)
     {
-      if(this.board[i][0]==playerAvatar&&this.board[i][1]==playerAvatar&&this.board[i][2]==playerAvatar){
+      if(this.board[i].every(x=>x==playerAvatar)){//this.board[i][0]==playerAvatar&&this.board[i][1]==playerAvatar&&this.board[i][2]==playerAvatar){
         return true;
       }
       if(this.board[0][i]==playerAvatar&&this.board[1][i]==playerAvatar&&this.board[2][i]==playerAvatar){
