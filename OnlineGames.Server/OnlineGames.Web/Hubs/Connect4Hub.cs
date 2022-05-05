@@ -17,28 +17,44 @@ namespace OnlineGames.Web.Hubs
         }
         public async Task MakeMoveAI(Connect4MoveAIInput input)
         {
-            var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //Skip update board if the ai is first
-            if (input.Col != -1)
+            try
             {
-                await roomService.UpdateBoardConnect4(userId, input.Col);
+                var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                //Skip update board if the ai is first
+                if (input.Col != -1)
+                {
+                    await roomService.UpdateBoardConnect4(userId, input.Col);
+                }
+                var boardString = await roomService.GetUserBoard(userId);
+                if (!boardString.Contains("0"))
+                {
+                    //The board is full
+                    return;
+                }
+                var currentPlayer = await roomService.GetTurn(userId);
+                var output = await this.connect4Service.MakeMove(boardString, currentPlayer, input.Difficulty);
+                await roomService.UpdateBoardAIConnect4(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), output);
+                await this.Clients.Caller.SendAsync("OponentMove", output);
             }
-            var boardString = await roomService.GetUserBoard(userId);
-            if (!boardString.Contains("0"))
+            catch (Exception)
             {
-                //The board is full
-                return;
+                throw;
             }
-            var currentPlayer = await roomService.GetTurn(userId);
-            var output = await this.connect4Service.MakeMove(boardString, currentPlayer, input.Difficulty);
-            await roomService.UpdateBoardAIConnect4(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), output);
-            await this.Clients.Caller.SendAsync("OponentMove", output);
+            
         }
         public async Task MakeMoveOponent( int col)
         {
-            var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await roomService.UpdateBoardConnect4(userId, col);
-            await this.Clients.OthersInGroup(await this.roomService.GetRoomId(userId)).SendAsync("OponentMove", col);
+            try
+            {
+                var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await roomService.UpdateBoardConnect4(userId, col);
+                await this.Clients.OthersInGroup(await this.roomService.GetRoomId(userId)).SendAsync("OponentMove", col);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
     }
 }

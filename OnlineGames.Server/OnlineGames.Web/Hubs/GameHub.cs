@@ -39,7 +39,7 @@ namespace OnlineGames.Web.Hubs
                         groupName = await this.roomService.CreateConnect4Room(this.Context.User.Identity.Name, true);
                     break;
                     default:
-                        break;
+                        throw new ArgumentException();
                 }
                 await this.roomService.SetRoomToUser(userId, groupName);
             }

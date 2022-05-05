@@ -54,7 +54,7 @@ namespace OnlineGames.Web.Controllers
             
         }
         [HttpGet]
-        public async Task<IEnumerable<RoomsServiceModel>>GetRooms(GetRoomsInputModel input)
+        public async Task<IEnumerable<RoomsServiceModel>>GetRooms([FromQuery]GetRoomsInputModel input)
         {
             return await this.roomService.GetAvailableRooms(input.Game=="null"?null: input.Game,input.Count,input.Page);
         }

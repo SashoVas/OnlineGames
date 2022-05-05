@@ -21,6 +21,7 @@ export class RoomsItemComponent implements OnInit {
   }
 
   refreshRooms(){
+    this.page=0;
     this.fetchData();
   }
   fetchData(){
@@ -39,6 +40,13 @@ export class RoomsItemComponent implements OnInit {
       }
     },
     (error)=>this.refreshRooms());
+    
+  }
+  loadRooms(){
+    this.page++;
+    this.roomService
+    .getAvailableRooms(this.game,this.count,this.page)
+    .subscribe(data=>this.rooms=this.rooms.concat(data));
     
   }
 }

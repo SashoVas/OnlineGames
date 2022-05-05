@@ -18,33 +18,49 @@ namespace OnlineGames.Web.Hubs
         }
         public async Task MakeMoveAI(TicTacToeMoveAIInput input)
         {
-            var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //Skip update board if the ai is first
-            if (input.Row!=-1 && input.Col!=-1)
+            try
             {
-                await roomService.UpdateBoardTicTacToe(userId, input.Row, input.Col);
+                var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                //Skip update board if the ai is first
+                if (input.Row!=-1 && input.Col!=-1)
+                {
+                    await roomService.UpdateBoardTicTacToe(userId, input.Row, input.Col);
+                }
+                var boardString = await roomService.GetUserBoard(userId);
+                if (!boardString.Contains("0"))
+                {
+                    //The board is full
+                    return;
+                }
+                var currentPlayer = await roomService.GetTurn(userId);
+                var output =await this.ticTacToeService.MakeMove(boardString,currentPlayer);
+                await roomService.UpdateBoardAITicTacToe(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),output.Row,output.Col);
+                await this.Clients.Caller.SendAsync("OponentMove", output);
             }
-            var boardString = await roomService.GetUserBoard(userId);
-            if (!boardString.Contains("0"))
+            catch (Exception)
             {
-                //The board is full
-                return;
+                throw;
             }
-            var currentPlayer = await roomService.GetTurn(userId);
-            var output =await this.ticTacToeService.MakeMove(boardString,currentPlayer);
-            await roomService.UpdateBoardAITicTacToe(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),output.Row,output.Col);
-            await this.Clients.Caller.SendAsync("OponentMove", output);
+            
         }
         public async Task MakeMoveOponent(int row, int col)
         {
-            var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            await roomService.UpdateBoardTicTacToe(userId, row, col);
-            await this.Clients.OthersInGroup(await this.roomService.GetRoomId(userId)).SendAsync("OponentMove",
-            new BoardCoordinates
+            try
             {
-                Row = row,
-                Col = col
-            });
+                var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                await roomService.UpdateBoardTicTacToe(userId, row, col);
+                await this.Clients.OthersInGroup(await this.roomService.GetRoomId(userId)).SendAsync("OponentMove",
+                new BoardCoordinates
+                {
+                    Row = row,
+                    Col = col
+                });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            
         }
     }
 }
