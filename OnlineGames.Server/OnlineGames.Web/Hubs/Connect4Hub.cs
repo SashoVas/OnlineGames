@@ -19,21 +19,20 @@ namespace OnlineGames.Web.Hubs
         {
             try
             {
-                var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 //Skip update board if the ai is first
                 if (input.Col != -1)
                 {
-                    await roomService.UpdateBoardConnect4(userId, input.Col);
+                    await roomService.UpdateBoardConnect4(GetUserId(), input.Col,GetUserName());
                 }
-                var boardString = await roomService.GetUserBoard(userId);
+                var boardString = await roomService.GetUserBoard(GetUserId());
                 if (!boardString.Contains("0"))
                 {
                     //The board is full
                     return;
                 }
-                var currentPlayer = await roomService.GetTurn(userId);
+                var currentPlayer = await roomService.GetTurn(GetUserId());
                 var output = await this.connect4Service.MakeMove(boardString, currentPlayer, input.Difficulty);
-                await roomService.UpdateBoardAIConnect4(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), output);
+                await roomService.UpdateBoardAIConnect4(GetUserId(), output);
                 await this.Clients.Caller.SendAsync("OponentMove", output);
             }
             catch (Exception)
@@ -46,9 +45,8 @@ namespace OnlineGames.Web.Hubs
         {
             try
             {
-                var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                await roomService.UpdateBoardConnect4(userId, col);
-                await this.Clients.OthersInGroup(await this.roomService.GetRoomId(userId)).SendAsync("OponentMove", col);
+                await roomService.UpdateBoardConnect4(GetUserId(), col,GetUserName());
+                await this.Clients.OthersInGroup(await this.roomService.GetRoomId(GetUserId())).SendAsync("OponentMove", col);
             }
             catch (Exception)
             {

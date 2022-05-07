@@ -9,7 +9,7 @@ namespace OnlineGames.Data.Models
 {
     public class User:IdentityUser
     {
-        public string? TicTacToeRoomId { get; set; }
-        public Room? TicTacToeRoom { get; set; }
+        public string? RoomId { get; set; }
+        public Room? Room { get; set; }
     }
 }

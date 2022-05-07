@@ -20,21 +20,20 @@ namespace OnlineGames.Web.Hubs
         {
             try
             {
-                var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 //Skip update board if the ai is first
                 if (input.Row!=-1 && input.Col!=-1)
                 {
-                    await roomService.UpdateBoardTicTacToe(userId, input.Row, input.Col);
+                    await roomService.UpdateBoardTicTacToe(GetUserId(), input.Row, input.Col,GetUserName());
                 }
-                var boardString = await roomService.GetUserBoard(userId);
+                var boardString = await roomService.GetUserBoard(GetUserId());
                 if (!boardString.Contains("0"))
                 {
                     //The board is full
                     return;
                 }
-                var currentPlayer = await roomService.GetTurn(userId);
+                var currentPlayer = await roomService.GetTurn(GetUserId());
                 var output =await this.ticTacToeService.MakeMove(boardString,currentPlayer);
-                await roomService.UpdateBoardAITicTacToe(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),output.Row,output.Col);
+                await roomService.UpdateBoardAITicTacToe(GetUserId(), output.Row,output.Col);
                 await this.Clients.Caller.SendAsync("OponentMove", output);
             }
             catch (Exception)
@@ -47,9 +46,8 @@ namespace OnlineGames.Web.Hubs
         {
             try
             {
-                var userId = this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                await roomService.UpdateBoardTicTacToe(userId, row, col);
-                await this.Clients.OthersInGroup(await this.roomService.GetRoomId(userId)).SendAsync("OponentMove",
+                await roomService.UpdateBoardTicTacToe(GetUserId(), row, col,GetUserName());
+                await this.Clients.OthersInGroup(await this.roomService.GetRoomId(GetUserId())).SendAsync("OponentMove",
                 new BoardCoordinates
                 {
                     Row = row,

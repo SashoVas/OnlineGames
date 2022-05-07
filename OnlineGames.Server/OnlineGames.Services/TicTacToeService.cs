@@ -15,22 +15,15 @@ namespace OnlineGames.Services
     public class TicTacToeService : ITicTacToeService
     {
         private readonly TicTacToe ticTacToe;
-        private readonly UserManager<User> userManager;
-        private readonly OnlineGamesDbContext dbContext;
-        private readonly IRoomService roomService;
-        public TicTacToeService(OnlineGamesDbContext dbContext, UserManager<User> userManager, IRoomService roomService)
+
+        public TicTacToeService()
         {
             this.ticTacToe=new TicTacToe();
-            this.userManager = userManager;
-            this.dbContext = dbContext;
-            this.roomService = roomService;
         }
-
 
         public async Task<BoardCoordinates> MakeMove(string boardSring,int currentPlayer)
         {
             var output=this.ticTacToe.CreateSolver(boardSring,currentPlayer);
-
             return new BoardCoordinates 
             {
                 Row= output.X,

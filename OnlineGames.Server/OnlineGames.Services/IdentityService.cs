@@ -20,6 +20,7 @@ namespace OnlineGames.Services
         {
             this.userManager = userManager;
         }
+
         private string GetJwt(User user,string Secret)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -46,7 +47,6 @@ namespace OnlineGames.Services
                 throw new UnauthorizedAccessException();
             }
             return GetJwt(user,secret);
-            
         }
 
         public async Task<string> Register(string username,string password,string confirmPassword)

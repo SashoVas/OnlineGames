@@ -14,11 +14,11 @@ namespace OnlineGames.Services.Contracts
         Task<string> CreateConnect4Room(string username, bool isPrivate);
         Task RemoveRoom(string userId);
         Task SetRoomToUser(string userId,string roomId);
-        Task UpdateBoardTicTacToe(string userId, int row, int col);
-        Task UpdateBoardConnect4(string userId,int col);
+        Task UpdateBoardTicTacToe(string userId, int row, int col,string username);
+        Task UpdateBoardConnect4(string userId,int col, string username);
         Task UpdateBoardAITicTacToe(string userId, int row, int col);
         Task UpdateBoardAIConnect4(string userId, int col);
-        Task ClearBoard(string userId);
+        Task ClearBoard(string userId, string username);
         Task<string> GetUserBoard(string userId);
         Task<int> GetTurn(string userId);
         Task<IEnumerable<RoomsServiceModel>> GetAvailableRooms(string game, int count, int page);

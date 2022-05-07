@@ -15,9 +15,9 @@ namespace OnlineGames.Data
         {
             base.OnModelCreating(builder);
             builder.Entity<User>()
-                .HasOne(u => u.TicTacToeRoom)
+                .HasOne(u => u.Room)
                 .WithMany(t => t.Users)
-                .HasForeignKey(u => u.TicTacToeRoomId)
+                .HasForeignKey(u => u.RoomId)
                 .OnDelete(DeleteBehavior.SetNull);
         }
     }
