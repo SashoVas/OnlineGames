@@ -37,10 +37,10 @@ namespace OnlineGames.Web.Hubs
                 switch (this.GetType().Name)
                 {
                     case ("TicTacToeHub"):
-                        groupName = await this.roomService.CreateTicTacToeRoom(GetUserName(), true);
+                        groupName = await this.roomService.CreateRoom(GetUserName(), true, "TicTacToe",3*3);
                         break;
                     case ("Connect4Hub"):
-                        groupName = await this.roomService.CreateConnect4Room(GetUserName(), true);
+                        groupName = await this.roomService.CreateRoom(GetUserName(), true, "Connect4", 6*7);
                     break;
                     default:
                         throw new ArgumentException();

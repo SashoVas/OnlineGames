@@ -7,16 +7,12 @@ using System.Threading.Tasks;
 
 namespace OnlineGames.Logic.TicTacToe
 {
-    public class TicTacToe
+    public static class TicTacToe
     {
-        public int Player1 { get; set; } = 1;
-        public int Player2 { get; set; } = -1;
-        public Dictionary<string, CellCoordinates> Solver { get; set; }
-        public TicTacToe()
-        {
-            this.Solver = new Dictionary<string, CellCoordinates>();
-        }
-        public void PlayVsBot(Func<string> inputFunc, int player)
+        public static int Player1 { get; set; } = 1;
+        public static int Player2 { get; set; } = -1;
+        public static Dictionary<string, CellCoordinates> Solver { get; set; } = new Dictionary<string, CellCoordinates>();
+        public static void PlayVsBot(Func<string> inputFunc, int player)
         {
             var board = new Board(3, 3);
             int currentPlayer = -player;
@@ -34,7 +30,7 @@ namespace OnlineGames.Logic.TicTacToe
                 }
                 else
                 {
-                    var solverOutput = this.Solver[board.ToString()];
+                    var solverOutput = Solver[board.ToString()];
                     Console.WriteLine(solverOutput.X + " " + solverOutput.Y);
                     board.MakeAMove(currentPlayer, solverOutput.X, solverOutput.Y);
                 }
@@ -43,7 +39,7 @@ namespace OnlineGames.Logic.TicTacToe
             } while (gameState == GameState.StillPlaing);
             Console.WriteLine(board.CurrentGameState(currentPlayer));
         }
-        public void Print(int[,] board)
+        public static void Print(int[,] board)
         {
             var result = "|";
             for (int i = 0; i < 3; i++)
@@ -56,13 +52,13 @@ namespace OnlineGames.Logic.TicTacToe
             }
             Console.WriteLine(result);
         }
-        public CellCoordinates CreateSolver(string boardString,int currentPlayer)
+        public static CellCoordinates CreateSolver(string boardString,int currentPlayer)
         {
             var board = boardString == null ? new Board(3, 3) : new Board(boardString,3,3);
             return FillSolver(board, currentPlayer);
         }
 
-        private CellCoordinates TransformState(CellCoordinates cellCoordinates)
+        private static CellCoordinates TransformState(CellCoordinates cellCoordinates)
         {
             var newCellCoordinates = new CellCoordinates();
             if (cellCoordinates.GameState == GameState.Win)
@@ -82,12 +78,12 @@ namespace OnlineGames.Logic.TicTacToe
             newCellCoordinates.Loses = cellCoordinates.Wins;
             return newCellCoordinates;
         }
-        private CellCoordinates FillSolver(Board board, int player)
+        private static CellCoordinates FillSolver(Board board, int player)
         {
             var boardString = board.ToString();
-            if (this.Solver.ContainsKey(boardString))
+            if (Solver.ContainsKey(boardString))
             {
-                return this.Solver[board.ToString()];
+                return Solver[board.ToString()];
             }
             var currentPosition = board.CurrentGameState(player);
             if (currentPosition != GameState.StillPlaing)
@@ -109,8 +105,8 @@ namespace OnlineGames.Logic.TicTacToe
                 }
 
             }
-            this.Solver[boardString] = new CellCoordinates();
-            this.Solver[boardString].GameState = GameState.StillPlaing;
+            Solver[boardString] = new CellCoordinates();
+            Solver[boardString].GameState = GameState.StillPlaing;
             int wins = 0;
             int loses = 0;
             int nextWins = 0;
@@ -124,20 +120,20 @@ namespace OnlineGames.Logic.TicTacToe
                     if (nextBoard.MakeAMove(player, i, j))
                     {
                         var outcome = TransformState(FillSolver(nextBoard, -player));
-                        var currentOutcome = this.Solver[boardString].GameState;
+                        var currentOutcome = Solver[boardString].GameState;
                         if ((int)outcome.GameState > (int)currentOutcome)
                         {
-                            this.Solver[boardString].GameState = outcome.GameState;
-                            this.Solver[boardString].X = i;
-                            this.Solver[boardString].Y = j;
+                            Solver[boardString].GameState = outcome.GameState;
+                            Solver[boardString].X = i;
+                            Solver[boardString].Y = j;
                             nextWins = outcome.Wins;
 
                         }
                         else if ((int)outcome.GameState == (int)currentOutcome && outcome.Wins > nextWins)
                         {
-                            this.Solver[boardString].GameState = outcome.GameState;
-                            this.Solver[boardString].X = i;
-                            this.Solver[boardString].Y = j;
+                            Solver[boardString].GameState = outcome.GameState;
+                            Solver[boardString].X = i;
+                            Solver[boardString].Y = j;
                             nextWins = outcome.Wins;
                         }
                         wins += outcome.Wins;
@@ -149,9 +145,7 @@ namespace OnlineGames.Logic.TicTacToe
                     }
                 }
             }
-
-
-            return this.Solver[board.ToString()];
+            return Solver[board.ToString()];
         }
     }
 }

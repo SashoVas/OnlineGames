@@ -22,7 +22,7 @@ namespace OnlineGames.Web.Hubs
                 //Skip update board if the ai is first
                 if (input.Col != -1)
                 {
-                    await roomService.UpdateBoardConnect4(GetUserId(), input.Col,GetUserName());
+                    await connect4Service.UpdateBoard(GetUserId(), input.Col,GetUserName());
                 }
                 var boardString = await roomService.GetUserBoard(GetUserId());
                 if (!boardString.Contains("0"))
@@ -32,7 +32,7 @@ namespace OnlineGames.Web.Hubs
                 }
                 var currentPlayer = await roomService.GetTurn(GetUserId());
                 var output = await this.connect4Service.MakeMove(boardString, currentPlayer, input.Difficulty);
-                await roomService.UpdateBoardAIConnect4(GetUserId(), output);
+                await connect4Service.UpdateBoardAI(GetUserId(), output);
                 await this.Clients.Caller.SendAsync("OponentMove", output);
             }
             catch (Exception)
@@ -45,7 +45,7 @@ namespace OnlineGames.Web.Hubs
         {
             try
             {
-                await roomService.UpdateBoardConnect4(GetUserId(), col,GetUserName());
+                await connect4Service.UpdateBoard(GetUserId(), col,GetUserName());
                 await this.Clients.OthersInGroup(await this.roomService.GetRoomId(GetUserId())).SendAsync("OponentMove", col);
             }
             catch (Exception)

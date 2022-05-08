@@ -10,19 +10,16 @@ namespace OnlineGames.Services.Contracts
 {
     public interface IRoomService
     {
-        Task<string> CreateTicTacToeRoom(string username,bool isPrivate);
-        Task<string> CreateConnect4Room(string username, bool isPrivate);
+        Task<string> CreateRoom(string username, bool isPrivate, string gameName, int board);
         Task RemoveRoom(string userId);
         Task SetRoomToUser(string userId,string roomId);
-        Task UpdateBoardTicTacToe(string userId, int row, int col,string username);
-        Task UpdateBoardConnect4(string userId,int col, string username);
-        Task UpdateBoardAITicTacToe(string userId, int row, int col);
-        Task UpdateBoardAIConnect4(string userId, int col);
         Task ClearBoard(string userId, string username);
         Task<string> GetUserBoard(string userId);
         Task<int> GetTurn(string userId);
+        Task<Room> GetRoom(string roomId);
         Task<IEnumerable<RoomsServiceModel>> GetAvailableRooms(string game, int count, int page);
         Task<string> GetRoomId(string userId);
+        Task UpdateBoard(Room room);
 
     }
 }

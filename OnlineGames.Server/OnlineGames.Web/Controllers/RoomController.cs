@@ -24,10 +24,10 @@ namespace OnlineGames.Web.Controllers
             switch (input.Game)
             {
                 case ("TicTacToe"):
-                    roomId=await this.roomService.CreateTicTacToeRoom(this.User.Identity.Name, false);
+                    roomId=await this.roomService.CreateRoom(this.User.Identity.Name, false,input.Game,3*3);
                     break;
                 case ("Connect4"):
-                    roomId= await this.roomService.CreateConnect4Room(this.User.Identity.Name, false);
+                    roomId= await this.roomService.CreateRoom(this.User.Identity.Name, false, input.Game, 6 * 7);
                     break;
                 default:
                     return this.BadRequest();
