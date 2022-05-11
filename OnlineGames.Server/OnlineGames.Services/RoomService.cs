@@ -21,34 +21,18 @@ namespace OnlineGames.Services
             this.dbContext = dbContext;
             this.userManager = userManager;
         }
-        private async Task<User> GetUser(string userId)
+        public async Task<Room>GetRoomByUserId(string userId)
         {
-            var user = await userManager.FindByIdAsync(userId);
-            if (user==null)
+            var result = await dbContext
+                .Users
+                .Where(u => u.Id == userId)
+                .Select(u => u.Room)
+                .FirstOrDefaultAsync();
+            if (result==null)
             {
                 throw new ArgumentException();
             }
-            return user;
-        }
-        public async Task<Room>GetRoom(string roomId)
-        {
-            var room = await dbContext.Rooms.FirstOrDefaultAsync(t => t.Id ==roomId);
-            if (room==null)
-            {
-                throw new ArgumentException();
-            }
-            return room;
-        }
-        private async Task<Room> GetRoomWithUsers(string roomId)
-        {
-            var room = await dbContext.Rooms
-                .Include(r=>r.Users)
-                .FirstOrDefaultAsync(t => t.Id == roomId);
-            if (room == null)
-            {
-                throw new ArgumentException();
-            }
-            return room;
+            return result;
         }
         public async Task<string> CreateRoom(string username, bool isPrivate,string gameName,int board)
         {
@@ -67,28 +51,36 @@ namespace OnlineGames.Services
 
         public async Task RemoveRoom(string userId)
         {
-            var user =await GetUser(userId);
-            var room = await GetRoomWithUsers(user.RoomId);
-            user.Room = null;
-            user.RoomId = null;
-            if (room.FirstPlayerName==user.UserName)
+
+            var result = await dbContext.Users
+                .Where(u => u.Id == userId)
+                .Select(u => new
+                {
+                    User = u,
+                    Room = u.Room
+                }).FirstOrDefaultAsync();
+
+            result.User.Room = null;
+            result.User.RoomId = null;
+            if (result.Room.FirstPlayerName== result.User.UserName)
             {
                 //The player that leves the room is first, so we set it to null
-                room.FirstPlayerName = null;
+                result.Room.FirstPlayerName = null;
             }
-            if (room.Users.Count()==1)
+            if (result.Room.Users.Count()==1)
             {
                 //The room is empty so we remove it
-                dbContext.Rooms.Remove(room);
+                dbContext.Rooms.Remove(result.Room);
             }
-            dbContext.Users.Update(user);
+            dbContext.Users.Update(result.User);
             await dbContext.SaveChangesAsync();
         }
 
         public async Task SetRoomToUser(string userId, string roomId)
         {
-            var user =await GetUser(userId);
-            var room = await GetRoom(roomId);
+            var user = await dbContext.Users.FirstOrDefaultAsync(u=>u.Id==userId);
+            var room = await dbContext.Rooms.Include(r=>r.Users).FirstOrDefaultAsync(r => r.Id == roomId);
+
             if (room.Users.Count>=2)
             {
                 //Room is full or does not exist
@@ -106,7 +98,13 @@ namespace OnlineGames.Services
 
         public async Task ClearBoard(string userId,string username)
         {
-            var room = await GetRoomWithUsers(await GetRoomId(userId));
+            //var room = await GetRoomWithUsers(await GetRoomId(userId));
+            var room = await dbContext.Users
+                .Where(u => u.Id == userId)
+                .Include(u=>u.Room)
+                .ThenInclude(r=>r.Users)
+                .Select(u =>u.Room)
+                .FirstOrDefaultAsync();
             //Swap first turns
             if (room.Users.Count()<=1)
             {
@@ -124,10 +122,16 @@ namespace OnlineGames.Services
         }
 
         public async Task<string> GetUserBoard(string userId) 
-            => (await GetRoom(await GetRoomId(userId))).BoardString;
+            => await dbContext.Users
+            .Where(u=>u.Id==userId)
+            .Select(u=>u.Room.BoardString)
+            .FirstOrDefaultAsync();
 
         public async Task<int> GetTurn(string userId) 
-            => (await GetRoom(await GetRoomId(userId))).FirstPlayerTurn ? 1 : -1;
+            =>await dbContext.Users
+            .Where(u=>u.Id==userId)
+            .Select(u=>u.Room.FirstPlayerTurn)
+            .FirstOrDefaultAsync() ? 1 : -1;
 
         public async Task<IEnumerable<RoomsServiceModel>> GetAvailableRooms(string game, int count, int page) 
             => await dbContext.Rooms
@@ -145,7 +149,10 @@ namespace OnlineGames.Services
                 }).ToListAsync();
 
         public async Task<string> GetRoomId(string userId) 
-            => (await GetUser(userId)).RoomId;
+            =>await dbContext.Users
+            .Where(u=>u.Id==userId)
+            .Select(u=>u.RoomId)
+            .FirstOrDefaultAsync();
 
         public async Task UpdateBoard(Room room)
         {

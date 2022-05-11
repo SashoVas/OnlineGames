@@ -20,7 +20,7 @@ namespace OnlineGames.Services
 
         public async Task UpdateBoard(string userId, int col, string username)
         {
-            var room = await roomService.GetRoom(await roomService.GetRoomId(userId));
+            var room = await roomService.GetRoomByUserId(userId);
             int row = -1;
             for (int i = 5; i >= 0; i--)
             {
@@ -53,7 +53,7 @@ namespace OnlineGames.Services
 
         public async Task UpdateBoardAI(string userId, int col)
         {
-            var room = await roomService.GetRoom(await roomService.GetRoomId(userId));
+            var room = await roomService.GetRoomByUserId(userId);
             int row = -1;
             for (int i = 5; i >= 0; i--)
             {

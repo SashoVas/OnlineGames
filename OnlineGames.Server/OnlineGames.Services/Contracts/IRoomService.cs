@@ -16,10 +16,10 @@ namespace OnlineGames.Services.Contracts
         Task ClearBoard(string userId, string username);
         Task<string> GetUserBoard(string userId);
         Task<int> GetTurn(string userId);
-        Task<Room> GetRoom(string roomId);
         Task<IEnumerable<RoomsServiceModel>> GetAvailableRooms(string game, int count, int page);
         Task<string> GetRoomId(string userId);
         Task UpdateBoard(Room room);
+        Task<Room> GetRoomByUserId(string userId);
 
     }
 }

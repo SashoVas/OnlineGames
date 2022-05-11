@@ -33,7 +33,7 @@ namespace OnlineGames.Services
 
         public async Task UpdateBoard(string userId, int row, int col, string username)
         {
-            var room=await roomService.GetRoom(await roomService.GetRoomId(userId));
+            var room = await roomService.GetRoomByUserId(userId);
             if (room.BoardString[((3 * row) + col)] != '0')
             {
                 //The position is alredy taken
@@ -58,7 +58,7 @@ namespace OnlineGames.Services
 
         public async Task UpdateBoardAI(string userId, int row, int col)
         {
-            var room = await roomService.GetRoom(await roomService.GetRoomId(userId));
+            var room = await roomService.GetRoomByUserId(userId);
             if (room.BoardString[(3 * row) + col] != '0')
             {
                 throw new ArgumentException();
