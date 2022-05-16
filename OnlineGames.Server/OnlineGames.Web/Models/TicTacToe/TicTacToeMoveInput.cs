@@ -2,7 +2,7 @@
 
 namespace OnlineGames.Web.Models.TicTacToe
 {
-    public class TicTacToeMoveAIInput
+    public class TicTacToeMoveInput
     {
         [Required]
         [Range(0,2)]

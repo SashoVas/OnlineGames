@@ -41,12 +41,12 @@ namespace OnlineGames.Web.Hubs
             }
             
         }
-        public async Task MakeMoveOponent( int col)
+        public async Task MakeMoveOponent(Connect4MoveInput input)
         {
             try
             {
-                await connect4Service.UpdateBoard(GetUserId(), col,GetUserName());
-                await this.Clients.OthersInGroup(await this.roomService.GetRoomId(GetUserId())).SendAsync("OponentMove", col);
+                await connect4Service.UpdateBoard(GetUserId(), input.Col,GetUserName());
+                await this.Clients.OthersInGroup(await this.roomService.GetRoomId(GetUserId())).SendAsync("OponentMove", input.Col);
             }
             catch (Exception)
             {

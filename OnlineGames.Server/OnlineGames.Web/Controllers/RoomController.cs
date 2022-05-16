@@ -21,17 +21,19 @@ namespace OnlineGames.Web.Controllers
         public async Task<ActionResult<object>> CreateRoom(CreateRoomInputModel input)
         {
             string roomId;
+            int board;
             switch (input.Game)
             {
                 case ("TicTacToe"):
-                    roomId=await this.roomService.CreateRoom(this.User.Identity.Name, false,input.Game,3*3);
+                    board = 3 * 3;
                     break;
                 case ("Connect4"):
-                    roomId= await this.roomService.CreateRoom(this.User.Identity.Name, false, input.Game, 6 * 7);
+                    board = 6 * 7;
                     break;
                 default:
                     return this.BadRequest();
             }
+            roomId = await this.roomService.CreateRoom(this.User.Identity.Name, false, input.Game, board);
             await this.roomService.SetRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier), roomId);
             return new
             {

@@ -16,7 +16,7 @@ namespace OnlineGames.Web.Hubs
         {
             this.ticTacToeService = ticTacToeService;
         }
-        public async Task MakeMoveAI(TicTacToeMoveAIInput input)
+        public async Task MakeMoveAI(TicTacToeMoveInput input)
         {
             try
             {
@@ -42,16 +42,16 @@ namespace OnlineGames.Web.Hubs
             }
             
         }
-        public async Task MakeMoveOponent(int row, int col)
+        public async Task MakeMoveOponent(TicTacToeMoveInput input)
         {
             try
             {
-                await ticTacToeService.UpdateBoard(GetUserId(), row, col,GetUserName());
+                await ticTacToeService.UpdateBoard(GetUserId(), input.Row, input.Col,GetUserName());
                 await this.Clients.OthersInGroup(await this.roomService.GetRoomId(GetUserId())).SendAsync("OponentMove",
                 new BoardCoordinates
                 {
-                    Row = row,
-                    Col = col
+                    Row = input.Row,
+                    Col = input.Col
                 });
             }
             catch (Exception)

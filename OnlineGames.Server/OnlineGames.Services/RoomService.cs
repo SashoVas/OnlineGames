@@ -15,11 +15,9 @@ namespace OnlineGames.Services
     public class RoomService : IRoomService
     {
         private readonly OnlineGamesDbContext dbContext;
-        private readonly UserManager<User> userManager;
-        public RoomService(OnlineGamesDbContext dbContext, UserManager<User> userManager)
+        public RoomService(OnlineGamesDbContext dbContext)
         {
             this.dbContext = dbContext;
-            this.userManager = userManager;
         }
         public async Task<Room>GetRoomByUserId(string userId)
         {
