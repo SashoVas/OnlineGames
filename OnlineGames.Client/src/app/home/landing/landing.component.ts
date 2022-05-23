@@ -14,10 +14,4 @@ export class LandingComponent implements OnInit {
   constructor(private router:Router) { }
   ngOnInit(): void {
   }
-  games(){
-    this.router.navigate(["home/games"])
-  }
-  rooms(){
-    this.router.navigate(["home/rooms"])
-  }
 }

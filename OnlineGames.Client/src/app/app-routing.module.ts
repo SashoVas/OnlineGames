@@ -29,6 +29,10 @@ const routes: Routes = [
     path:"identity",
     loadChildren:()=>import("./identity/identity.module").then(i=>i.IdentityModule),
     canActivate:[IdentityGuard]
+  },
+  {
+    path:"users",
+    loadChildren:()=>import("./users/users.module").then(u=>u.UsersModule)
   }
 ]; 
 

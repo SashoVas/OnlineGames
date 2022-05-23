@@ -36,3 +36,27 @@
 .grid-item:hover{
     background-color: #FF1493;
 }
+@media(max-width:1200px)
+{
+    .grid-item{
+        grid-column: 1;
+    }
+    .games{
+        grid-row:1;
+    }
+    .rooms{
+        grid-row:2;
+    }
+    .profile{
+        grid-row:3;
+    }
+    .friends{
+        grid-row:4;
+    }
+    .notifications{
+        grid-row:5;
+    }
+    .settings{
+        grid-row:6;
+    }
+}

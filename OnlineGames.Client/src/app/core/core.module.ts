@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { NavigationComponent } from './navigation/navigation.component';
 import { RouterModule } from '@angular/router';
 import { BoardCellComponent } from './board-cell/board-cell.component';
+import { ChatComponent } from './chat/chat.component';
 
 
 @NgModule({
   declarations: [
     NavigationComponent,
-    BoardCellComponent
+    BoardCellComponent,
+    ChatComponent
   ],
   imports: [
     CommonModule,
@@ -16,7 +18,8 @@ import { BoardCellComponent } from './board-cell/board-cell.component';
   ],
   exports:[
     BoardCellComponent,
-    NavigationComponent
+    NavigationComponent,
+    ChatComponent
   ],
   providers: [],
 })

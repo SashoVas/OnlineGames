@@ -1,0 +1,9 @@
+.chat{
+    height: 78vh;
+}
+small{
+    font-size: 13px;
+}
+.text-input{
+    word-break: break-all;
+}
