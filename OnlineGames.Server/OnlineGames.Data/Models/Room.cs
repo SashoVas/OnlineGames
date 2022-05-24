@@ -19,6 +19,7 @@ namespace OnlineGames.Data.Models
         public ICollection<User> Users { get; set; }
         public bool Private { get; set; } = false;
         public string GameName { get; set; }
+        public ICollection<Message> Messages { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
 
     }
