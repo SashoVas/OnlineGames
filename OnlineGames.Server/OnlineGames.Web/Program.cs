@@ -41,6 +41,7 @@ app.UseAuthorization();
 
 app.MapHub<TicTacToeHub>("/TicTacToe");
 app.MapHub<Connect4Hub>("/Connect4");
+app.MapHub<ChatHub>("/Chat");
 app.MapControllers();
 
 app.Run();

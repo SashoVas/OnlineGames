@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineGames.Services.Contracts;
-using OnlineGames.Services.Models;
+using OnlineGames.Services.Models.Room;
 using OnlineGames.Web.Models.Room;
 using System.Security.Claims;
 

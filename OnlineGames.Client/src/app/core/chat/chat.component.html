@@ -6,5 +6,8 @@
     <p>Test</p>
 </div>
 <div>
-    <input type="text" class="w-100 text-input" name="" id="">
+    <form action="" [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+        <input formControlName="contents" type="text" class="w-100 text-input" name="" id="">
+        <input type="submit" class="btn btn-primary" name="" id="">
+    </form>
 </div>

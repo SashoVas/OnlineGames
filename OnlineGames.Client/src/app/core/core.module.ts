@@ -4,6 +4,7 @@ import { NavigationComponent } from './navigation/navigation.component';
 import { RouterModule } from '@angular/router';
 import { BoardCellComponent } from './board-cell/board-cell.component';
 import { ChatComponent } from './chat/chat.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { ChatComponent } from './chat/chat.component';
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   exports:[
     BoardCellComponent,

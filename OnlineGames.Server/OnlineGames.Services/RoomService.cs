@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineGames.Data;
 using OnlineGames.Data.Models;
 using OnlineGames.Services.Contracts;
-using OnlineGames.Services.Models;
+using OnlineGames.Services.Models.Room;
 using System;
 using System.Collections.Generic;
 using System.Linq;

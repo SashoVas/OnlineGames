@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineGames.Services.Models
+namespace OnlineGames.Services.Models.Room
 {
     public class RoomsServiceModel
     {

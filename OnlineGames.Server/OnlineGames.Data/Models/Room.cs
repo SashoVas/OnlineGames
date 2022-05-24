@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,11 +14,15 @@ namespace OnlineGames.Data.Models
             Users = new List<User>();
         }
         public string Id { get; set; }
+        [Required]
         public string BoardString { get; set; } = "000000000";
+        [Required]
         public bool FirstPlayerTurn { get; set; } = true;
         public string? FirstPlayerName { get; set; }
         public ICollection<User> Users { get; set; }
+        [Required]
         public bool Private { get; set; } = false;
+        [Required]
         public string GameName { get; set; }
         public ICollection<Message> Messages { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;

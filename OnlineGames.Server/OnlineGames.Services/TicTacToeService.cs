@@ -3,7 +3,7 @@ using OnlineGames.Data;
 using OnlineGames.Data.Models;
 using OnlineGames.Logic.TicTacToe;
 using OnlineGames.Services.Contracts;
-using OnlineGames.Services.Models;
+using OnlineGames.Services.Models.TicTacToe;
 using System;
 using System.Collections.Generic;
 using System.Linq;

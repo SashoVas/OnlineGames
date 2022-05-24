@@ -1,4 +1,4 @@
-﻿using OnlineGames.Services.Models;
+﻿using OnlineGames.Services.Models.TicTacToe;
 using System;
 using System.Collections.Generic;
 using System.Linq;

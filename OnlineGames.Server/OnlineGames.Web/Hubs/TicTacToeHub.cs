@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using OnlineGames.Services.Contracts;
-using OnlineGames.Services.Models;
+using OnlineGames.Services.Models.TicTacToe;
 using OnlineGames.Web.Models.TicTacToe;
 using System.Security.Claims;
 

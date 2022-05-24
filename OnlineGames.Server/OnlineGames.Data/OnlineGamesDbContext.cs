@@ -42,12 +42,12 @@ namespace OnlineGames.Data
             builder.Entity<Room>()
                 .HasMany(r => r.Messages)
                 .WithOne(m => m.RoomChat)
-                .HasForeignKey(m => m.RoomChatId);
+                .HasForeignKey(m => m.RoomChatId).OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Message>()
                 .HasOne(m => m.Sender)
                 .WithMany(u => u.Messages)
-                .HasForeignKey(m => m.SenderId);
+                .HasForeignKey(m => m.SenderId).OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
