@@ -36,7 +36,6 @@ namespace OnlineGames.Services
             return new MessageServiceModel
             {
                 Contents=contents,
-                Id=message.Id,
                 PostedOn=message.PostedOn.ToString("dd/MM/yyyy")
             };
         }

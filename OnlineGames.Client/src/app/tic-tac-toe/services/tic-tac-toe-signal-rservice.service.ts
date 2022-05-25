@@ -42,7 +42,7 @@ export class TicTacToeSignalRServiceService {
     this.hubConnection.on("ClearBoard",func);
   }
   public tellOponenet(row:number,col:number){
-    this.hubConnection.invoke("MakeMoveOponent",row,col);
+    this.hubConnection.invoke("MakeMoveOponent",{row,col});
   }
   public clearBoard(){
     this.hubConnection.invoke("ClearBoard");

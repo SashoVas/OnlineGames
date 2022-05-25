@@ -31,7 +31,7 @@ namespace OnlineGames.Web.Hubs
         }
         public async Task AddToGroup(string groupName)
         {
-            if (groupName == null)
+            if (groupName == null )
             {
                 //Here if the oponent is ai and we dont want our room id to be exposed
                 switch (this.GetType().Name)

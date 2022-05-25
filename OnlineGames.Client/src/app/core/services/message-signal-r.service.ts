@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
 import { from, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { IMessage } from '../interfaces/IMessage';
 import { AccountService } from './account.service';
 
 @Injectable({
@@ -32,5 +33,10 @@ export class MessageSignalRService {
  public sendMessageToRoom(roomId:string,contents:string){
    this.hubConnection.invoke("SendMessage",roomId,contents);
  }
-
+ public joinGroup(roomId:string){
+  this.hubConnection.invoke("JoinGroup",roomId);
+  }
+ public receiveMessage(func:(message:IMessage)=>void){
+  this.hubConnection.on("ReceiveMessage",func);
+  }
 }

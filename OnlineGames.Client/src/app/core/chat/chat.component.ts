@@ -1,5 +1,6 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IMessage } from '../interfaces/IMessage';
 import { MessageSignalRService } from '../services/message-signal-r.service';
 
 @Component({
@@ -9,17 +10,26 @@ import { MessageSignalRService } from '../services/message-signal-r.service';
 })
 export class ChatComponent implements OnInit {
   messageForm:FormGroup;
+  messages:Array<IMessage>=[]
+  @Input() roomId:any="";
+  @ViewChild("messageField")inputField? : ElementRef;
   constructor(private fb:FormBuilder,private messageSignalRService:MessageSignalRService ) { 
     this.messageForm=this.fb.group({
       'contents':['',Validators.required]
     });
   }
-  @Input() roomId:any="";
+
   ngOnInit(): void {
+    this.messageSignalRService.joinGroup(this.roomId);
+    this.messageSignalRService.receiveMessage((message:IMessage)=>this.messages.push(message));
   }
   sendMessage(){
-    console.log(this.roomId,this.messageForm)
-    this.messageSignalRService.sendMessageToRoom(this.roomId,this.messageForm.value['contents'])
+    if(this.messageForm.valid && this.messageForm.value['contents']!=null)
+    {
+      this.messageSignalRService.sendMessageToRoom(this.roomId,this.messageForm.value['contents']);
+      this.messageForm.value['contents']=null;
+      this.inputField!.nativeElement.value="";
+    }
   }
   ngOnDestroy():void{
     this.messageSignalRService.hubConnection.stop()

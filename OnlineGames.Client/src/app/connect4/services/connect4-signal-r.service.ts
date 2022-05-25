@@ -41,7 +41,7 @@ export class Connect4SignalRService {
    this.hubConnection.on("ClearBoard",func);
  }
  public tellOponenet(col:number){
-   this.hubConnection.invoke("MakeMoveOponent",col);
+   this.hubConnection.invoke("MakeMoveOponent",{col});
  }
  public clearBoard(){
    this.hubConnection.invoke("ClearBoard");

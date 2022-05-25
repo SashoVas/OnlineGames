@@ -11,14 +11,15 @@ namespace OnlineGames.Web.Hubs
         {
             this.messageService = messageService;
         }
-        public override Task OnConnectedAsync()
+        public async Task JoinGroup(string groupName)
         {
-            return base.OnConnectedAsync();
-
+            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);
         }
         public async Task SendMessage(string roomId,string contents)
         {
-            await this.messageService.SendMessageToRoomChat(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),roomId,contents);
+            var message=await this.messageService.SendMessageToRoomChat(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),roomId,contents);
+            message.UserName = this.Context.User.Identity.Name;
+            await this.Clients.Group(roomId).SendAsync("ReceiveMessage",message);
         }
     }
 }

@@ -1,13 +1,15 @@
 <div class="chat">
-    <h4>
-        User1
-        <small class="text-muted">2022/1/1</small>
-    </h4>
-    <p>Test</p>
+    <div *ngFor="let message of messages">   
+        <h4>
+            {{message.userName}}
+            <small class="text-muted">{{message.postedOn}}</small>
+        </h4>
+        <p>{{message.contents}}</p>
+    </div>
 </div>
 <div>
     <form action="" [formGroup]="messageForm" (ngSubmit)="sendMessage()">
-        <input formControlName="contents" type="text" class="w-100 text-input" name="" id="">
+        <input #messageField formControlName="contents" type="text" class="w-100 text-input" name="" id="">
         <input type="submit" class="btn btn-primary" name="" id="">
     </form>
 </div>
