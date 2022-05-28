@@ -12,7 +12,7 @@ namespace OnlineGames.Data.Models
         public string Id { get; set; }
         public string? SenderId { get; set; }
         public User? Sender { get; set; }
-        public DateTime PostedOn { get; set; } = DateTime.Now;
+        public DateTime PostedOn { get; set; } = DateTime.UtcNow;
         [Required()]
         [MaxLength(300)]
         public string Contents { get; set; }

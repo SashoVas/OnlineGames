@@ -71,6 +71,7 @@ namespace OnlineGames.Web.Infrastructure
             builder.Services.AddTransient<IIdentityService, IdentityService>();
             builder.Services.AddTransient<IRoomService, RoomService>();
             builder.Services.AddTransient<IMessageService, MessageService>();
+            builder.Services.AddTransient<IUserService, UserService>();
         }
         public static void AddCors(this WebApplicationBuilder builder)
         {
