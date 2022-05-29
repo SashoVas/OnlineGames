@@ -17,10 +17,25 @@ namespace OnlineGames.Web.Controllers
         {
             this.userService = userService;
         }
+        private string GetUserId()
+            => this.User.FindFirstValue(ClaimTypes.NameIdentifier);
         [HttpPost]
         public async Task<object> AddFriend(SendFriendRequestInputModel input)
         {
-            if (!await userService.SendFriendRequest(this.User.FindFirstValue(ClaimTypes.NameIdentifier), input.FriendUserName))
+            if (await userService.FriendExist(GetUserId(),input.FriendUserName))
+            {
+                return BadRequest();
+            }
+            if (!await userService.SendFriendRequest(GetUserId(), input.FriendUserName))
+            {
+                return BadRequest();
+            }
+            return new { friendUserName = input.FriendUserName };
+        }
+        [HttpPut]
+        public async Task<object> AcceptFriendRequest(SendFriendRequestInputModel input)
+        {
+            if (!await userService.AcceptFriendRequest(GetUserId(), input.FriendUserName))
             {
                 return BadRequest();
             }
@@ -28,6 +43,6 @@ namespace OnlineGames.Web.Controllers
         }
         [HttpGet]
         public async Task<IEnumerable<UsersServiceModel>> GetFriends() 
-            => await userService.GetFriends(this.User.FindFirstValue(ClaimTypes.NameIdentifier));
+            => await userService.GetFriends(GetUserId());
     }
 }

@@ -11,6 +11,7 @@ namespace OnlineGames.Services.Contracts
     {
         Task<bool> SendFriendRequest(string userId,string friendUserName);
         Task<IEnumerable<UsersServiceModel>> GetFriends(string userId);
-        Task<bool> AcceptFriendRequest();
+        Task<bool> AcceptFriendRequest(string userId,string friendUserName);
+        Task<bool> FriendExist(string userId, string friendUserName);
     }
 }

@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { ChatResolver } from "../core/resolvers/chat.resolver";
 import { FriendsComponent } from "./friends/friends.component";
 
 
@@ -11,7 +12,8 @@ const routes: Routes = [
     },
     {
       path:"friends",
-      component:FriendsComponent
+      component:FriendsComponent,
+      resolve:[ChatResolver]
     }
     ]; 
   

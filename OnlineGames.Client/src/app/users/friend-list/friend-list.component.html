@@ -1,6 +1,14 @@
 <div class="overflow-auto friends-list text-center" >
 
-    <a *ngFor="let friend of friends" class="nav-link text-light btn {{friend['accepted']? 'btn-outline-primary':'btn-outline-warning'}} border-0" >{{friend["userName"]}}</a>
+    
+    <div *ngFor="let friend of friends">
+        <a class="nav-link text-light btn {{friend['accepted']? 'btn-outline-primary':'btn-outline-warning'}} border-0" (click)="friend['accepted'] && changeFriendClick(friend['userName'])">
+            {{friend["userName"]}}
+            <br>
+            <a *ngIf="!friend['accepted']" class="btn btn-outline-success" (click)="acceptFriend(friend['userName'])">Accept</a>
+        </a>
+        
+    </div>
     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Friends</button>
 </div>
 <app-add-friend></app-add-friend>

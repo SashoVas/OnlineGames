@@ -14,14 +14,28 @@ namespace OnlineGames.Services
     public class UserService : IUserService
     {
         private readonly OnlineGamesDbContext dbContext;
-        public UserService(OnlineGamesDbContext dbContext)
+        public UserService(OnlineGamesDbContext dbContext) 
+            => this.dbContext = dbContext;
+        public async Task<bool> AcceptFriendRequest(string userId, string friendUserName)
         {
-            this.dbContext = dbContext;
+            var friend =await dbContext
+                .Friends
+                .Where(f => f.User1.UserName == friendUserName && f.User2Id == userId)
+                .FirstOrDefaultAsync();
+
+            if (friend == null)
+                return false;
+
+            friend.Accepted = true;
+            dbContext.Update(friend);
+            await dbContext.SaveChangesAsync();
+            return true;
         }
-        public Task<bool> AcceptFriendRequest()
-        {
-            throw new NotImplementedException();
-        }
+
+        public async Task<bool> FriendExist(string userId, string friendUserName)
+        => await dbContext.Friends
+            .AnyAsync(f => (f.User1Id == userId && f.User2.UserName == friendUserName)
+            || (f.User2Id == userId && f.User1.UserName == friendUserName));
 
         public async Task<IEnumerable<UsersServiceModel>> GetFriends(string userId) 
             => await dbContext.Friends
@@ -40,9 +54,8 @@ namespace OnlineGames.Services
                 .Select(u=>u.Id)
                 .FirstOrDefaultAsync();
             if (friendId==null)
-            {
                 return false;
-            }
+            
             var friend = new Friend 
             { 
                 Id=Guid.NewGuid().ToString(),

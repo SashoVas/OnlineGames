@@ -15,6 +15,10 @@ namespace OnlineGames.Web.Hubs
         {
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);
         }
+        public async Task LeaveGroup()
+        {
+            await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, "groupName");
+        }
         public async Task SendMessage(string roomId,string contents)
         {
             var message=await this.messageService.SendMessageToRoomChat(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),roomId,contents);
