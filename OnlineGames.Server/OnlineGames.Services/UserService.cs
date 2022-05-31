@@ -37,6 +37,12 @@ namespace OnlineGames.Services
             .AnyAsync(f => (f.User1Id == userId && f.User2.UserName == friendUserName)
             || (f.User2Id == userId && f.User1.UserName == friendUserName));
 
+        public async Task<string> GetFriendId(string userId, string friendUserName)
+        => await dbContext.Friends.Where(f => (f.User1Id == userId && f.User2.UserName == friendUserName)
+            || (f.User2Id == userId && f.User1.UserName == friendUserName))
+            .Select(f => f.Id)
+            .FirstOrDefaultAsync();
+
         public async Task<IEnumerable<UsersServiceModel>> GetFriends(string userId) 
             => await dbContext.Friends
                        .Where(f => (f.User1Id == userId && f.Accepted) || f.User2Id == userId)

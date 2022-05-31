@@ -1,11 +1,10 @@
 <div class="row">
     <div class="col-lg-2">
-        <app-friend-list ></app-friend-list>       
+        <app-friend-list (setRoomNameEventEmmiter)="setRoomId($event)" ></app-friend-list>       
     </div>
     <div class="col-lg-8">
-        <app-chat [roomId]="'bbb'" ></app-chat>
+        <app-chat *ngIf="groupName" [roomId]="groupName" [isName]="true" ></app-chat>
     </div>
     <div class="col-lg-2"></div>
 </div>
-
 

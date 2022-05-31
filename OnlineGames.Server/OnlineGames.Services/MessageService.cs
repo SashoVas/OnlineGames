@@ -22,14 +22,15 @@ namespace OnlineGames.Services
             throw new NotImplementedException();
         }
 
-        public async Task<MessageServiceModel> SendMessageToRoomChat(string userId, string roomId, string contents)
+        public async Task<MessageServiceModel> SendMessageToRoomChat(string userId, string roomId, string contents,bool isName)
         {
             var message = new Message
             {
                 Id = Guid.NewGuid().ToString(),
                 Contents = contents,
                 SenderId=userId,
-                RoomChatId=roomId
+                RoomChatId=!isName?roomId:null,
+                FriendChatId=isName?roomId:null
             };
             await dbContext.Messages.AddAsync(message);
             await dbContext.SaveChangesAsync();

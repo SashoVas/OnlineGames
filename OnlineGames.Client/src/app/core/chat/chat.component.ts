@@ -15,6 +15,7 @@ export class ChatComponent implements OnInit {
   messageForm:FormGroup;
   messages:Array<IMessage>=[]
   @Input() roomId:any="";
+  @Input() isName:boolean=false;
   @ViewChild("messageField")inputField? : ElementRef;
   $changeUser!:Observable<any>;
   constructor(private fb:FormBuilder,private messageSignalRService:MessageSignalRService,private userService:UserService,private messageService:MessageService ) { 
@@ -25,21 +26,21 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.messageService.getObservableForChangeFriend().subscribe((friendUserName:string)=>
+    this.messageService.getObservableForChangeFriend().subscribe((friendUserName)=>
     {
-      console.log('change group')
-      this.roomId=friendUserName;
-      this.messageSignalRService.leaveGroup();
-      this.messageSignalRService.joinGroup(this.roomId);
+      this.roomId=friendUserName['friendUserName'];
+      this.messageSignalRService.changeGroup(this.roomId,this.isName);
+      console.log("join group")
+      this.messages=[]
     })
-    this.messageSignalRService.joinGroup(this.roomId);
+    this.messageSignalRService.joinGroup(this.roomId,this.isName);
     this.messageSignalRService.receiveMessage((message:IMessage)=>this.messages.push(message));
     
   }
   sendMessage(){
     if(this.messageForm.valid && this.messageForm.value['contents']!=null)
     {
-      this.messageSignalRService.sendMessageToRoom(this.roomId,this.messageForm.value['contents']);
+      this.messageSignalRService.sendMessageToRoom(this.roomId,this.messageForm.value['contents'],this.isName);
       this.messageForm.value['contents']=null;
       this.inputField!.nativeElement.value="";
     }

@@ -30,16 +30,16 @@ export class MessageSignalRService {
  }
 
 
-  public sendMessageToRoom(roomId:string,contents:string){
-   this.hubConnection.invoke("SendMessage",roomId,contents);
+  public sendMessageToRoom(groupName:string,contents:string,isName:boolean){
+    this.hubConnection.invoke("SendMessage",{groupName,contents,isName});
  }
-  public joinGroup(roomId:string){
-  this.hubConnection.invoke("JoinGroup",roomId);
-  }
-  public leaveGroup(){
-    this.hubConnection.invoke("LeaveGroup");
+  public joinGroup(groupName:string,isName:boolean){
+    this.hubConnection.invoke("JoinGroup",{groupName,isName});
   }
  public receiveMessage(func:(message:IMessage)=>void){
-  this.hubConnection.on("ReceiveMessage",func);
+    this.hubConnection.on("ReceiveMessage",func);
+  }
+  public changeGroup(groupName:string,isName:boolean){
+    this.hubConnection.invoke("ChangeGroup",{groupName,isName});
   }
 }

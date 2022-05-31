@@ -11,6 +11,7 @@ import { UserService } from '../services/user.service';
 })
 export class FriendListComponent implements OnInit {
   friends!:Array<IFriend>;
+  @Output() setRoomNameEventEmmiter=new EventEmitter<any>();
   constructor(private userService:UserService,private messageService:MessageService ) { }
 
   ngOnInit(): void {
@@ -24,7 +25,12 @@ export class FriendListComponent implements OnInit {
   fetchData(){
     this.userService
     .getFriends()
-    .subscribe(data=>this.friends=data);
+    .subscribe(data=>
+      {
+        this.friends=data;
+        console.log("FetchData")
+        this.setRoomNameEventEmmiter.emit({groupName:this.friends[0]["userName"]})
+      });
   }
   acceptFriend(friendUserName:string){
     this.userService.acceptFriendRequest(friendUserName).subscribe();

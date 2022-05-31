@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using OnlineGames.Services.Contracts;
+using OnlineGames.Web.Models.Chat;
 using System.Security.Claims;
 
 namespace OnlineGames.Web.Hubs
@@ -7,23 +8,46 @@ namespace OnlineGames.Web.Hubs
     public class ChatHub:Hub
     {
         private readonly IMessageService messageService;
-        public ChatHub(IMessageService messageService)
+        private readonly IUserService userService;
+        public ChatHub(IMessageService messageService, IUserService userService)
         {
             this.messageService = messageService;
+            this.userService = userService;
         }
-        public async Task JoinGroup(string groupName)
+        public async Task JoinGroup(MessageJoinGroupInputModel input)
         {
-            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);
+            if (input.IsName)
+            {
+                //here if the chat is with friend
+                var group =await userService.GetFriendId(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName);
+                if (group==null)
+                {
+                    return;
+                }
+                input.GroupName = group;
+            }
+            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, input.GroupName);
         }
-        public async Task LeaveGroup()
+        public async Task ChangeGroup(MessageJoinGroupInputModel input)
         {
-            await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, "groupName");
+            await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, input.GroupName);
+            await this.JoinGroup(input);
         }
-        public async Task SendMessage(string roomId,string contents)
+        public async Task SendMessage(SendMessageInputModel input)
         {
-            var message=await this.messageService.SendMessageToRoomChat(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier),roomId,contents);
+            if (input.IsName)
+            {
+                //here if the chat is with friend
+                var group = await userService.GetFriendId(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName);
+                if (group == null)
+                {
+                    return;
+                }
+                input.GroupName = group;
+            }
+            var message=await this.messageService.SendMessageToRoomChat(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName, input.Contents,input.IsName);
             message.UserName = this.Context.User.Identity.Name;
-            await this.Clients.Group(roomId).SendAsync("ReceiveMessage",message);
+            await this.Clients.Group(input.GroupName).SendAsync("ReceiveMessage",message);
         }
     }
 }
