@@ -45,7 +45,7 @@ namespace OnlineGames.Web.Hubs
                 }
                 input.GroupName = group;
             }
-            var message=await this.messageService.SendMessageToRoomChat(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName, input.Contents,input.IsName);
+            var message=await this.messageService.SendMessageToChat(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName, input.Contents,input.IsName);
             message.UserName = this.Context.User.Identity.Name;
             await this.Clients.Group(input.GroupName).SendAsync("ReceiveMessage",message);
         }

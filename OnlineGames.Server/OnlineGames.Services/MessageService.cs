@@ -1,4 +1,5 @@
-﻿using OnlineGames.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineGames.Data;
 using OnlineGames.Data.Models;
 using OnlineGames.Services.Contracts;
 using OnlineGames.Services.Models.Message;
@@ -13,16 +14,24 @@ namespace OnlineGames.Services
     public class MessageService : IMessageService
     {
         private readonly OnlineGamesDbContext dbContext;
-        public MessageService(OnlineGamesDbContext dbContext)
-        {
-            this.dbContext = dbContext;
-        }
-        public Task<MessageServiceModel> SendMessageToFriendChat(string userId, string friendUserName, string contents)
-        {
-            throw new NotImplementedException();
-        }
+        public MessageService(OnlineGamesDbContext dbContext) 
+            => this.dbContext = dbContext;
 
-        public async Task<MessageServiceModel> SendMessageToRoomChat(string userId, string roomId, string contents,bool isName)
+        public async Task<IEnumerable<MessageServiceModel>> GetMessages(string userId, string friendName,int page)
+            => await dbContext.Messages
+                .Where(m => (m.FriendChat.User1Id == userId && m.FriendChat.User2.UserName == friendName)
+                ||(m.FriendChat.User2Id == userId && m.FriendChat.User1.UserName == friendName))
+                .OrderByDescending(m=>m.PostedOn)
+                .Skip(page*20)
+                .Take(20)
+                .Select(m => new MessageServiceModel
+                {
+                    Contents = m.Contents,
+                    PostedOn = m.PostedOn.ToString("dd/MM,yyyy"),
+                    UserName=m.Sender.UserName
+                }).ToListAsync();
+
+        public async Task<MessageServiceModel> SendMessageToChat(string userId, string roomId, string contents,bool isName)
         {
             var message = new Message
             {

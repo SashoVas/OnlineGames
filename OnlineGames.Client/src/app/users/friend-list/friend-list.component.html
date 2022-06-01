@@ -1,13 +1,10 @@
-<div class="overflow-auto friends-list text-center" >
-
-    
-    <div *ngFor="let friend of friends">
-        <a class="nav-link text-light btn {{friend['accepted']? 'btn-outline-primary':'btn-outline-warning'}} border-0" (click)="friend['accepted'] && changeFriendClick(friend['userName'])">
+<div class="overflow-auto friends-list text-center">
+    <div class="list-group" role="tablist" >
+        <a aria-controls="list-home" role="tab" data-bs-toggle="list" id="list-home-list" *ngFor="let friend of friends;index as i " class="{{i==0?'active':''}} nav-link text-light btn {{friend['accepted']? 'btn-outline-primary':'btn-outline-warning'}} border-0" (click)="friend['accepted'] && changeFriendClick(friend['userName'])">
             {{friend["userName"]}}
             <br>
-            <a *ngIf="!friend['accepted']" class="btn btn-outline-success" (click)="acceptFriend(friend['userName'])">Accept</a>
+            <a  *ngIf="!friend['accepted']" class="btn btn-outline-success" (click)="acceptFriend(friend['userName'])">Accept</a>
         </a>
-        
     </div>
     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Friends</button>
 </div>

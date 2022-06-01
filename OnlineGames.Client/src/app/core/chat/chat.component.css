@@ -1,9 +1,14 @@
 .chat{
     height: 78vh;
+    display: flex;
+    flex-direction: column-reverse;
 }
 small{
     font-size: 13px;
 }
 .text-input{
     word-break: break-all;
+}
+.load-more{
+    width: 30%;
 }

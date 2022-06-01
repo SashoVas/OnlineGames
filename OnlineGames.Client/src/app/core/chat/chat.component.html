@@ -1,4 +1,5 @@
-<div class="chat">
+<div class="chat overflow-auto" >
+    
     <div *ngFor="let message of messages">   
         <h4>
             {{message.userName}}
@@ -6,10 +7,13 @@
         </h4>
         <p>{{message.contents}}</p>
     </div>
+    <div class="text-center">
+        <a class="btn btn-primary load-more text-center" (click)="loadMore()">Load More</a>
+    </div>
 </div>
 <div>
     <form action="" [formGroup]="messageForm" (ngSubmit)="sendMessage()">
-        <input #messageField formControlName="contents" type="text" class="w-100 text-input" name="" id="">
-        <input type="submit" class="btn btn-primary" name="" id="">
+        <input #messageField formControlName="contents" type="text" class="w-100 text-input" >
+        <input type="submit" class="btn btn-primary" >
     </form>
 </div>

@@ -19,7 +19,6 @@ export class FriendListComponent implements OnInit {
   }
 
   changeFriendClick(friendUserName:string ){
-    console.log('clicked');
     this.messageService.triggerChangeFriend(friendUserName);
   }
   fetchData(){
@@ -28,7 +27,6 @@ export class FriendListComponent implements OnInit {
     .subscribe(data=>
       {
         this.friends=data;
-        console.log("FetchData")
         this.setRoomNameEventEmmiter.emit({groupName:this.friends[0]["userName"]})
       });
   }

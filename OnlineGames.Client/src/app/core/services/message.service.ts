@@ -1,19 +1,23 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { IMessage } from '../interfaces/IMessage';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
 
-  constructor() { }
+  constructor(private http:HttpClient) { }
   private changeFriendSubject=new Subject();
   triggerChangeFriend(friendUserName:string){
-    console.log("change friend")
     this.changeFriendSubject.next({friendUserName});
   }
   getObservableForChangeFriend():Observable<any>{
-    console.log('get observable');
     return this.changeFriendSubject.asObservable();
+  }
+  getMessages(page:number,friendUserName:string):Observable<any>{
+    return this.http.get<Array<IMessage>>(environment.apiUrl+'/Message/'+page+'/'+friendUserName)
   }
 }
