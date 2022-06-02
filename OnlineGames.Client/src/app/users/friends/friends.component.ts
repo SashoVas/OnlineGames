@@ -11,8 +11,6 @@ export class FriendsComponent implements OnInit {
   ngOnInit(): void {
   }
   setRoomId($event:any){
-    console.log("setRoom")
-    console.log($event['groupName']);
     this.groupName=$event['groupName'];
   }
 }

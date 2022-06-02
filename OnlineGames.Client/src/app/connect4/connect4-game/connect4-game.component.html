@@ -36,9 +36,9 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-3" *ngIf="roomId">
         <h3 class="text-center">Chat</h3>
-        <app-chat *ngIf="roomId" [roomId]="roomId"></app-chat>
+        <app-chat [roomId]="roomId"></app-chat>
     </div>
 </div>
 

@@ -45,13 +45,18 @@ namespace OnlineGames.Services
 
         public async Task<IEnumerable<UsersServiceModel>> GetFriends(string userId) 
             => await dbContext.Friends
-                       .Where(f => (f.User1Id == userId && f.Accepted) || f.User2Id == userId)
-                       .Select(f => new UsersServiceModel
-                       {
-                           Accepted = f.Accepted,
-                           UserName = f.User1Id == userId ? f.User2.UserName : f.User1.UserName
-                       })
-                       .ToListAsync();
+                .Where(f => (f.User1Id == userId && f.Accepted) || f.User2Id == userId)
+                .OrderByDescending(f=>f.Accepted)
+                .Select(f => new UsersServiceModel
+                {
+                    Accepted = f.Accepted,
+                    UserName = f.User1Id == userId ? f.User2.UserName : f.User1.UserName
+                })
+                .ToListAsync();
+
+        public async Task<bool> IsUserInRoom(string userId, string roomId) 
+            => await dbContext.Users
+                .AnyAsync(u => u.Id == userId && u.RoomId == roomId);
 
         public async Task<bool> SendFriendRequest(string userId,string friendUserName)
         {

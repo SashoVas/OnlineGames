@@ -7,10 +7,7 @@ using System.Security.Claims;
 
 namespace OnlineGames.Web.Controllers
 {
-    [Authorize]
-    [ApiController]
-    [Route("[controller]")]
-    public class RoomController : ControllerBase
+    public class RoomController : ApiController
     {
         private readonly IRoomService roomService;
         public RoomController(IRoomService roomService)
@@ -34,7 +31,7 @@ namespace OnlineGames.Web.Controllers
                     return this.BadRequest();
             }
             roomId = await this.roomService.CreateRoom(this.User.Identity.Name, false, input.Game, board);
-            await this.roomService.SetRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier), roomId);
+            await this.roomService.SetRoomToUser(GetUserId(), roomId);
             return new
             {
                 RoomId = roomId
@@ -46,7 +43,7 @@ namespace OnlineGames.Web.Controllers
         {
             try
             {
-                await this.roomService.SetRoomToUser(User.FindFirstValue(ClaimTypes.NameIdentifier), input.RoomId);
+                await this.roomService.SetRoomToUser(GetUserId(), input.RoomId);
                 return new {RoomId=input.RoomId };
             }
             catch (Exception)

@@ -16,16 +16,7 @@ namespace OnlineGames.Web.Hubs
         }
         public async Task JoinGroup(MessageJoinGroupInputModel input)
         {
-            if (input.IsName)
-            {
-                //here if the chat is with friend
-                var group =await userService.GetFriendId(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName);
-                if (group==null)
-                {
-                    return;
-                }
-                input.GroupName = group;
-            }
+            await ValidateInput(input);
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, input.GroupName);
         }
         public async Task ChangeGroup(MessageJoinGroupInputModel input)
@@ -35,19 +26,27 @@ namespace OnlineGames.Web.Hubs
         }
         public async Task SendMessage(SendMessageInputModel input)
         {
+            await ValidateInput(input);
+            var message =await this.messageService.SendMessageToChat(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName, input.Contents,input.IsName);
+            message.UserName = this.Context.User.Identity.Name;
+            await this.Clients.Group(input.GroupName).SendAsync("ReceiveMessage",message);
+        }
+        private async Task ValidateInput(MessageJoinGroupInputModel input)
+        {
             if (input.IsName)
             {
                 //here if the chat is with friend
                 var group = await userService.GetFriendId(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName);
                 if (group == null)
                 {
-                    return;
+                    throw new ArgumentException();
                 }
                 input.GroupName = group;
             }
-            var message=await this.messageService.SendMessageToChat(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName, input.Contents,input.IsName);
-            message.UserName = this.Context.User.Identity.Name;
-            await this.Clients.Group(input.GroupName).SendAsync("ReceiveMessage",message);
+            else if (!await userService.IsUserInRoom(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName))
+            {
+                throw new ArgumentException();
+            }
         }
     }
 }

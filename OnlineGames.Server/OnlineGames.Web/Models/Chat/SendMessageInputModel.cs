@@ -1,9 +1,7 @@
 ﻿namespace OnlineGames.Web.Models.Chat
 {
-    public class SendMessageInputModel
+    public class SendMessageInputModel: MessageJoinGroupInputModel
     {
-        public string GroupName { get; set; }
         public string Contents { get; set; }
-        public bool IsName { get; set; }
     }
 }

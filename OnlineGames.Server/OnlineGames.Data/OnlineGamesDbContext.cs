@@ -26,7 +26,8 @@ namespace OnlineGames.Data
             builder.Entity<Friend>()
                 .HasOne(f => f.User1)
                 .WithMany(u => u.FriendsWith)
-                .HasForeignKey(f => f.User1Id);
+                .HasForeignKey(f => f.User1Id)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Friend>()
                 .HasOne(f => f.User2)
@@ -37,17 +38,20 @@ namespace OnlineGames.Data
             builder.Entity<Friend>()
                 .HasMany(f => f.Messages)
                 .WithOne(m => m.FriendChat)
-                .HasForeignKey(m => m.FriendChatId);
+                .HasForeignKey(m => m.FriendChatId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Room>()
                 .HasMany(r => r.Messages)
                 .WithOne(m => m.RoomChat)
-                .HasForeignKey(m => m.RoomChatId).OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey(m => m.RoomChatId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Entity<Message>()
                 .HasOne(m => m.Sender)
                 .WithMany(u => u.Messages)
-                .HasForeignKey(m => m.SenderId).OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

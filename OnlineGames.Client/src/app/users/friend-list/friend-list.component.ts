@@ -27,7 +27,10 @@ export class FriendListComponent implements OnInit {
     .subscribe(data=>
       {
         this.friends=data;
-        this.setRoomNameEventEmmiter.emit({groupName:this.friends[0]["userName"]})
+        if(data.length>0&&data![0]['accepted'])
+        {
+          this.setRoomNameEventEmmiter.emit({groupName:this.friends[0]["userName"]})
+        } 
       });
   }
   acceptFriend(friendUserName:string){
