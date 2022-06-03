@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using OnlineGames.Services.Contracts;
 using OnlineGames.Web.Models.Connect4;
-using System.Security.Claims;
 
 namespace OnlineGames.Web.Hubs
 {

@@ -2,9 +2,12 @@
     <div class="col-lg-2">
         <app-friend-list (setRoomNameEventEmmiter)="setRoomId($event)" ></app-friend-list>       
     </div>
-    <div class="col-lg-8">
-        <app-chat *ngIf="groupName" [roomId]="groupName" [isName]="true" ></app-chat>
+    <div *ngIf="groupName" class="col-lg-8" >
+        <div  class="d-flex">
+            <div class="mx-auto"><h3 >UserName</h3></div>
+            <div><a class="btn btn-danger" (click)="unFriend()">Unfriend</a></div>
+        </div>
+        <app-chat  [roomId]="groupName" [isFriend]="true" ></app-chat>
     </div>
     <div class="col-lg-2"></div>
 </div>
-

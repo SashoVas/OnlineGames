@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.SignalR;
 using OnlineGames.Services.Contracts;
 using OnlineGames.Services.Models.TicTacToe;
 using OnlineGames.Web.Models.TicTacToe;
-using System.Security.Claims;
 
 namespace OnlineGames.Web.Hubs
 {
@@ -40,7 +39,6 @@ namespace OnlineGames.Web.Hubs
             {
                 throw;
             }
-            
         }
         public async Task MakeMoveOponent(TicTacToeMoveInput input)
         {

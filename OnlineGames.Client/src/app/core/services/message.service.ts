@@ -11,13 +11,13 @@ export class MessageService {
 
   constructor(private http:HttpClient) { }
   private changeFriendSubject=new Subject();
-  triggerChangeFriend(friendUserName:string){
-    this.changeFriendSubject.next({friendUserName});
+  triggerChangeFriend(id:string){
+    this.changeFriendSubject.next({id});
   }
   getObservableForChangeFriend():Observable<any>{
     return this.changeFriendSubject.asObservable();
   }
-  getMessages(page:number,friendUserName:string):Observable<any>{
-    return this.http.get<Array<IMessage>>(environment.apiUrl+'/Message/'+page+'/'+friendUserName)
+  getMessages(page:number,id:string):Observable<any>{
+    return this.http.get<Array<IMessage>>(environment.apiUrl+'/Message/'+page+'/'+id)
   }
 }

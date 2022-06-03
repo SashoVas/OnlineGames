@@ -18,8 +18,8 @@ export class FriendListComponent implements OnInit {
     this.fetchData();
   }
 
-  changeFriendClick(friendUserName:string ){
-    this.messageService.triggerChangeFriend(friendUserName);
+  changeFriendClick(id:string ){
+    this.messageService.triggerChangeFriend(id);
   }
   fetchData(){
     this.userService
@@ -29,12 +29,12 @@ export class FriendListComponent implements OnInit {
         this.friends=data;
         if(data.length>0&&data![0]['accepted'])
         {
-          this.setRoomNameEventEmmiter.emit({groupName:this.friends[0]["userName"]})
+          this.setRoomNameEventEmmiter.emit({groupName:this.friends[0]["id"]})
         } 
       });
   }
-  acceptFriend(friendUserName:string){
-    this.userService.acceptFriendRequest(friendUserName).subscribe();
+  acceptFriend(id:string){
+    this.userService.acceptFriendRequest(id).subscribe();
     this.fetchData();
   }
 }

@@ -15,7 +15,7 @@ export class ChatComponent implements OnInit {
   messages:Array<IMessage>=[];
   page:number=0;
   @Input() roomId:any="";
-  @Input() isName:boolean=false;
+  @Input() isFriend:boolean=false;
   @ViewChild("messageField")inputField? : ElementRef;
   $changeUser!:Observable<any>;
   constructor(private fb:FormBuilder,private messageSignalRService:MessageSignalRService,private messageService:MessageService ) { 
@@ -29,13 +29,13 @@ export class ChatComponent implements OnInit {
     {
       this.messages=[];
       this.page=0;
-      this.roomId=friendUserName['friendUserName'];
-      this.messageSignalRService.changeGroup(this.roomId,this.isName);
+      this.roomId=friendUserName['id'];
+      this.messageSignalRService.changeGroup(this.roomId,this.isFriend);
       this.getMessages();
     })
-    this.messageSignalRService.joinGroup(this.roomId,this.isName);
+    this.messageSignalRService.joinGroup(this.roomId,this.isFriend);
     this.messageSignalRService.receiveMessage((message:IMessage)=> this.messages=[message].concat(this.messages));
-    if(this.isName)
+    if(this.isFriend)
     {
       this.getMessages();
     }
@@ -46,7 +46,7 @@ export class ChatComponent implements OnInit {
   sendMessage(){
     if(this.messageForm.valid && this.messageForm.value['contents']!=null)
     {
-      this.messageSignalRService.sendMessageToRoom(this.roomId,this.messageForm.value['contents'],this.isName);
+      this.messageSignalRService.sendMessageToRoom(this.roomId,this.messageForm.value['contents'],this.isFriend);
       this.messageForm.value['contents']=null;
       this.inputField!.nativeElement.value="";
     }

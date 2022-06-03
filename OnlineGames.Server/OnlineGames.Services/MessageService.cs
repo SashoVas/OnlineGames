@@ -17,10 +17,10 @@ namespace OnlineGames.Services
         public MessageService(OnlineGamesDbContext dbContext) 
             => this.dbContext = dbContext;
 
-        public async Task<IEnumerable<MessageServiceModel>> GetMessages(string userId, string friendName,int page)
+        public async Task<IEnumerable<MessageServiceModel>> GetMessages(string userId, string friendId,int page)
             => await dbContext.Messages
-                .Where(m => (m.FriendChat.User1Id == userId && m.FriendChat.User2.UserName == friendName)
-                ||(m.FriendChat.User2Id == userId && m.FriendChat.User1.UserName == friendName))
+                .Where(m => (m.FriendChat.User1Id == userId && m.FriendChat.User2Id==friendId)
+                ||(m.FriendChat.User2Id == userId && m.FriendChat.User1Id == friendId))
                 .OrderByDescending(m=>m.PostedOn)
                 .Skip(page*20)
                 .Take(20)

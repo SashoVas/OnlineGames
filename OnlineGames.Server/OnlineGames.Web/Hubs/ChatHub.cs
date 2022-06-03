@@ -17,33 +17,33 @@ namespace OnlineGames.Web.Hubs
         public async Task JoinGroup(MessageJoinGroupInputModel input)
         {
             await ValidateInput(input);
-            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, input.GroupName);
+            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, input.Id);
         }
         public async Task ChangeGroup(MessageJoinGroupInputModel input)
         {
-            await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, input.GroupName);
+            await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, input.Id);
             await this.JoinGroup(input);
         }
         public async Task SendMessage(SendMessageInputModel input)
         {
             await ValidateInput(input);
-            var message =await this.messageService.SendMessageToChat(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName, input.Contents,input.IsName);
+            var message =await this.messageService.SendMessageToChat(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.Id, input.Contents,input.IsName);
             message.UserName = this.Context.User.Identity.Name;
-            await this.Clients.Group(input.GroupName).SendAsync("ReceiveMessage",message);
+            await this.Clients.Group(input.Id).SendAsync("ReceiveMessage",message);
         }
         private async Task ValidateInput(MessageJoinGroupInputModel input)
         {
             if (input.IsName)
             {
                 //here if the chat is with friend
-                var group = await userService.GetFriendId(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName);
+                var group = await userService.GetFriendId(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.Id);
                 if (group == null)
                 {
                     throw new ArgumentException();
                 }
-                input.GroupName = group;
+                input.Id = group;
             }
-            else if (!await userService.IsUserInRoom(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.GroupName))
+            else if (!await userService.IsUserInRoom(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.Id))
             {
                 throw new ArgumentException();
             }

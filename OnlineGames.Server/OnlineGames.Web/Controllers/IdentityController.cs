@@ -1,14 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using OnlineGames.Data.Models;
 using OnlineGames.Services.Contracts;
 using OnlineGames.Web.Infrastructure;
 using OnlineGames.Web.Models.Identity;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 
 namespace OnlineGames.Web.Controllers
 {

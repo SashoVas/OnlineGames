@@ -26,16 +26,24 @@ namespace OnlineGames.Web.Controllers
             return new { friendUserName = input.FriendUserName };
         }
         [HttpPut]
-        public async Task<object> AcceptFriendRequest(SendFriendRequestInputModel input)
+        public async Task<object> AcceptFriendRequest(FriendIdInputModel input)
         {
-            if (!await userService.AcceptFriendRequest(GetUserId(), input.FriendUserName))
+            if (!await userService.AcceptFriendRequest(GetUserId(), input.Id))
             {
                 return BadRequest();
             }
-            return new { friendUserName = input.FriendUserName };
+            return new { Id = input.Id };
         }
         [HttpGet]
         public async Task<IEnumerable<UsersServiceModel>> GetFriends() 
             => await userService.GetFriends(GetUserId());
+        [HttpDelete("{id}")]
+        public async Task UnFriend(string id)
+        {
+            if (!await userService.DeleteFriend(GetUserId(),id))
+            {
+                throw new ArgumentException();
+            }
+        }
     }
 }

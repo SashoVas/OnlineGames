@@ -1,4 +1,5 @@
 export interface IFriend{
     userName:string,
-    accepted:boolean
+    accepted:boolean,
+    id:string
 }

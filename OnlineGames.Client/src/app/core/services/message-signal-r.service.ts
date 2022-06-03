@@ -31,15 +31,15 @@ export class MessageSignalRService {
 
 
   public sendMessageToRoom(groupName:string,contents:string,isName:boolean){
-    this.hubConnection.invoke("SendMessage",{groupName,contents,isName});
+    this.hubConnection.invoke("SendMessage",{id:groupName,contents,isName});
  }
   public joinGroup(groupName:string,isName:boolean){
-    this.hubConnection.invoke("JoinGroup",{groupName,isName});
+    this.hubConnection.invoke("JoinGroup",{id:groupName,isName});
   }
  public receiveMessage(func:(message:IMessage)=>void){
     this.hubConnection.on("ReceiveMessage",func);
   }
   public changeGroup(groupName:string,isName:boolean){
-    this.hubConnection.invoke("ChangeGroup",{groupName,isName});
+    this.hubConnection.invoke("ChangeGroup",{id:groupName,isName});
   }
 }

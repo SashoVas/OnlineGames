@@ -16,7 +16,10 @@ export class UserService {
   sendFriendRequest(friendUserName:string):Observable<any>{
     return this.http.post(environment.apiUrl+'/User',{friendUserName});
   }
-  acceptFriendRequest(friendUserName:string):Observable<any>{
-    return this.http.put(environment.apiUrl+'/User',{friendUserName})
+  acceptFriendRequest(id:string):Observable<any>{
+    return this.http.put(environment.apiUrl+'/User',{id})
+  }
+  unFriend(id:string):Observable<any>{
+    return this.http.delete(environment.apiUrl+'/User/'+id)
   }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-friends',
@@ -7,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FriendsComponent implements OnInit {
   groupName!:string;
-  constructor() { }
+  constructor(private userService:UserService) { }
   ngOnInit(): void {
   }
   setRoomId($event:any){
     this.groupName=$event['groupName'];
+  }
+  unFriend(){
+    this.userService.unFriend(this.groupName).subscribe();
   }
 }
