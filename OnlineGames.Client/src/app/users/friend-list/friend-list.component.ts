@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Observable } from 'rxjs';
 import { IFriend } from 'src/app/core/interfaces/IFriend';
 import { MessageService } from 'src/app/core/services/message.service';
 import { UserService } from '../services/user.service';
@@ -29,12 +28,20 @@ export class FriendListComponent implements OnInit {
         this.friends=data;
         if(data.length>0&&data![0]['accepted'])
         {
-          this.setRoomNameEventEmmiter.emit({groupName:this.friends[0]["id"]})
+          this.changeFriendClick(this.friends[0]["id"]);
+          this.setRoomNameEventEmmiter.emit({id:this.friends[0]["id"],groupName:this.friends[0]['userName']});
         } 
+        else
+        {
+          this.setRoomNameEventEmmiter.emit({id:null,groupName:null});
+        }
       });
   }
   acceptFriend(id:string){
     this.userService.acceptFriendRequest(id).subscribe();
     this.fetchData();
+  }
+  unFriend(id:string){
+    this.userService.unFriend(id).subscribe(()=>this.fetchData());
   }
 }
