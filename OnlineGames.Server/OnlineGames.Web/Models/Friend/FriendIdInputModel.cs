@@ -1,4 +1,4 @@
-﻿namespace OnlineGames.Web.Models.User
+﻿namespace OnlineGames.Web.Models.Friend
 {
     public class FriendIdInputModel
     {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OnlineGames.Services.Models.TicTacToe
+﻿namespace OnlineGames.Services.Models.TicTacToe
 {
     public class BoardCoordinates
     {

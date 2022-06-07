@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { UserService } from '../services/user.service';
+import { FriendService } from '../services/friend.service';
 @Component({
   selector: 'app-add-friend',
   templateUrl: './add-friend.component.html',
@@ -7,11 +7,11 @@ import { UserService } from '../services/user.service';
 })
 export class AddFriendComponent implements OnInit {
 
-  constructor(private userService:UserService) { }
+  constructor(private friendService:FriendService) { }
   @ViewChild('userNameField') userNameField!:ElementRef;
   ngOnInit(): void {
   }
   addFriend(){
-    this.userService.sendFriendRequest(this.userNameField!.nativeElement.value).subscribe();
+    this.friendService.sendFriendRequest(this.userNameField!.nativeElement.value).subscribe();
   }
 }

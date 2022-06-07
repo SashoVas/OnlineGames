@@ -1,14 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using OnlineGames.Data;
-using OnlineGames.Data.Models;
-using OnlineGames.Logic.TicTacToe;
+﻿using OnlineGames.Logic.TicTacToe;
 using OnlineGames.Services.Contracts;
 using OnlineGames.Services.Models.TicTacToe;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineGames.Services
 {

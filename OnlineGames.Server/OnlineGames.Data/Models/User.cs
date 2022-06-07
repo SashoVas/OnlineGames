@@ -1,9 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineGames.Data.Models
 {
@@ -15,6 +10,7 @@ namespace OnlineGames.Data.Models
             this.FriendsOf = new HashSet<Friend>();
             this.Messages = new HashSet<Message>();
         }
+        public string? Description { get; set; }
         public string? RoomId { get; set; }
         public Room? Room { get; set; }
         public ICollection<Friend> FriendsWith { get; set; }

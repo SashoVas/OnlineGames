@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IFriend } from 'src/app/core/interfaces/IFriend';
 import { MessageService } from 'src/app/core/services/message.service';
-import { UserService } from '../services/user.service';
+import { FriendService } from '../services/friend.service';
 
 @Component({
   selector: 'app-friend-list',
@@ -11,7 +11,7 @@ import { UserService } from '../services/user.service';
 export class FriendListComponent implements OnInit {
   friends!:Array<IFriend>;
   @Output() setRoomNameEventEmmiter=new EventEmitter<any>();
-  constructor(private userService:UserService,private messageService:MessageService ) { }
+  constructor(private friendService:FriendService,private messageService:MessageService ) { }
 
   ngOnInit(): void {
     this.fetchData();
@@ -21,7 +21,7 @@ export class FriendListComponent implements OnInit {
     this.messageService.triggerChangeFriend(id);
   }
   fetchData(){
-    this.userService
+    this.friendService
     .getFriends()
     .subscribe(data=>
       {
@@ -38,10 +38,10 @@ export class FriendListComponent implements OnInit {
       });
   }
   acceptFriend(id:string){
-    this.userService.acceptFriendRequest(id).subscribe();
+    this.friendService.acceptFriendRequest(id).subscribe();
     this.fetchData();
   }
   unFriend(id:string){
-    this.userService.unFriend(id).subscribe(()=>this.fetchData());
+    this.friendService.unFriend(id).subscribe(()=>this.fetchData());
   }
 }

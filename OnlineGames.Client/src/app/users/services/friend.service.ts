@@ -7,19 +7,19 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class FriendService {
 
   constructor(private http:HttpClient ) { }
   getFriends():Observable<any>{
-    return this.http.get<Array<IFriend>>(environment.apiUrl+'/User');
+    return this.http.get<Array<IFriend>>(environment.apiUrl+'/Friend');
   }
   sendFriendRequest(friendUserName:string):Observable<any>{
-    return this.http.post(environment.apiUrl+'/User',{friendUserName});
+    return this.http.post(environment.apiUrl+'/Friend',{friendUserName});
   }
   acceptFriendRequest(id:string):Observable<any>{
-    return this.http.put(environment.apiUrl+'/User',{id})
+    return this.http.put(environment.apiUrl+'/Friend',{id})
   }
   unFriend(id:string):Observable<any>{
-    return this.http.delete(environment.apiUrl+'/User/'+id)
+    return this.http.delete(environment.apiUrl+'/Friend/'+id)
   }
 }

@@ -8,8 +8,8 @@ namespace OnlineGames.Web.Hubs
     public class ChatHub:Hub
     {
         private readonly IMessageService messageService;
-        private readonly IUserService userService;
-        public ChatHub(IMessageService messageService, IUserService userService)
+        private readonly IFriendService userService;
+        public ChatHub(IMessageService messageService, IFriendService userService)
         {
             this.messageService = messageService;
             this.userService = userService;
