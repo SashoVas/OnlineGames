@@ -1,0 +1,17 @@
+.profile{
+    border: 2px solid gray;
+    border-radius: 25px;
+    padding: 5% 15%;
+    margin-top: 20%;
+}
+
+img{
+    width: 75px;
+    height: 75px;
+}
+
+.baner{
+    border-radius: 25px 25px 0 0;
+    width: 100%;
+    margin: 0;
+}

@@ -9,9 +9,10 @@ namespace OnlineGames.Web.Controllers
         public UserController(IUserService userService)
             => this.userService = userService;
         [HttpGet("{id?}")]
-        public async Task<object> GetUser(string id)
+        public async Task<object> GetUser(string? id)
         {
             var user= await userService.GetUser(id??GetUserId());
+            user.IsMe = id == null;
             if (user==null)
             {
                 return BadRequest();

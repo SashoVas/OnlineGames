@@ -5,6 +5,7 @@ import { FriendsComponent } from './friends/friends.component';
 import { FriendListComponent } from './friend-list/friend-list.component';
 import { CoreModule } from '../core/core.module';
 import { AddFriendComponent } from './add-friend/add-friend.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 
@@ -12,7 +13,8 @@ import { AddFriendComponent } from './add-friend/add-friend.component';
   declarations: [
     FriendsComponent,
     FriendListComponent,
-    AddFriendComponent
+    AddFriendComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
