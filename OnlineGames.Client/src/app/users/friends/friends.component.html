@@ -4,7 +4,7 @@
     </div>
     <div *ngIf="groupName" class="col-lg-8" >
         <div  class="d-flex">
-            <div class="mx-auto"><h3 >{{groupName}}</h3></div>
+            <div  [routerLink]="['/users/profile/']" [queryParams]="{name: groupName}" class="mx-auto" ><h3 >{{groupName}}</h3></div>
         </div>
         <app-chat  [roomId]="groupId" [isFriend]="true" ></app-chat>
     </div>

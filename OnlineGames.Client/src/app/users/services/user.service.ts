@@ -11,13 +11,17 @@ export class UserService {
 
   constructor(private http:HttpClient) { }
 
-  getUser(id:string|null):Observable<any>
+  getUser(name:string|null):Observable<any>
   {
-    if (id==null)
+    if (name==null)
     {
       return this.http.get<IUser>(environment.apiUrl+'/User')
 
     }
-    return this.http.get<IUser>(environment.apiUrl+'/User/'+id)
+    return this.http.get<IUser>(environment.apiUrl+'/User/'+name)
+  }
+  updateUser(description:string,imgUrl:string,userName:string):Observable<any>
+  {
+    return this.http.put(environment.apiUrl+'/User',{description,imgUrl,userName})
   }
 }

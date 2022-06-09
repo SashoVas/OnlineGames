@@ -3,6 +3,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { ChatResolver } from "../core/resolvers/chat.resolver";
 import { FriendsComponent } from "./friends/friends.component";
 import { ProfileComponent } from "./profile/profile.component";
+import { UserResolver } from "./resolvers/user.resolver";
 
 
 const routes: Routes = [
@@ -19,6 +20,7 @@ const routes: Routes = [
     {
       path:"profile",
       component:ProfileComponent,
+      resolve:[UserResolver]
     },
     ]; 
   

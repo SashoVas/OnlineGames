@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { IMessage } from '../interfaces/IMessage';
 import { MessageSignalRService } from '../services/message-signal-r.service';
 import { MessageService } from '../services/message.service';
@@ -12,6 +12,7 @@ import { MessageService } from '../services/message.service';
 })
 export class ChatComponent implements OnInit {
   messageForm:FormGroup;
+  changFriendSubscription!:Subscription;
   messages:Array<IMessage>=[];
   page:number=0;
   @Input() roomId:any="";
@@ -25,7 +26,7 @@ export class ChatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.messageService.getObservableForChangeFriend().subscribe((friendUserName)=>
+    this.changFriendSubscription=this.messageService.getObservableForChangeFriend().subscribe((friendUserName)=>
     {
       this.messages=[];
       this.page=0;
@@ -56,6 +57,7 @@ export class ChatComponent implements OnInit {
     this.getMessages();
   }
   ngOnDestroy():void{
-    this.messageSignalRService.hubConnection.stop()
+    this.messageSignalRService.hubConnection.stop();
+    this.changFriendSubscription.unsubscribe();
   }
 }
