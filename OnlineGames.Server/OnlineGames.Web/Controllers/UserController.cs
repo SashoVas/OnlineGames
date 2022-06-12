@@ -23,6 +23,10 @@ namespace OnlineGames.Web.Controllers
         [HttpPut]
         public async Task<object> Update(UpdateUserInputModel input )
         {
+            if (!ModelState.IsValid|| !await this.userService.UpdateUser(GetUserId(), input.Description, input.ImgUrl, input.UserName))
+            {
+                return BadRequest();
+            }
             return input;
         }
     }

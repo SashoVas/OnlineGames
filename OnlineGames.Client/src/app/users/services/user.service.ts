@@ -20,8 +20,8 @@ export class UserService {
     }
     return this.http.get<IUser>(environment.apiUrl+'/User/'+name)
   }
-  updateUser(description:string,imgUrl:string,userName:string):Observable<any>
+  updateUser(userName:string,description:string,imgUrl:string):Observable<any>
   {
-    return this.http.put(environment.apiUrl+'/User',{description,imgUrl,userName})
+    return this.http.put(environment.apiUrl+'/User',{userName,description,imgUrl})
   }
 }

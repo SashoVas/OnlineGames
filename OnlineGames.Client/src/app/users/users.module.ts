@@ -6,6 +6,8 @@ import { FriendListComponent } from './friend-list/friend-list.component';
 import { CoreModule } from '../core/core.module';
 import { AddFriendComponent } from './add-friend/add-friend.component';
 import { ProfileComponent } from './profile/profile.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -14,12 +16,14 @@ import { ProfileComponent } from './profile/profile.component';
     FriendsComponent,
     FriendListComponent,
     AddFriendComponent,
-    ProfileComponent
+    ProfileComponent,
+    EditProfileComponent
   ],
   imports: [
     CommonModule,
     UsersRoutingModule,
-    CoreModule
+    CoreModule,
+    ReactiveFormsModule
   ]
 })
 export class UsersModule { }

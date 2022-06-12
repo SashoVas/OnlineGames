@@ -1,0 +1,20 @@
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog text-center text-dark">
+        <div class="modal-content">
+            <form [formGroup]="editForm">
+                <div class="modal-body p-1 d-flex flex-column">
+                    <label>Username</label>
+                    <input  formControlName="userName" type="text">
+                    <label>Description</label>
+                    <input formControlName="description" type="text">
+                    <label>ImgUrl</label>
+                    <input formControlName="imgUrl" type="text">
+                </div>
+                <div class="d-flex justify-content-around p-1">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="submit" (click)="edit()" type="button" data-bs-dismiss="modal" class="btn btn-success" value="Edit">
+                </div>                
+            </form>
+        </div>
+    </div>
+</div>

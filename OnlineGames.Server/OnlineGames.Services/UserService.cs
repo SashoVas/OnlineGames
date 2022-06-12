@@ -15,7 +15,9 @@ namespace OnlineGames.Services
                 .Where(u => u.UserName == name)
                 .Select(u => new UserServiceModel
                 {
-                    Username = u.UserName
+                    Username = u.UserName,
+                    Description=u.Description,
+                    ImgUrl = u.ImgUrl,
                 })
                 .FirstOrDefaultAsync();
 
@@ -24,9 +26,9 @@ namespace OnlineGames.Services
             var user =await dbContext.Users
                 .Where(u => u.Id == id)
                 .FirstOrDefaultAsync();
-            user.UserName = userName ?? user.UserName;
-            user.Description = descripiton ?? user.UserName;
-            //todo:imageUrl
+            user.UserName = userName;
+            user.Description = descripiton;
+            user.ImgUrl = imgUrl;
             dbContext.Update(user);
             await dbContext.SaveChangesAsync();
             return true;

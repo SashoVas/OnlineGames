@@ -1,9 +1,14 @@
-﻿namespace OnlineGames.Web.Models.User
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OnlineGames.Web.Models.User
 {
     public class UpdateUserInputModel
     {
-        public string Description { get; set; }
-        public string ImgUrl { get; set; }
-        public string UserName { get; set; }
+        [MaxLength(300)]
+        public string? Description { get; set; }
+        [Url]
+        public string? ImgUrl { get; set; }
+        [MaxLength(50)]
+        public string? UserName { get; set; }
     }
 }

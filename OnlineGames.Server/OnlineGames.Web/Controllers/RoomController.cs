@@ -8,10 +8,8 @@ namespace OnlineGames.Web.Controllers
     public class RoomController : ApiController
     {
         private readonly IRoomService roomService;
-        public RoomController(IRoomService roomService)
-        {
-            this.roomService = roomService;
-        }
+        public RoomController(IRoomService roomService) 
+            => this.roomService = roomService;
         [HttpPost]
         public async Task<ActionResult<object>> CreateRoom(CreateRoomInputModel input)
         {

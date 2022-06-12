@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineGames.Data.Models
 {
@@ -12,6 +13,7 @@ namespace OnlineGames.Data.Models
         }
         public string? Description { get; set; }
         public string? RoomId { get; set; }
+        public string? ImgUrl { get; set; }
         public Room? Room { get; set; }
         public ICollection<Friend> FriendsWith { get; set; }
         public ICollection<Friend> FriendsOf { get; set; }
