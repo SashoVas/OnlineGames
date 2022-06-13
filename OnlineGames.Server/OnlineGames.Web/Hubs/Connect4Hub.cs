@@ -10,10 +10,8 @@ namespace OnlineGames.Web.Hubs
     public class Connect4Hub:GameHub
     {
         private readonly IConnect4Service connect4Service;
-        public Connect4Hub(IRoomService roomService, IConnect4Service connect4Service) : base(roomService)
-        {
-            this.connect4Service = connect4Service;
-        }
+        public Connect4Hub(IRoomService roomService, IConnect4Service connect4Service) : base(roomService) 
+            => this.connect4Service = connect4Service;
         public async Task MakeMoveAI(Connect4MoveAIInput input)
         {
             try

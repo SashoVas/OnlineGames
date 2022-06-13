@@ -28,10 +28,10 @@ namespace OnlineGames.Web.Controllers
             }
             roomId = await this.roomService.CreateRoom(this.User.Identity.Name, false, input.Game, board);
             await this.roomService.SetRoomToUser(GetUserId(), roomId);
-            return new
+            return Created(nameof(this.Created),new
             {
                 RoomId = roomId
-            };
+            });
         }
 
         [HttpPut]
@@ -40,7 +40,7 @@ namespace OnlineGames.Web.Controllers
             try
             {
                 await this.roomService.SetRoomToUser(GetUserId(), input.RoomId);
-                return new {RoomId=input.RoomId };
+                return Ok(new {RoomId=input.RoomId });
             }
             catch (Exception)
             {
@@ -49,9 +49,9 @@ namespace OnlineGames.Web.Controllers
             
         }
         [HttpGet]
-        public async Task<IEnumerable<RoomsServiceModel>>GetRooms([FromQuery]GetRoomsInputModel input)
+        public async Task<ActionResult<IEnumerable<RoomsServiceModel>>>GetRooms([FromQuery]GetRoomsInputModel input)
         {
-            return await this.roomService.GetAvailableRooms(input.Game=="null"?null: input.Game,input.Count,input.Page);
+            return Ok( await this.roomService.GetAvailableRooms(input.Game=="null"?null: input.Game,input.Count,input.Page));
         }
     }
 }

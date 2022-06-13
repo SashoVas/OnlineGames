@@ -73,14 +73,14 @@ namespace OnlineGames.Services
             => await dbContext.Users
                 .AnyAsync(u => u.Id == userId && u.RoomId == roomId);
 
-        public async Task<bool> SendFriendRequest(string userId,string friendUserName)
+        public async Task<string> SendFriendRequest(string userId,string friendUserName)
         {
             var friendId=await dbContext.Users
                 .Where(u=>u.UserName== friendUserName)
                 .Select(u=>u.Id)
                 .FirstOrDefaultAsync();
-            if (friendId==null)
-                return false;
+            if (friendId == null)
+                throw new ArgumentException();
             
             var friend = new Friend 
             { 
@@ -91,7 +91,7 @@ namespace OnlineGames.Services
             };
             dbContext.Friends.Add(friend);
             await dbContext.SaveChangesAsync();
-            return true;
+            return friend.Id;
         }
     }
 }

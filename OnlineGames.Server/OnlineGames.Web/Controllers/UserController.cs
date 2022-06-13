@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineGames.Services.Contracts;
+using OnlineGames.Services.Models.User;
 using OnlineGames.Web.Models.User;
 
 namespace OnlineGames.Web.Controllers
@@ -10,7 +11,7 @@ namespace OnlineGames.Web.Controllers
         public UserController(IUserService userService)
             => this.userService = userService;
         [HttpGet("{name?}")]
-        public async Task<object> GetUser(string? name)
+        public async Task<ActionResult<UserServiceModel>> GetUser(string? name)
         {
             var user= await userService.GetUser(name??this.User.Identity.Name);
             user.IsMe = name == null;
@@ -18,16 +19,17 @@ namespace OnlineGames.Web.Controllers
             {
                 return BadRequest();
             }
-            return user;
+            return Ok(user);
         }
         [HttpPut]
-        public async Task<object> Update(UpdateUserInputModel input )
+        public async Task<ActionResult<UserServiceModel>> Update(UpdateUserInputModel input )
         {
-            if (!ModelState.IsValid|| !await this.userService.UpdateUser(GetUserId(), input.Description, input.ImgUrl, input.UserName))
+            if (!ModelState.IsValid )
             {
                 return BadRequest();
             }
-            return input;
+            var user = await this.userService.UpdateUser(GetUserId(), input.Description, input.ImgUrl, input.UserName);
+            return Ok(user);
         }
     }
 }

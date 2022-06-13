@@ -18,7 +18,7 @@ builder.AddServices();
 
 var app = builder.Build();
 
-using (var serviceScope = app.Services.CreateScope())//app.ApplicationServices.CreateScope())
+using (var serviceScope = app.Services.CreateScope())
 {
     using (var context = serviceScope.ServiceProvider.GetRequiredService<OnlineGamesDbContext>())
     {

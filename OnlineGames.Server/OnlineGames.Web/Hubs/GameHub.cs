@@ -7,10 +7,8 @@ namespace OnlineGames.Web.Hubs
     public abstract class GameHub:Hub
     {
         protected readonly IRoomService roomService;
-        public GameHub(IRoomService roomService)
-        {
-            this.roomService = roomService;
-        }
+        public GameHub(IRoomService roomService) 
+            => this.roomService = roomService;
 
         protected string GetUserId() 
             => this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);

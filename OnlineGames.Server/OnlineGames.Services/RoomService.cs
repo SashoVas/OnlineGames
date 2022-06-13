@@ -4,16 +4,13 @@ using OnlineGames.Data.Models;
 using OnlineGames.Services.Contracts;
 using OnlineGames.Services.Models.Room;
 
-
 namespace OnlineGames.Services
 {
     public class RoomService : IRoomService
     {
         private readonly OnlineGamesDbContext dbContext;
-        public RoomService(OnlineGamesDbContext dbContext)
-        {
-            this.dbContext = dbContext;
-        }
+        public RoomService(OnlineGamesDbContext dbContext) 
+            => this.dbContext = dbContext;
         public async Task<Room>GetRoomByUserId(string userId)
         {
             var result = await dbContext

@@ -21,7 +21,7 @@ namespace OnlineGames.Services
                 })
                 .FirstOrDefaultAsync();
 
-        public async Task<bool> UpdateUser(string id, string descripiton, string imgUrl, string userName)
+        public async Task<UserServiceModel> UpdateUser(string id, string descripiton, string imgUrl, string userName)
         {
             var user =await dbContext.Users
                 .Where(u => u.Id == id)
@@ -31,7 +31,13 @@ namespace OnlineGames.Services
             user.ImgUrl = imgUrl;
             dbContext.Update(user);
             await dbContext.SaveChangesAsync();
-            return true;
+            return new UserServiceModel
+            {
+                ImgUrl = user.ImgUrl,
+                IsMe=true,
+                Description=user.Description,
+                Username=user.UserName
+            };
         }
     }
 }

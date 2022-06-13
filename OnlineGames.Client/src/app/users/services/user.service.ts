@@ -16,7 +16,6 @@ export class UserService {
     if (name==null)
     {
       return this.http.get<IUser>(environment.apiUrl+'/User')
-
     }
     return this.http.get<IUser>(environment.apiUrl+'/User/'+name)
   }

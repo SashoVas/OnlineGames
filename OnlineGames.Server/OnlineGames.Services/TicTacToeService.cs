@@ -8,10 +8,8 @@ namespace OnlineGames.Services
     {
         private readonly IRoomService roomService;
 
-        public TicTacToeService(IRoomService roomService)
-        {
-            this.roomService = roomService;
-        }
+        public TicTacToeService(IRoomService roomService) 
+            => this.roomService = roomService;
 
         public async Task<BoardCoordinates> MakeMove(string boardSring,int currentPlayer)
         {

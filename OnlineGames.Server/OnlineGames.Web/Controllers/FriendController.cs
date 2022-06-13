@@ -8,42 +8,45 @@ namespace OnlineGames.Web.Controllers
     public class FriendController : ApiController
     {
         private readonly IFriendService friendService;
-        public FriendController(IFriendService friendService)
-        {
-            this.friendService = friendService;
-        }
+        public FriendController(IFriendService friendService) 
+            => this.friendService = friendService;
         [HttpPost]
-        public async Task<object> AddFriend(SendFriendRequestInputModel input)
+        public async Task<ActionResult> AddFriend(SendFriendRequestInputModel input)
         {
             if (!ModelState.IsValid ||await friendService.FriendExist(GetUserId(),input.FriendUserName))
             {
                 return BadRequest();
             }
-            if (!await friendService.SendFriendRequest(GetUserId(), input.FriendUserName))
+            try
+            {
+                var id = await friendService.SendFriendRequest(GetUserId(), input.FriendUserName);
+                return Created(nameof(this.Created),id);
+            }
+            catch (ArgumentException)
             {
                 return BadRequest();
             }
-            return new { friendUserName = input.FriendUserName };
         }
         [HttpPut]
-        public async Task<object> AcceptFriendRequest(FriendIdInputModel input)
+        public async Task<ActionResult> AcceptFriendRequest(FriendIdInputModel input)
         {
             if (!ModelState.IsValid || !await friendService.AcceptFriendRequest(GetUserId(), input.Id))
             {
                 return BadRequest();
             }
-            return new { Id = input.Id };
+            return Ok();
         }
         [HttpGet]
-        public async Task<IEnumerable<FriendServiceModel>> GetFriends() 
-            => await friendService.GetFriends(GetUserId());
+        public async Task<ActionResult<IEnumerable<FriendServiceModel>>> GetFriends() 
+            =>Ok( await friendService.GetFriends(GetUserId()));
         [HttpDelete("{id}")]
-        public async Task UnFriend(string id)
+        public async Task<ActionResult> UnFriend(string id)
         {
             if ( !await friendService.DeleteFriend(GetUserId(),id))
             {
                 throw new ArgumentException();
             }
+            return Ok();
         }
     }
 }

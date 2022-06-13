@@ -11,10 +11,8 @@ namespace OnlineGames.Web.Hubs
     public class TicTacToeHub: GameHub
     {
         private readonly ITicTacToeService ticTacToeService;
-        public TicTacToeHub(IRoomService roomService, ITicTacToeService ticTacToeService) : base(roomService)
-        {
-            this.ticTacToeService = ticTacToeService;
-        }
+        public TicTacToeHub(IRoomService roomService, ITicTacToeService ticTacToeService) : base(roomService) 
+            => this.ticTacToeService = ticTacToeService;
         public async Task MakeMoveAI(TicTacToeMoveInput input)
         {
             try

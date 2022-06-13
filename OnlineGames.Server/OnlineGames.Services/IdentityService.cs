@@ -11,10 +11,8 @@ namespace OnlineGames.Services
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<User> userManager;
-        public IdentityService(UserManager<User> userManager)
-        {
-            this.userManager = userManager;
-        }
+        public IdentityService(UserManager<User> userManager) 
+            => this.userManager = userManager;
 
         private string GetJwt(User user,string Secret)
         {

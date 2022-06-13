@@ -15,4 +15,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(data=>this.user=data[0])
   }
+  updateUser($event:any){
+    this.user=$event['user']
+  }
 }
