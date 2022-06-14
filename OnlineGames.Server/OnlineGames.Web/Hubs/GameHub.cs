@@ -43,7 +43,7 @@ namespace OnlineGames.Web.Hubs
                     default:
                         throw new ArgumentException();
                 }
-                await this.roomService.SetRoomToUser(GetUserId(), groupName);
+                await this.roomService.SetRoomToUser(GetUserId(), groupName,GetUserName());
             }
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);
         }

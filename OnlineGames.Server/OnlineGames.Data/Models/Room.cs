@@ -4,10 +4,6 @@ namespace OnlineGames.Data.Models
 {
     public class Room
     {
-        public Room()
-        {
-            Users = new List<User>();
-        }
         public string Id { get; set; }
         [Required]
         [MaxLength(100)]
@@ -16,7 +12,6 @@ namespace OnlineGames.Data.Models
         public bool FirstPlayerTurn { get; set; } = true;
         [MaxLength(100)]
         public string? FirstPlayerName { get; set; }
-        public ICollection<User> Users { get; set; }
         [Required]
         public bool Private { get; set; } = false;
         [Required]
@@ -24,6 +19,11 @@ namespace OnlineGames.Data.Models
         public string GameName { get; set; }
         public ICollection<Message> Messages { get; set; }
         public DateTime CreatedOn { get; set; } = DateTime.Now;
+
+        public string? Player1Id { get; set; }
+        public User? Player1 { get; set; }
+        public string? Player2Id { get; set; }
+        public User? Player2 { get; set; }
 
     }
 }

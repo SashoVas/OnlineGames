@@ -17,11 +17,17 @@ namespace OnlineGames.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<User>()
-                .HasOne(u => u.Room)
-                .WithMany(t => t.Users)
-                .HasForeignKey(u => u.RoomId)
-                .OnDelete(DeleteBehavior.SetNull);
+            builder.Entity<Room>()
+                .HasOne(f => f.Player1)
+                .WithOne(u => u.Room1)
+                .HasForeignKey<Room>(r => r.Player1Id)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Room>()
+                .HasOne(f => f.Player2)
+                .WithOne(u => u.Room2)
+                .HasForeignKey<Room>(r => r.Player2Id)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<Friend>()
                 .HasOne(f => f.User1)

@@ -8,19 +8,16 @@ namespace OnlineGames.Services
 {
     public class RoomService : IRoomService
     {
-        private readonly IRepository<Room> repoRoom;
-        private readonly IRepository<User> repoUser;
-        public RoomService(IRepository<Room> repoRoom, IRepository<User> repoUser)
+        private readonly IRepository<Room> repo;
+        public RoomService(IRepository<Room> repo)
         {
-            this.repoRoom = repoRoom;
-            this.repoUser = repoUser;
+            this.repo = repo;
         }
 
         public async Task<Room>GetRoomByUserId(string userId)
         {
-            var result = await repoUser.GetAll()
-                .Where(u => u.Id == userId)
-                .Select(u => u.Room)
+            var result = await repo.GetAll()
+                .Where(r=>r.Player1Id==userId || r.Player2Id==userId)
                 .FirstOrDefaultAsync();
             if (result==null)
             {
@@ -38,98 +35,117 @@ namespace OnlineGames.Services
                 Private = isPrivate,
                 GameName = gameName
             };
-            await repoRoom.AddAsync(room);
-            await repoRoom.SaveChangesAsync();
+            await repo.AddAsync(room);
+            await repo.SaveChangesAsync();
             return room.Id;
         }
 
         public async Task RemoveRoom(string userId)
         {
 
-            var result = await repoUser.GetAll()
-                .Where(u => u.Id == userId)
-                .Select(u => new
+            var result = await repo.GetAll()
+                .Where(r => r.Player1Id == userId || r.Player2Id == userId)
+                .Select(r => new
                 {
-                    User = u,
-                    Room = u.Room
+                    UserName = userId==r.Player1Id?r.Player1.UserName:r.Player2.UserName,
+                    Room = r
                 }).FirstOrDefaultAsync();
 
-            result.User.Room = null;
-            result.User.RoomId = null;
-            if (result.Room.FirstPlayerName== result.User.UserName)
+            if (result.Room.Player1Id==userId)
+            {
+                result.Room.Player1 = null;
+                result.Room.Player1Id=null;
+            }
+            else
+            {
+                result.Room.Player2 = null;
+                result.Room.Player2Id = null;
+            }
+            if (result.Room.FirstPlayerName== result.UserName)
             {
                 //The player that leves the room is first, so we set it to null
                 result.Room.FirstPlayerName = null;
             }
-            if (result.Room.Users.Count()==1)
+            if (result.Room.Player1==null && result.Room.Player2==null)
             {
                 //The room is empty so we remove it
-                repoRoom.Remove(result.Room);
+                repo.Remove(result.Room);
             }
-            repoUser.Update(result.User);
-            await repoRoom.SaveChangesAsync();
+            else
+            {
+                repo.Update(result.Room);
+            }
+            await repo.SaveChangesAsync();
         }
 
-        public async Task SetRoomToUser(string userId, string roomId)
+        public async Task SetRoomToUser(string userId, string roomId,string username)
         {
-            var user = await repoUser.GetAll().FirstOrDefaultAsync(u=>u.Id==userId);
-            var room = await repoRoom.GetAll().Include(r=>r.Users).FirstOrDefaultAsync(r => r.Id == roomId);
+            var room = await repo.GetAll()
+                .FirstOrDefaultAsync(r => r.Id == roomId);
 
-            if (room.Users.Count>=2)
+            if (room.Player1Id == null)
+            {
+                room.Player1Id = userId;
+            }
+            else if (room.Player2Id==null)
+            {
+                room.Player2Id = userId;
+            }
+            else
             {
                 //Room is full or does not exist
                 throw new ArgumentException();
             }
-            user.Room = room;
             if (room.FirstPlayerName==null)
             {
                 //Here if the new join user is first
-                room.FirstPlayerName = user.UserName;
+                room.FirstPlayerName = username;
             }
-            repoUser.Update(user);
-            await repoRoom.SaveChangesAsync();
+            repo.Update(room);
+            await repo.SaveChangesAsync();
         }
 
         public async Task ClearBoard(string userId,string username)
         {
             //var room = await GetRoomWithUsers(await GetRoomId(userId));
-            var room = await repoUser.GetAll()
-                .Where(u => u.Id == userId)
-                .Include(u=>u.Room)
-                .ThenInclude(r=>r.Users)
-                .Select(u =>u.Room)
+            var room = await repo.GetAll()
+                .Where(r => r.Player1Id == userId || r.Player2Id == userId)
+                .Include(r=>r.Player1)
+                .Include(r=>r.Player2)
                 .FirstOrDefaultAsync();
             //Swap first turns
-            if (room.Users.Count()<=1)
+            if (room.Player1Id==null || room.Player2Id==null)
             {
                 //Here if oponent is ai or the room is not full
                 room.FirstPlayerName=room.FirstPlayerName!=null?null:username;
             }
             else
             {
-                room.FirstPlayerName = room.Users.FirstOrDefault(r => r.UserName != room.FirstPlayerName).UserName;
+                room.FirstPlayerName = room.Player1.UserName==room.FirstPlayerName?room.Player2.UserName:room.Player1.UserName;
             }
             room.FirstPlayerTurn=true;
             room.BoardString =room.BoardString.Length==9?"000000000":new string('0',6*7);
-            repoRoom.Update(room);
-            await repoRoom.SaveChangesAsync();
+            repo.Update(room);
+            await repo.SaveChangesAsync();
         }
 
         public async Task<string> GetUserBoard(string userId) 
-            => await repoUser.GetAll()
-            .Where(u=>u.Id==userId)
-            .Select(u=>u.Room.BoardString)
+            => await repo.GetAll()
+            .Where(r => r.Player1Id == userId || r.Player2Id == userId)
+            .Select(r=>r.BoardString)
             .FirstOrDefaultAsync();
 
         public async Task<int> GetTurn(string userId) 
-            =>await repoUser.GetAll()
-            .Where(u=>u.Id==userId)
-            .Select(u=>u.Room.FirstPlayerTurn)
+            =>await repo.GetAll()
+            .Where(r => r.Player1Id == userId || r.Player2Id == userId)
+            .Select(r=>r.FirstPlayerTurn)
             .FirstOrDefaultAsync() ? 1 : -1;
 
         public async Task<IEnumerable<RoomsServiceModel>> GetAvailableRooms(string game, int count, int page) 
-            => await repoRoom.GetAll()
-                .Where(r => r.Users.Count() < 2 && !r.Private && game != null ? game == r.GameName : true)
+            => await repo.GetAll()
+                .Include(r=>r.Player1)
+                .Include(r=>r.Player2)
+                .Where(r => !r.Private && (game != null ? game == r.GameName : true) && (r.Player1Id == null || r.Player2Id == null))//&& (r.Player1Id==null || r.Player2Id == null)
                 .Skip(count * page)
                 .Take(count)
                 .Select(r => new RoomsServiceModel
@@ -137,22 +153,22 @@ namespace OnlineGames.Services
                     Capacity = 2,
                     Players = 1,
                     GameName = r.GameName,
-                    UserName = r.Users.First().UserName,
+                    UserName = r.Player1==null?r.Player2.UserName:r.Player1.UserName,
                     RoomId = r.Id,
                     First = r.FirstPlayerName == null
                 }).ToListAsync();
 
         public async Task<string> GetRoomId(string userId) 
-            =>await repoUser.GetAll()
-            .Where(u=>u.Id==userId)
-            .Select(u=>u.RoomId)
+            =>await repo.GetAll()
+            .Where(r => r.Player1Id == userId || r.Player2Id == userId)
+            .Select(r=>r.Id)
             .FirstOrDefaultAsync();
 
         public async Task UpdateBoard(Room room)
         {
             room.FirstPlayerTurn = !room.FirstPlayerTurn;
-            repoRoom.Update(room);
-            await repoRoom.SaveChangesAsync();
+            repo.Update(room);
+            await repo.SaveChangesAsync();
         }
     }
 }

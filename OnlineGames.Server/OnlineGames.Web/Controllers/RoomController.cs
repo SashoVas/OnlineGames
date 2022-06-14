@@ -27,7 +27,7 @@ namespace OnlineGames.Web.Controllers
                     return this.BadRequest();
             }
             roomId = await this.roomService.CreateRoom(this.User.Identity.Name, false, input.Game, board);
-            await this.roomService.SetRoomToUser(GetUserId(), roomId);
+            await this.roomService.SetRoomToUser(GetUserId(), roomId,User.Identity.Name);
             return Created(nameof(this.Created),new
             {
                 RoomId = roomId
@@ -39,7 +39,7 @@ namespace OnlineGames.Web.Controllers
         {
             try
             {
-                await this.roomService.SetRoomToUser(GetUserId(), input.RoomId);
+                await this.roomService.SetRoomToUser(GetUserId(), input.RoomId,User.Identity.Name);
                 return Ok(new {RoomId=input.RoomId });
             }
             catch (Exception)
