@@ -8,12 +8,12 @@ namespace OnlineGames.Services
 {
     public class MessageService : IMessageService
     {
-        private readonly OnlineGamesDbContext dbContext;
-        public MessageService(OnlineGamesDbContext dbContext) 
-            => this.dbContext = dbContext;
+        private readonly IRepository<Message> repo;
+        public MessageService(IRepository<Message> messageRepository) 
+            => this.repo = messageRepository;
 
         public async Task<IEnumerable<MessageServiceModel>> GetMessages(string userId, string friendId,int page)
-            => await dbContext.Messages
+            => await repo.GetAll()
                 .Where(m => (m.FriendChat.User1Id == userId && m.FriendChat.User2Id==friendId)
                 ||(m.FriendChat.User2Id == userId && m.FriendChat.User1Id == friendId))
                 .OrderByDescending(m=>m.PostedOn)
@@ -36,8 +36,8 @@ namespace OnlineGames.Services
                 RoomChatId=!isName?roomId:null,
                 FriendChatId=isName?roomId:null
             };
-            await dbContext.Messages.AddAsync(message);
-            await dbContext.SaveChangesAsync();
+            await repo.AddAsync(message);
+            await repo.SaveChangesAsync();
             return new MessageServiceModel
             {
                 Contents=contents,

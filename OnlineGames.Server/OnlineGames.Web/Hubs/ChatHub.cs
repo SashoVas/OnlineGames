@@ -8,11 +8,13 @@ namespace OnlineGames.Web.Hubs
     public class ChatHub:Hub
     {
         private readonly IMessageService messageService;
-        private readonly IFriendService userService;
-        public ChatHub(IMessageService messageService, IFriendService userService)
+        private readonly IUserService userService;
+        private readonly IFriendService friendService;
+        public ChatHub(IMessageService messageService, IUserService userService, IFriendService friendService)
         {
             this.messageService = messageService;
             this.userService = userService;
+            this.friendService = friendService;
         }
         public async Task JoinGroup(MessageJoinGroupInputModel input)
         {
@@ -36,7 +38,7 @@ namespace OnlineGames.Web.Hubs
             if (input.IsName)
             {
                 //here if the chat is with friend
-                var group = await userService.GetFriendId(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.Id);
+                var group = await friendService.GetFriendId(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.Id);
                 if (group == null)
                 {
                     throw new ArgumentException();

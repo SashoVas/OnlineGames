@@ -66,6 +66,7 @@ namespace OnlineGames.Web.Infrastructure
         }
         public static void AddServices(this WebApplicationBuilder builder)
         {
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             builder.Services.AddTransient<ITicTacToeService, TicTacToeService>();
             builder.Services.AddTransient<IConnect4Service, Connect4Service>();
             builder.Services.AddTransient<IIdentityService, IdentityService>();

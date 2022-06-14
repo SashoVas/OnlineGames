@@ -12,7 +12,7 @@ export class EditProfileComponent implements OnInit {
   @Input()userName!:string;
   @Input()description!:string;
   @Input()imgUrl!:string;
-  @Output()updateUserEventEmitter=new EventEmitter();
+  @Output()updateUserEventEmitter=new EventEmitter<any>();
   constructor(private fb:FormBuilder,private userService:UserService) { }
 
   ngOnInit(): void {

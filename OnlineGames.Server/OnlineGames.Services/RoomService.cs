@@ -8,13 +8,17 @@ namespace OnlineGames.Services
 {
     public class RoomService : IRoomService
     {
-        private readonly OnlineGamesDbContext dbContext;
-        public RoomService(OnlineGamesDbContext dbContext) 
-            => this.dbContext = dbContext;
+        private readonly IRepository<Room> repoRoom;
+        private readonly IRepository<User> repoUser;
+        public RoomService(IRepository<Room> repoRoom, IRepository<User> repoUser)
+        {
+            this.repoRoom = repoRoom;
+            this.repoUser = repoUser;
+        }
+
         public async Task<Room>GetRoomByUserId(string userId)
         {
-            var result = await dbContext
-                .Users
+            var result = await repoUser.GetAll()
                 .Where(u => u.Id == userId)
                 .Select(u => u.Room)
                 .FirstOrDefaultAsync();
@@ -34,15 +38,15 @@ namespace OnlineGames.Services
                 Private = isPrivate,
                 GameName = gameName
             };
-            await dbContext.Rooms.AddAsync(room);
-            await dbContext.SaveChangesAsync();
+            await repoRoom.AddAsync(room);
+            await repoRoom.SaveChangesAsync();
             return room.Id;
         }
 
         public async Task RemoveRoom(string userId)
         {
 
-            var result = await dbContext.Users
+            var result = await repoUser.GetAll()
                 .Where(u => u.Id == userId)
                 .Select(u => new
                 {
@@ -60,16 +64,16 @@ namespace OnlineGames.Services
             if (result.Room.Users.Count()==1)
             {
                 //The room is empty so we remove it
-                dbContext.Rooms.Remove(result.Room);
+                repoRoom.Remove(result.Room);
             }
-            dbContext.Users.Update(result.User);
-            await dbContext.SaveChangesAsync();
+            repoUser.Update(result.User);
+            await repoRoom.SaveChangesAsync();
         }
 
         public async Task SetRoomToUser(string userId, string roomId)
         {
-            var user = await dbContext.Users.FirstOrDefaultAsync(u=>u.Id==userId);
-            var room = await dbContext.Rooms.Include(r=>r.Users).FirstOrDefaultAsync(r => r.Id == roomId);
+            var user = await repoUser.GetAll().FirstOrDefaultAsync(u=>u.Id==userId);
+            var room = await repoRoom.GetAll().Include(r=>r.Users).FirstOrDefaultAsync(r => r.Id == roomId);
 
             if (room.Users.Count>=2)
             {
@@ -82,14 +86,14 @@ namespace OnlineGames.Services
                 //Here if the new join user is first
                 room.FirstPlayerName = user.UserName;
             }
-            dbContext.Users.Update(user);
-            await dbContext.SaveChangesAsync();
+            repoUser.Update(user);
+            await repoRoom.SaveChangesAsync();
         }
 
         public async Task ClearBoard(string userId,string username)
         {
             //var room = await GetRoomWithUsers(await GetRoomId(userId));
-            var room = await dbContext.Users
+            var room = await repoUser.GetAll()
                 .Where(u => u.Id == userId)
                 .Include(u=>u.Room)
                 .ThenInclude(r=>r.Users)
@@ -107,24 +111,24 @@ namespace OnlineGames.Services
             }
             room.FirstPlayerTurn=true;
             room.BoardString =room.BoardString.Length==9?"000000000":new string('0',6*7);
-            dbContext.Rooms.Update(room);
-            await dbContext.SaveChangesAsync();
+            repoRoom.Update(room);
+            await repoRoom.SaveChangesAsync();
         }
 
         public async Task<string> GetUserBoard(string userId) 
-            => await dbContext.Users
+            => await repoUser.GetAll()
             .Where(u=>u.Id==userId)
             .Select(u=>u.Room.BoardString)
             .FirstOrDefaultAsync();
 
         public async Task<int> GetTurn(string userId) 
-            =>await dbContext.Users
+            =>await repoUser.GetAll()
             .Where(u=>u.Id==userId)
             .Select(u=>u.Room.FirstPlayerTurn)
             .FirstOrDefaultAsync() ? 1 : -1;
 
         public async Task<IEnumerable<RoomsServiceModel>> GetAvailableRooms(string game, int count, int page) 
-            => await dbContext.Rooms
+            => await repoRoom.GetAll()
                 .Where(r => r.Users.Count() < 2 && !r.Private && game != null ? game == r.GameName : true)
                 .Skip(count * page)
                 .Take(count)
@@ -139,7 +143,7 @@ namespace OnlineGames.Services
                 }).ToListAsync();
 
         public async Task<string> GetRoomId(string userId) 
-            =>await dbContext.Users
+            =>await repoUser.GetAll()
             .Where(u=>u.Id==userId)
             .Select(u=>u.RoomId)
             .FirstOrDefaultAsync();
@@ -147,8 +151,8 @@ namespace OnlineGames.Services
         public async Task UpdateBoard(Room room)
         {
             room.FirstPlayerTurn = !room.FirstPlayerTurn;
-            dbContext.Rooms.Update(room);
-            await dbContext.SaveChangesAsync();
+            repoRoom.Update(room);
+            await repoRoom.SaveChangesAsync();
         }
     }
 }

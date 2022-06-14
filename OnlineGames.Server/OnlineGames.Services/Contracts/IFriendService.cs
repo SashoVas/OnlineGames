@@ -9,7 +9,6 @@ namespace OnlineGames.Services.Contracts
         Task<bool> AcceptFriendRequest(string userId,string friendId);
         Task<bool> FriendExist(string userId, string friendUserName);
         Task<string> GetFriendId(string userId, string friendId);
-        Task<bool> IsUserInRoom(string userId,string roomId);
         Task<bool> DeleteFriend(string userId,string friendId);
     }
 }

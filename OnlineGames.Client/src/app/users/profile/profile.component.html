@@ -23,4 +23,4 @@
     </div>
     <div class="col-lg-3"></div>
 </div>
-<app-edit-profile (updateUser)="updateUser($event)" [userName]="user.username" [description]="user.description" [imgUrl]="user.imgUrl" ></app-edit-profile>
+<app-edit-profile (updateUserEventEmitter)="updateUser($event)" [userName]="user.username" [description]="user.description" [imgUrl]="user.imgUrl" ></app-edit-profile>

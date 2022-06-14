@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineGames.Data;
+using OnlineGames.Data.Models;
 using OnlineGames.Services.Contracts;
 using OnlineGames.Services.Models.User;
 
@@ -7,11 +8,11 @@ namespace OnlineGames.Services
 {
     public class UserService : IUserService
     {
-        private OnlineGamesDbContext dbContext;
-        public UserService(OnlineGamesDbContext dbContext) 
-            => this.dbContext = dbContext;
+        private readonly IRepository<User> repo;
+        public UserService(IRepository<User> repo) 
+            => this.repo = repo;
         public async Task<UserServiceModel> GetUser(string name) 
-            => await dbContext.Users
+            => await repo.GetAll()
                 .Where(u => u.UserName == name)
                 .Select(u => new UserServiceModel
                 {
@@ -23,14 +24,14 @@ namespace OnlineGames.Services
 
         public async Task<UserServiceModel> UpdateUser(string id, string descripiton, string imgUrl, string userName)
         {
-            var user =await dbContext.Users
+            var user =await repo.GetAll()
                 .Where(u => u.Id == id)
                 .FirstOrDefaultAsync();
             user.UserName = userName;
             user.Description = descripiton;
             user.ImgUrl = imgUrl;
-            dbContext.Update(user);
-            await dbContext.SaveChangesAsync();
+            repo.Update(user);
+            await repo.SaveChangesAsync();
             return new UserServiceModel
             {
                 ImgUrl = user.ImgUrl,
@@ -39,5 +40,9 @@ namespace OnlineGames.Services
                 Username=user.UserName
             };
         }
+
+        public async Task<bool> IsUserInRoom(string userId, string roomId)
+            => await repo.GetAll()
+                .AnyAsync(u => u.Id == userId && u.RoomId == roomId);
     }
 }

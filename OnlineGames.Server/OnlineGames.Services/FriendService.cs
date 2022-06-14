@@ -8,13 +8,17 @@ namespace OnlineGames.Services
 {
     public class FriendService : IFriendService
     {
-        private readonly OnlineGamesDbContext dbContext;
-        public FriendService(OnlineGamesDbContext dbContext) 
-            => this.dbContext = dbContext;
+        private readonly IRepository<Friend> repoFriend;
+        private readonly IRepository<User> repoUser;
+        public FriendService(IRepository<Friend> repoFriend, IRepository<User> repoUser)
+        {
+            this.repoFriend = repoFriend;
+            this.repoUser = repoUser;
+        }
+
         public async Task<bool> AcceptFriendRequest(string userId, string friendId)
         {
-            var friend =await dbContext
-                .Friends
+            var friend =await repoFriend.GetAll()
                 .Where(f => f.User1Id==friendId && f.User2Id == userId)
                 .FirstOrDefaultAsync();
 
@@ -22,14 +26,14 @@ namespace OnlineGames.Services
                 return false;
 
             friend.Accepted = true;
-            dbContext.Update(friend);
-            await dbContext.SaveChangesAsync();
+            repoFriend.Update(friend);
+            await repoFriend.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> DeleteFriend(string userId, string friendId)
         {
-            var friend= await dbContext.Friends
+            var friend= await repoFriend.GetAll()
                 .Where(f => (f.User1Id == userId && f.User2Id == friendId)
                 || (f.User2Id == userId && f.User1Id == friendId))
                 .Select(f => new Friend
@@ -40,25 +44,25 @@ namespace OnlineGames.Services
             {
                 return false;
             }
-            dbContext.Friends.Remove(friend);
-            await dbContext.SaveChangesAsync();
+            repoFriend.Remove(friend);
+            await repoFriend.SaveChangesAsync();
             return true;
         }
 
         public async Task<bool> FriendExist(string userId, string friendUserName)
-        => await dbContext.Friends
+        => await repoFriend.GetAll()
             .AnyAsync(f => (f.User1Id == userId && f.User2.UserName == friendUserName)
             || (f.User2Id == userId && f.User1.UserName == friendUserName));
 
         public async Task<string> GetFriendId(string userId, string friendId)
-        => await dbContext.Friends
+        => await repoFriend.GetAll()
             .Where(f => (f.User1Id == userId && f.User2Id==friendId)
             || (f.User2Id == userId && f.User1Id==friendId))
             .Select(f => f.Id)
             .FirstOrDefaultAsync();
 
         public async Task<IEnumerable<FriendServiceModel>> GetFriends(string userId) 
-            => await dbContext.Friends
+            => await repoFriend.GetAll()
                 .Where(f => (f.User1Id == userId && f.Accepted) || f.User2Id == userId)
                 .OrderByDescending(f=>f.Accepted)
                 .Select(f => new FriendServiceModel
@@ -68,14 +72,10 @@ namespace OnlineGames.Services
                     Id= f.User1Id == userId ? f.User2Id : f.User1Id,
                 })
                 .ToListAsync();
-        
-        public async Task<bool> IsUserInRoom(string userId, string roomId) 
-            => await dbContext.Users
-                .AnyAsync(u => u.Id == userId && u.RoomId == roomId);
 
         public async Task<string> SendFriendRequest(string userId,string friendUserName)
         {
-            var friendId=await dbContext.Users
+            var friendId=await repoUser.GetAll()
                 .Where(u=>u.UserName== friendUserName)
                 .Select(u=>u.Id)
                 .FirstOrDefaultAsync();
@@ -89,8 +89,8 @@ namespace OnlineGames.Services
                 User2Id = friendId,
                 Accepted = false,
             };
-            dbContext.Friends.Add(friend);
-            await dbContext.SaveChangesAsync();
+            await repoFriend.AddAsync(friend);
+            await repoFriend.SaveChangesAsync();
             return friend.Id;
         }
     }
