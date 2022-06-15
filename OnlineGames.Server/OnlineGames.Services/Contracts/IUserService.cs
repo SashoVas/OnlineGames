@@ -7,5 +7,6 @@ namespace OnlineGames.Services.Contracts
         Task<UserServiceModel> GetUser(string name);
         Task<UserServiceModel> UpdateUser(string id,string descripiton,string imgUrl,string userName);
         Task<bool> IsUserInRoom(string userId, string roomId);
+        Task<string> GetUserIdFromName(string name);
     }
 }

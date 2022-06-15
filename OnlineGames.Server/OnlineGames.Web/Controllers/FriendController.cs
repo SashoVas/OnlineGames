@@ -11,7 +11,7 @@ namespace OnlineGames.Web.Controllers
         public FriendController(IFriendService friendService) 
             => this.friendService = friendService;
         [HttpPost]
-        public async Task<ActionResult> AddFriend(SendFriendRequestInputModel input)
+        public async Task<ActionResult<object>> AddFriend(SendFriendRequestInputModel input)
         {
             if (!ModelState.IsValid ||await friendService.FriendExist(GetUserId(),input.FriendUserName))
             {
@@ -20,7 +20,7 @@ namespace OnlineGames.Web.Controllers
             try
             {
                 var id = await friendService.SendFriendRequest(GetUserId(), input.FriendUserName);
-                return Created(nameof(this.Created),id);
+                return Created(nameof(AddFriend),new { Id=id });
             }
             catch (ArgumentException)
             {

@@ -6,6 +6,7 @@ using OnlineGames.Data;
 using OnlineGames.Data.Models;
 using OnlineGames.Services;
 using OnlineGames.Services.Contracts;
+using OnlineGames.Web.Hubs;
 using System.Text;
 
 namespace OnlineGames.Web.Infrastructure
@@ -91,6 +92,12 @@ namespace OnlineGames.Web.Infrastructure
             var appSettingsSection = builder.Configuration.GetSection("AppSettings");
             builder.Services.Configure<AppSettings>(appSettingsSection);
             return appSettingsSection.Get<AppSettings>();
+        }
+        public static void AddHubs(this WebApplication app)
+        {
+            app.MapHub<TicTacToeHub>("/TicTacToe");
+            app.MapHub<Connect4Hub>("/Connect4");
+            app.MapHub<ChatHub>("/Chat");
         }
     }
 }

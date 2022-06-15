@@ -9,10 +9,8 @@ namespace OnlineGames.Services
     public class RoomService : IRoomService
     {
         private readonly IRepository<Room> repo;
-        public RoomService(IRepository<Room> repo)
-        {
-            this.repo = repo;
-        }
+        public RoomService(IRepository<Room> repo) 
+            => this.repo = repo;
 
         public async Task<Room>GetRoomByUserId(string userId)
         {
@@ -50,15 +48,13 @@ namespace OnlineGames.Services
                     UserName = userId==r.Player1Id?r.Player1.UserName:r.Player2.UserName,
                     Room = r
                 }).FirstOrDefaultAsync();
-
+            //Remove user from room
             if (result.Room.Player1Id==userId)
             {
-                result.Room.Player1 = null;
                 result.Room.Player1Id=null;
             }
             else
             {
-                result.Room.Player2 = null;
                 result.Room.Player2Id = null;
             }
             if (result.Room.FirstPlayerName== result.UserName)
@@ -66,13 +62,14 @@ namespace OnlineGames.Services
                 //The player that leves the room is first, so we set it to null
                 result.Room.FirstPlayerName = null;
             }
-            if (result.Room.Player1==null && result.Room.Player2==null)
+            if (result.Room.Player1Id==null && result.Room.Player2Id==null)
             {
                 //The room is empty so we remove it
                 repo.Remove(result.Room);
             }
             else
             {
+                //Else we update it
                 repo.Update(result.Room);
             }
             await repo.SaveChangesAsync();
@@ -107,7 +104,6 @@ namespace OnlineGames.Services
 
         public async Task ClearBoard(string userId,string username)
         {
-            //var room = await GetRoomWithUsers(await GetRoomId(userId));
             var room = await repo.GetAll()
                 .Where(r => r.Player1Id == userId || r.Player2Id == userId)
                 .Include(r=>r.Player1)
@@ -124,7 +120,7 @@ namespace OnlineGames.Services
                 room.FirstPlayerName = room.Player1.UserName==room.FirstPlayerName?room.Player2.UserName:room.Player1.UserName;
             }
             room.FirstPlayerTurn=true;
-            room.BoardString =room.BoardString.Length==9?"000000000":new string('0',6*7);
+            room.BoardString =new string('0',room.BoardString.Length);
             repo.Update(room);
             await repo.SaveChangesAsync();
         }

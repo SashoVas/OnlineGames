@@ -44,5 +44,11 @@ namespace OnlineGames.Services
         public async Task<bool> IsUserInRoom(string userId, string roomId)
             => await repo.GetAll()
                 .AnyAsync(u => u.Id == userId && (u.Room1!=null || u.Room2!=null));
+
+        public async Task<string> GetUserIdFromName(string name) 
+            => await repo.GetAll()
+                .Where(u => u.UserName == name)
+                .Select(u => u.Id)
+                .FirstOrDefaultAsync();
     }
 }

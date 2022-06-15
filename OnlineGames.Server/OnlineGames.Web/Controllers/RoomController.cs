@@ -13,6 +13,10 @@ namespace OnlineGames.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<object>> CreateRoom(CreateRoomInputModel input)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             string roomId;
             int board;
             switch (input.Game)
@@ -35,8 +39,12 @@ namespace OnlineGames.Web.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<object>>AddToRoom([FromBody] AddToRoomInputModel input)
+        public async Task<ActionResult<object>>AddToRoom(AddToRoomInputModel input)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             try
             {
                 await this.roomService.SetRoomToUser(GetUserId(), input.RoomId,User.Identity.Name);
@@ -51,6 +59,10 @@ namespace OnlineGames.Web.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RoomsServiceModel>>>GetRooms([FromQuery]GetRoomsInputModel input)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             return Ok( await this.roomService.GetAvailableRooms(input.Game=="null"?null: input.Game,input.Count,input.Page));
         }
     }

@@ -6,16 +6,16 @@
                 <div class="bg-danger baner p-3 d-flex justify-content-around">
                     <img *ngIf="user.imgUrl" src="{{user.imgUrl}}"  class="img-fluid rounded-circle" >
                     <div class="align-self-center ">
-                        <h3>{{user.username}} <a data-bs-toggle="modal" data-bs-target="#editModal" *ngIf="user.isMe"><small >edit</small></a></h3>
+                        <h3>{{user.username}} <a data-bs-toggle="modal" data-bs-target="#editModal" *ngIf="user.isMe"><small class="pointer" >edit</small></a></h3>
                     </div>
                 </div>
                 <div class="p-3">
                     <div>
-                        <h5>Description <a  data-bs-toggle="modal" data-bs-target="#editModal" *ngIf="user.isMe"><small >edit</small></a></h5>
+                        <h5>Description <a  data-bs-toggle="modal" data-bs-target="#editModal" *ngIf="user.isMe"><small class="pointer">edit</small></a></h5>
                         <p>{{user.description}}</p>
                     </div>
                     <div>
-                        <h5>Actions <a data-bs-toggle="modal" data-bs-target="#editModal" *ngIf="user.isMe"><small >edit</small></a></h5>
+                        <h5>Actions <a data-bs-toggle="modal" data-bs-target="#editModal" *ngIf="user.isMe"><small class="pointer">edit</small></a></h5>
                     </div>
                 </div>
             </div>

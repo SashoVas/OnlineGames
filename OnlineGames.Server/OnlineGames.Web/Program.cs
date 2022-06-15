@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineGames.Data;
-using OnlineGames.Web.Hubs;
 using OnlineGames.Web.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,17 +30,10 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-
 app.UseHttpsRedirection();
-
 app.UseCors("CorsPolicy");
-
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.MapHub<TicTacToeHub>("/TicTacToe");
-app.MapHub<Connect4Hub>("/Connect4");
-app.MapHub<ChatHub>("/Chat");
+app.AddHubs();
 app.MapControllers();
-
 app.Run();
