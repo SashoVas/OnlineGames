@@ -1,13 +1,17 @@
 <div class="row">
     <div class="col-lg-2"></div>
     <div class="col-lg-8">
-        <div class="grid-container">   
-            <div routerLink="/home/games" class="games grid-item">Games</div>
-            <div routerLink="/home/rooms" class="rooms grid-item">Rooms</div>
-            <div routerLink="/users/profile" class="profile grid-item">Profile</div>
-            <div routerLink="/users/friends" class="friends grid-item">Friends</div>
-            <div class="notifications grid-item">Notifications</div>
-            <div class="settings grid-item">Settings</div>
+        <div *ngIf="isLoged" class="grid-container">   
+            <div routerLink="/home/games" class="games grid-item pointer">Games</div>
+            <div routerLink="/home/rooms" class="rooms grid-item pointer">Rooms</div>
+            <div routerLink="/users/profile" class="profile grid-item pointer">Profile</div>
+            <div routerLink="/users/friends" class="friends grid-item pointer">Friends</div>
+            <div routerLink="/home/notifications" class="notifications grid-item pointer">Notifications</div>
+            <div class="settings grid-item pointer">Settings</div>
+        </div>
+        <div class="grid-container" *ngIf="!isLoged">
+            <div routerLink="/identity/login" class="grid-item pointer login">Login</div>
+            <div routerLink="/identity/register" class="grid-item pointer register">Register</div>
         </div>
     </div>
     <div class="col-lg-2"></div>

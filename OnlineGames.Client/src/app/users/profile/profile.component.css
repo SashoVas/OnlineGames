@@ -6,14 +6,15 @@
 }
 
 img{
-    width: 75px;
-    height: 75px;
+    width: 150px;
+    height: 150px;
 }
 
 .baner{
     border-radius: 25px 25px 0 0;
     width: 100%;
     margin: 0;
+    height: 200px;
 }
 
 small{
@@ -22,4 +23,7 @@ small{
 
 .pointer {
     cursor: pointer;
+}
+.multy-line{
+    white-space: pre-wrap;
 }

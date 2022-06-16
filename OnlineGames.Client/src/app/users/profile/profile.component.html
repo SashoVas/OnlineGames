@@ -5,14 +5,15 @@
             <div class="profile p-0">
                 <div class="bg-danger baner p-3 d-flex justify-content-around">
                     <img *ngIf="user.imgUrl" src="{{user.imgUrl}}"  class="img-fluid rounded-circle" >
+                    <img *ngIf="!user.imgUrl" src="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/user.png"  class="img-fluid rounded-circle" >
                     <div class="align-self-center ">
                         <h3>{{user.username}} <a data-bs-toggle="modal" data-bs-target="#editModal" *ngIf="user.isMe"><small class="pointer" >edit</small></a></h3>
                     </div>
                 </div>
                 <div class="p-3">
                     <div>
-                        <h5>Description <a  data-bs-toggle="modal" data-bs-target="#editModal" *ngIf="user.isMe"><small class="pointer">edit</small></a></h5>
-                        <p>{{user.description}}</p>
+                        <h5 >Description <a data-bs-toggle="modal" data-bs-target="#editModal" *ngIf="user.isMe"><small class="pointer">edit</small></a></h5>
+                        <p class="multy-line">{{user.description}}</p>
                     </div>
                     <div>
                         <h5>Actions <a data-bs-toggle="modal" data-bs-target="#editModal" *ngIf="user.isMe"><small class="pointer">edit</small></a></h5>
