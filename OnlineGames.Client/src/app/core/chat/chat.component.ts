@@ -30,19 +30,26 @@ export class ChatComponent implements OnInit {
     {
       this.messages=[];
       this.page=0;
+      this.messageSignalRService.changeGroup(friendUserName['id'],this.roomId);
       this.roomId=friendUserName['id'];
-      this.messageSignalRService.changeGroup(this.roomId,this.isFriend);
-      this.getMessages();
+      this.getMessages();      
     })
     this.messageSignalRService.joinGroup(this.roomId,this.isFriend);
-    this.messageSignalRService.receiveMessage((message:IMessage)=> this.messages=[message].concat(this.messages));
+    this.messageSignalRService.receiveMessage((message:IMessage)=> {
+      this.messages=[message].concat(this.messages)
+      this.messageSignalRService.readMessage(this.messages[0]['messageId']);
+    });
     if(this.isFriend)
     {
       this.getMessages();
     }
+    
   }
   getMessages(){
-    return this.messageService.getMessages(this.page,this.roomId).subscribe(data=>this.messages=this.messages.concat(data));
+    return this.messageService.getMessages(this.page,this.roomId).subscribe(data=>{
+      this.messages=this.messages.concat(data)
+      this.messageSignalRService.readMessage(this.messages[0]['messageId']);
+    });
   }
   sendMessage(){
     if(this.messageForm.valid && this.messageForm.value['contents']!=null)

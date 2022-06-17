@@ -8,12 +8,11 @@ import { HomeRoutingModule } from './home-routing.module';
 import { RoomsItemComponent } from './rooms-item/rooms-item.component';
 import { GamesComponent } from './games/games.component';
 import { RoomsComponent } from './rooms/rooms.component';
-import { NotificationsComponent } from './notifications/notifications.component';
 
 
 
 @NgModule({
-  declarations: [LandingComponent, RoomsItemComponent, GamesComponent, RoomsComponent, NotificationsComponent],
+  declarations: [LandingComponent, RoomsItemComponent, GamesComponent, RoomsComponent],
   imports: [
     CommonModule,
     RouterModule,

@@ -16,39 +16,54 @@ namespace OnlineGames.Web.Hubs
             this.userService = userService;
             this.friendService = friendService;
         }
-        public async Task JoinGroup(MessageJoinGroupInputModel input)
-        {
-            await ValidateInput(input);
-            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, input.Id);
-        }
-        public async Task ChangeGroup(MessageJoinGroupInputModel input)
-        {
-            await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, input.Id);
-            await this.JoinGroup(input);
-        }
-        public async Task SendMessage(SendMessageInputModel input)
-        {
-            await ValidateInput(input);
-            var message =await this.messageService.SendMessageToChat(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.Id, input.Contents,input.IsName);
-            message.UserName = this.Context.User.Identity.Name;
-            await this.Clients.Group(input.Id).SendAsync("ReceiveMessage",message);
-        }
         private async Task ValidateInput(MessageJoinGroupInputModel input)
         {
             if (input.IsName)
             {
                 //here if the chat is with friend
-                var group = await friendService.GetFriendId(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.Id);
+                var group = await friendService.GetFriendId(GetUserId(), input.Id);
                 if (group == null)
                 {
                     throw new ArgumentException();
                 }
                 input.Id = group;
             }
-            else if (!await userService.IsUserInRoom(this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier), input.Id))
+            else if (!await userService.IsUserInRoom(GetUserId(), input.Id))
             {
                 throw new ArgumentException();
             }
         }
+
+        private string GetUserId()
+            => this.Context.User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        public async Task JoinGroup(MessageJoinGroupInputModel input)
+        {
+            await ValidateInput(input);
+            await this.Groups.AddToGroupAsync(this.Context.ConnectionId, input.Id);
+        }
+
+        public async Task ChangeGroup(ChangeGroupInputModel input)
+        {
+            var odlGroup = await friendService.GetFriendId(GetUserId(), input.OldFriendName);
+            await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, odlGroup);
+            await this.JoinGroup(new MessageJoinGroupInputModel 
+            { 
+                Id=input.FriendName,
+                IsName=true
+            });
+        }
+
+        public async Task SendMessage(SendMessageInputModel input)
+        {
+            await ValidateInput(input);
+            var message =await this.messageService.SendMessageToChat(GetUserId(), input.Id, input.Contents,input.IsName);
+            message.UserName = this.Context.User.Identity.Name;
+            await this.Clients.Group(input.Id).SendAsync("ReceiveMessage",message);
+        }
+
+        //Here when user see new message
+        public async Task ReadMessage(ReadMessageInputModel input) 
+            => await messageService.ReadMessage(GetUserId(), input.MessageId);
     }
 }

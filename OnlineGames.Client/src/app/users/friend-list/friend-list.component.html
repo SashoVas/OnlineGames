@@ -1,6 +1,6 @@
 <div class="overflow-auto friends-list text-center p-3 pt-0">
     <div class="list-group" role="tablist" >
-        <a aria-controls="list-home" role="tab" data-bs-toggle="list" id="list-home-list" *ngFor="let friend of friends;index as i " class="{{i==0?'active':''}} nav-link text-light btn {{friend['accepted']? 'btn-outline-primary':'btn-outline-warning'}} border-0" (click)="friend['accepted'] && changeFriendClick(friend['id'])">
+        <a aria-controls="list-home" role="tab" data-bs-toggle="list" id="list-home-list" *ngFor="let friend of friends;index as i " class="{{i==0?'active':''}} nav-link text-light btn {{friend['accepted']? 'btn-outline-primary':'btn-outline-warning'}} border-0" (click)="friend['accepted'] && changeFriendClick(friend['id'],friend['userName'])">
             {{friend["userName"]}}
             <br *ngIf="!friend['accepted']">
             <a  *ngIf="!friend['accepted']" class="btn btn-outline-success" (click)="acceptFriend(friend['id'])">Accept</a>

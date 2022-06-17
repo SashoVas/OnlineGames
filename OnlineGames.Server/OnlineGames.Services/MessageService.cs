@@ -23,8 +23,24 @@ namespace OnlineGames.Services
                 {
                     Contents = m.Contents,
                     PostedOn = m.PostedOn.ToString("dd/MM,yyyy"),
-                    UserName=m.Sender.UserName
+                    UserName=m.Sender.UserName,
+                    MessageId=m.Id
                 }).ToListAsync();
+
+        public async Task<bool> ReadMessage(string userId,string messageId)
+        {
+            var friend = await repo.GetAll()
+                .Where(m => m.Id == messageId && m.SenderId!=userId)
+                .FirstOrDefaultAsync();
+            if (friend == null)
+            {
+                return false;
+            }
+            friend.Seen = true;
+            repo.Update(friend);
+            await repo.SaveChangesAsync();
+            return true;
+        }
 
         public async Task<MessageServiceModel> SendMessageToChat(string userId, string roomId, string contents,bool isName)
         {
@@ -41,7 +57,8 @@ namespace OnlineGames.Services
             return new MessageServiceModel
             {
                 Contents=contents,
-                PostedOn=message.PostedOn.ToString("dd/MM/yyyy")
+                PostedOn=message.PostedOn.ToString("dd/MM/yyyy"),
+                MessageId=message.Id
             };
         }
     }

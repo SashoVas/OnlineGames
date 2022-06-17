@@ -6,5 +6,6 @@ namespace OnlineGames.Services.Contracts
     {
         Task<MessageServiceModel> SendMessageToChat(string userId, string roomId, string contents,bool isName);
         Task<IEnumerable<MessageServiceModel>> GetMessages(string userId, string friendId,int page);
+        Task<bool> ReadMessage(string userId,string messageId);
     }
 }

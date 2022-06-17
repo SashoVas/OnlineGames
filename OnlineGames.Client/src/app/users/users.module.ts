@@ -8,6 +8,7 @@ import { AddFriendComponent } from './add-friend/add-friend.component';
 import { ProfileComponent } from './profile/profile.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 
 
@@ -17,7 +18,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     FriendListComponent,
     AddFriendComponent,
     ProfileComponent,
-    EditProfileComponent
+    EditProfileComponent,
+    NotificationsComponent
   ],
   imports: [
     CommonModule,

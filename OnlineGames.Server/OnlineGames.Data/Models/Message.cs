@@ -11,6 +11,7 @@ namespace OnlineGames.Data.Models
         [Required()]
         [MaxLength(300)]
         public string Contents { get; set; }
+        public bool Seen { get; set; } = false;
         public string? FriendChatId { get; set; }
         public Friend? FriendChat { get; set; }
         public string? RoomChatId { get; set; }

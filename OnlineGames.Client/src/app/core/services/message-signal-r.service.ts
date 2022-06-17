@@ -36,10 +36,13 @@ export class MessageSignalRService {
   public joinGroup(groupName:string,isName:boolean){
     this.hubConnection.invoke("JoinGroup",{id:groupName,isName});
   }
- public receiveMessage(func:(message:IMessage)=>void){
+  public receiveMessage(func:(message:IMessage)=>void){
     this.hubConnection.on("ReceiveMessage",func);
   }
-  public changeGroup(groupName:string,isName:boolean){
-    this.hubConnection.invoke("ChangeGroup",{id:groupName,isName});
+  public changeGroup(friendName:string,oldFriendName:string){
+    this.hubConnection.invoke("ChangeGroup",{friendName,oldFriendName});
+  }
+  public readMessage(messageId:string){
+    this.hubConnection.invoke("ReadMessage",{messageId});
   }
 }
