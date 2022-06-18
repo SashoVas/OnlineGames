@@ -3,6 +3,7 @@ using OnlineGames.Data;
 using OnlineGames.Data.Models;
 using OnlineGames.Services.Contracts;
 using OnlineGames.Services.Models.Friend;
+using OnlineGames.Services.Models.Message;
 
 namespace OnlineGames.Services
 {
@@ -72,6 +73,16 @@ namespace OnlineGames.Services
                     Id= f.User1Id == userId ? f.User2Id : f.User1Id,
                 })
                 .ToListAsync();
+
+        public async Task<IEnumerable<FriendServiceModel>> GetRequests(string userId) 
+            => await repo.GetAll()
+                .Where(f => !f.Accepted && (f.User1Id == userId || f.User2Id == userId))
+                .Select(f => new FriendServiceModel
+                {
+                    Accepted = false,
+                    Id = f.User1Id == userId ? f.User2Id : f.User1Id,
+                    UserName = f.User1Id == userId ? f.User2.UserName : f.User1.UserName
+                }).ToListAsync();
 
         public async Task<string> SendFriendRequest(string userId,string friendUserName)
         {

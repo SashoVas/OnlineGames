@@ -1,27 +1,29 @@
 <div class="row">
     <div class="col-lg-3"></div>
     <div class="col-lg-6">
-        <div class="d-flex flex-column">
+        <div *ngIf="notifications" class="d-flex flex-column">
             <h3 class="text-center">Notifications</h3>
             <hr>
-            <a class="btn btn-secondary"  data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1"  aria-controls="multiCollapseExample1">Friend Requests <span class="badge bg-primary rounded-pill">14</span></a>
+            <a class="btn btn-secondary"  data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1"  aria-controls="multiCollapseExample1">Friend Requests <span class="badge bg-danger rounded-pill">{{notifications!.friendRequests!.length}}</span></a>
             <div class="collapse multi-collapse" id="multiCollapseExample1">
-                <div *ngFor="let i of [1,2,3,4]">
-                    <a aria-controls="list-home" role="tab" data-bs-toggle="list" id="list-home-list"  class="nav-link text-light btn btn-outline-warning border-0">
-                       Someone
+                <div *ngFor="let i of notifications.friendRequests">
+                    <a class="nav-link text-light btn btn-outline-warning border-0">
+                       {{i.userName}}
                         <br>
-                        <a class="btn btn-outline-success" >Accept</a>
-                        <a class="btn btn-outline-danger">X</a>
+                        <a class="btn btn-outline-success" (click)="acceptFriend(i.id)">Accept</a>
+                        <a class="btn btn-outline-danger" (click)="unFriend(i.id)">X</a>
                     </a>
                 </div>
+                <a *ngIf="notifications!.friendRequests!.length==0">No friend requests</a>
               </div>
-            <a class="btn btn-secondary mt-1 mb-1"  data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-controls="multiCollapseExample2">Messages <span class="badge bg-primary rounded-pill">14</span></a>
+            <a class="btn btn-secondary mt-1 mb-1"  data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-controls="multiCollapseExample2">Messages <span class="badge bg-danger rounded-pill">{{notifications!.messages!.length}}</span></a>
             <div class="collapse multi-collapse " id="multiCollapseExample2">
                 <div class="d-flex flex-column text-center">
-                    <a *ngFor="let i of [1,2,3,4]" class="p-3 btn btn-outline-primary text-white border-0">
-                        Message From Someone
+                    <a *ngFor="let i of notifications!.messages!" class="p-3 btn btn-outline-primary text-white border-0">
+                        {{i.contents}}
                     </a>
                 </div>
+                <a *ngIf="notifications!.messages!.length==0">No messages</a>
               </div>
         </div>
     </div>

@@ -27,6 +27,17 @@ namespace OnlineGames.Services
                     MessageId=m.Id
                 }).ToListAsync();
 
+        public async Task<IEnumerable<MessageServiceModel>> GetMessagesUnread(string userId) 
+            => await repo.GetAll()
+                .Where(m => !m.Seen && m.SenderId != userId && (m.FriendChat.User1Id == userId || m.FriendChat.User2Id == userId))
+                .Select(m => new MessageServiceModel
+                {
+                    Contents = m.Contents,
+                    MessageId = m.Id,
+                    PostedOn = m.PostedOn.ToString("dd/MM,yyyy"),
+                    UserName = m.Sender.UserName,
+                }).ToListAsync();
+
         public async Task<bool> ReadMessage(string userId,string messageId)
         {
             var friend = await repo.GetAll()

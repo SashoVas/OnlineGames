@@ -10,5 +10,6 @@ namespace OnlineGames.Services.Contracts
         Task<bool> FriendExist(string userId, string friendUserName);
         Task<string> GetFriendId(string userId, string friendId);
         Task<bool> DeleteFriend(string userId,string friendId);
+        Task<IEnumerable<FriendServiceModel>> GetRequests(string userId);
     }
 }
