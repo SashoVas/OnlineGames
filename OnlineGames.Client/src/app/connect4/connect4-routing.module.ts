@@ -6,13 +6,8 @@ const routes: Routes = [
     {
         path:"",
         pathMatch:"full",
-        redirectTo:"connect4game"
-
-    },
-    {
-      path:"connect4game",
-      component:Connect4GameComponent,
-    },]; 
+        component:Connect4GameComponent,
+    }]; 
   
   @NgModule({
     imports: [RouterModule.forChild(routes)],

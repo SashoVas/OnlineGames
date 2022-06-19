@@ -1,0 +1,33 @@
+.mode{
+    margin:1% 1%;
+    width: 100%;
+    padding: 40px;
+    font-size: 30px;
+    transition-duration: 0.2s;
+    cursor:pointer;
+}
+
+.mode:hover{
+    transform: scaleX(1.1); 
+}
+.bg-crimson{
+    background-color: #DC143C;
+}
+.bg-brown{
+    background-color: #A52A2A;
+}
+.bg-coral{
+    background-color: #FF7F50;
+}
+.bg-chocolate{
+    background-color: #D2691E;
+}
+.bg-dark-golden{
+    background-color: #B8860B;
+}
+.bg-dark-orange{
+    background-color: #FF8C00;
+}
+.bg-dark-cyan{
+    background-color: #008B8B;
+}

@@ -14,14 +14,11 @@ namespace OnlineGames.Web.Controllers
             this.messageService = messageService;
         }
         [HttpGet]
-        public async Task<ActionResult<NotificationsModel>> GetNotifications()
-        {
-            var result = new NotificationsModel
+        public async Task<ActionResult<NotificationsModel>> GetNotifications() 
+            => Ok(new NotificationsModel
             {
                 FriendRequests = await friendService.GetRequests(GetUserId()),
-                Messages= await messageService.GetMessagesUnread(GetUserId())
-            };
-            return Ok(result);
-        }
+                Messages = await messageService.GetMessagesUnread(GetUserId())
+            });
     }
 }

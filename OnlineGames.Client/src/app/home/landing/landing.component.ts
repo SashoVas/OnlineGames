@@ -12,4 +12,8 @@ export class LandingComponent implements OnInit {
   ngOnInit(): void {
     this.isLoged=this.acountService.getToken()!=null
   }
+  logOut(){
+    this.acountService.logOut();
+    this.isLoged=false;
+  }
 }

@@ -3,7 +3,6 @@ using OnlineGames.Data;
 using OnlineGames.Data.Models;
 using OnlineGames.Services.Contracts;
 using OnlineGames.Services.Models.Friend;
-using OnlineGames.Services.Models.Message;
 
 namespace OnlineGames.Services
 {

@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IRoom } from 'src/app/core/interfaces/IRoom';
-import { RoomService } from '../services/room.service';
+import { RoomService } from '../../games/services/room.service';
 
 @Component({
   selector: 'app-games',

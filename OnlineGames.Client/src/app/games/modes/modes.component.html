@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="col-lg-3">
+    </div>
+    <div  class="col-lg-9" >
+        <div class="mode pointer bg-crimson" routerLink="tictactoe/">
+            TicTacToe AI
+        </div>
+        <div class="mode pointer bg-brown" (click)="createRoomTicTacToe()">
+            Create Room TicTacToe
+        </div>
+        <div class="mode pointer bg-coral" (click)="joinRoomTicTacToe()">
+            Join Room TicTacToe 
+            <input #ticTacToeRoomId type="text" placeholder="Room id">
+        </div> 
+        <div class="mode pointer bg-chocolate" routerLink="connect4/">
+            Connect4 AI
+        </div>
+        <div class="mode pointer bg-dark-golden" (click)="createRoomConnect4()">
+            Create Room Connect4
+        </div>
+        <div class="mode pointer bg-dark-orange" (click)="joinRoomConnect4()">
+            Join Room Connect4 
+            <input #connect4RoomId type="text" placeholder="Room id">
+        </div>  
+        <div class="mode pointer bg-dark-cyan">
+            Rooms 
+        </div> 
+    </div>
+</div>

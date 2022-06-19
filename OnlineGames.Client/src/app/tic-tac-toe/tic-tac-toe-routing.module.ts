@@ -6,13 +6,8 @@ const routes: Routes = [
     {
         path:"",
         pathMatch:"full",
-        redirectTo:"tictactoe"
-
-    },
-    {
-      path:"tictactoe",
-      component:TicTacToeComponent,
-    },]; 
+        component:TicTacToeComponent,
+    }]; 
   
   @NgModule({
     imports: [RouterModule.forChild(routes)],

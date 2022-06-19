@@ -48,6 +48,10 @@
 .grid-item:hover{
     background-color: #FF1493;
 }
+.log-out{
+    grid-row: 4;
+    grid-column: 1 / span 3;
+}
 @media(max-width:1200px)
 {
     .grid-item{
@@ -70,6 +74,9 @@
     }
     .settings{
         grid-row:6;
+    }
+    .log-out{
+        grid-row: 7;
     }
 }
 .pointer {

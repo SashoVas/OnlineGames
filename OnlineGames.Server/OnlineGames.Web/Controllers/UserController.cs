@@ -14,7 +14,7 @@ namespace OnlineGames.Web.Controllers
         public async Task<ActionResult<UserServiceModel>> GetUser(string? name)
         {
             var user= await userService.GetUser(name??this.User.Identity.Name);
-            user.IsMe = name == null;
+            user.IsMe = (name == null)||name==(User.Identity.Name);
             if (user==null)
             {
                 return BadRequest();
