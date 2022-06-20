@@ -5,14 +5,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from '../core/core.module';
 import { LandingComponent } from './landing/landing.component';
 import { HomeRoutingModule } from './home-routing.module';
-import { RoomsItemComponent } from './rooms-item/rooms-item.component';
-import { GamesComponent } from './games/games.component';
-import { RoomsComponent } from './rooms/rooms.component';
-
-
 
 @NgModule({
-  declarations: [LandingComponent, RoomsItemComponent, GamesComponent, RoomsComponent],
+  declarations: [LandingComponent],
   imports: [
     CommonModule,
     RouterModule,

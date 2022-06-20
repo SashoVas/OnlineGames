@@ -4,25 +4,18 @@
     padding: 5% 15%;
     margin-top: 20%;
 }
-
 img{
     width: 150px;
     height: 150px;
 }
-
 .baner{
     border-radius: 25px 25px 0 0;
     width: 100%;
     margin: 0;
     height: 200px;
 }
-
 small{
     font-size: 12px;
-}
-
-.pointer {
-    cursor: pointer;
 }
 .multy-line{
     white-space: pre-wrap;

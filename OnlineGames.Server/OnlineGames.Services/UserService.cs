@@ -50,5 +50,14 @@ namespace OnlineGames.Services
                 .Where(u => u.UserName == name)
                 .Select(u => u.Id)
                 .FirstOrDefaultAsync();
+
+        public async Task<UserCardServiceModel> GetUserCard(string userId) 
+            => await repo.GetAll()
+                .Where(u => u.Id == userId)
+                .Select(u => new UserCardServiceModel
+                {
+                    ImgUrl = u.ImgUrl,
+                    Username = u.UserName
+                }).FirstOrDefaultAsync();
     }
 }

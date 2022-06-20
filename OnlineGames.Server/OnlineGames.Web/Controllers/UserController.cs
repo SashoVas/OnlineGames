@@ -31,5 +31,8 @@ namespace OnlineGames.Web.Controllers
             var user = await this.userService.UpdateUser(GetUserId(), input.Description, input.ImgUrl, input.UserName);
             return Ok(user);
         }
+        [HttpGet("GetUserCard")]
+        public async Task<ActionResult<UserCardServiceModel>> GetUserCard() 
+            => Ok(await userService.GetUserCard(GetUserId()));
     }
 }

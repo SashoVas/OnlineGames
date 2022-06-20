@@ -1,31 +1,16 @@
-<nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid">
-      <a class="navbar-brand text-light"  routerLink="">OnlineGames</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active text-light" href="#" aria-current="page" routerLink="">Home</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav mb-2 mb-lg-0">
-          <li *ngIf="!isLoged()" class="justify-content-end">
-            <a class="nav-link active text-light" routerLink="/identity/login" >Login</a>
-          </li>
-          <li *ngIf="!isLoged()" class="justify-content-end">
-            <a class="nav-link active text-light" routerLink="/identity/register" >Register</a>
-          </li>
-          <li *ngIf="isLoged()" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Settings
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item pointer"  (click)="logOut()">Log Out</a></li>
-            </ul>
-          </li>
-        </ul>
+<nav class="navbar navbar-dark p-0">
+  <div class="d-flex align-items-center justify-content-between contents">
+    <a class="navbar-brand" routerLink="/home">Online Games</a>
+    <div class="wrapper">
+      <div routerLink="/users/profile" *ngIf="isLoged()" class="d-flex align-items-center profile justify-content-between pointer">
+        <h5 class="mb-0">{{user.username}}</h5>
+        <img *ngIf="user.imgUrl" src="{{user.imgUrl}}" alt="">
+        <img *ngIf="!user.imgUrl" src="../../../assets/resources/profilepic.png" alt="">
       </div>
     </div>
-  </nav>
+    <div *ngIf="!isLoged()" class="d-flex not-loged-in align-items-center">
+      <a class="nav-link text-white" routerLink="/identity/login">Login</a>
+      <a class="nav-link text-white" routerLink="/identity/register">Register</a>
+    </div>
+  </div>
+</nav>

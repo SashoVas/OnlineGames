@@ -4,6 +4,7 @@ import { Connect4Resolver } from "../connect4/resolvers/connect4.resolver";
 import { ChatResolver } from "../core/resolvers/chat.resolver";
 import { TicTacToeResolver } from "../tic-tac-toe/resolvers/tic-tac-toe.resolver";
 import { ModesComponent } from "./modes/modes.component";
+import { RoomsComponent } from "./rooms/rooms.component";
 
 const routes: Routes = [
     {
@@ -25,6 +26,10 @@ const routes: Routes = [
         loadChildren:()=>import("../connect4/connect4.module").then(c=>c.Connect4Module),
         resolve:[Connect4Resolver,ChatResolver]
       },
+      {
+        path:"rooms",
+        component:RoomsComponent
+      }
     ]; 
   
   @NgModule({
