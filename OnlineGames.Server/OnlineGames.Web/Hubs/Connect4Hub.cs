@@ -16,16 +16,20 @@ namespace OnlineGames.Web.Hubs
         {
             try
             {
-                //Skip update board if the ai is first
+                string boardString;
                 if (input.Col != -1)
                 {
-                    await connect4Service.UpdateBoard(GetUserId(), input.Col,GetUserName());
+                    boardString=await connect4Service.UpdateBoard(GetUserId(), input.Col,GetUserName());
+                    if (!boardString.Contains("0"))
+                    {
+                        //The board is full
+                        return;
+                    }
                 }
-                var boardString = await roomService.GetUserBoard(GetUserId());
-                if (!boardString.Contains("0"))
+                else
                 {
-                    //The board is full
-                    return;
+                    //Skip update board if the ai is first
+                    boardString = await roomService.GetUserBoard(GetUserId());
                 }
                 var currentPlayer = await roomService.GetTurn(GetUserId());
                 var output = await this.connect4Service.MakeMove(boardString, currentPlayer, input.Difficulty);

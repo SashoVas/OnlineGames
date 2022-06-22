@@ -17,19 +17,22 @@ namespace OnlineGames.Web.Hubs
         {
             try
             {
-                //Skip update board if the ai is first
+                string boardString;
                 if (input.Row!=-1 && input.Col!=-1)
                 {
-                    await ticTacToeService.UpdateBoard(GetUserId(), input.Row, input.Col,GetUserName());
+                    boardString=await ticTacToeService.UpdateBoard(GetUserId(), input.Row, input.Col,GetUserName());
+                    if (!boardString.Contains("0"))
+                    {
+                        //The board is full
+                        return;
+                    }
                 }
-                var boardString = await roomService.GetUserBoard(GetUserId());
-                if (!boardString.Contains("0"))
+                else
                 {
-                    //The board is full
-                    return;
+                    //Skip update board if the ai is first
+                    boardString = await roomService.GetUserBoard(GetUserId());
                 }
-                var currentPlayer = await roomService.GetTurn(GetUserId());
-                var output =await this.ticTacToeService.MakeMove(boardString,currentPlayer);
+                var output =await this.ticTacToeService.MakeMove(boardString);
                 await ticTacToeService.UpdateBoardAI(GetUserId(), output.Row,output.Col);
                 await this.Clients.Caller.SendAsync("OponentMove", output);
             }

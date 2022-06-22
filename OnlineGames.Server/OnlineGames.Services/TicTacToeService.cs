@@ -7,13 +7,16 @@ namespace OnlineGames.Services
     public class TicTacToeService : ITicTacToeService
     {
         private readonly IRoomService roomService;
-
-        public TicTacToeService(IRoomService roomService) 
-            => this.roomService = roomService;
-
-        public async Task<BoardCoordinates> MakeMove(string boardSring,int currentPlayer)
+        private readonly ITicTacToe ticTacToe;
+        public TicTacToeService(IRoomService roomService, ITicTacToe ticTacToe)
         {
-            var output=TicTacToe.CreateSolver(boardSring,currentPlayer);
+            this.roomService = roomService;
+            this.ticTacToe = ticTacToe;
+        }
+
+        public async Task<BoardCoordinates> MakeMove(string boardSring)
+        {
+            var output=ticTacToe.GetMove(boardSring);
             return new BoardCoordinates 
             {
                 Row= output.X,
@@ -21,7 +24,7 @@ namespace OnlineGames.Services
             };
         }
 
-        public async Task UpdateBoard(string userId, int row, int col, string username)
+        public async Task<string> UpdateBoard(string userId, int row, int col, string username)
         {
             var room = await roomService.GetRoomByUserId(userId);
             if (room.BoardString[((3 * row) + col)] != '0')
@@ -44,6 +47,7 @@ namespace OnlineGames.Services
                 throw new ArgumentException();
             }
             await roomService.UpdateBoard(room);
+            return room.BoardString;
         }
 
         public async Task UpdateBoardAI(string userId, int row, int col)

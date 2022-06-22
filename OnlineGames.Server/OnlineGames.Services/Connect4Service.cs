@@ -11,7 +11,7 @@ namespace OnlineGames.Services
         public async Task<int> MakeMove(string boardSring, int currentPlayer, int difficulty) 
             => Connect4.GetBestMove(boardSring, currentPlayer, difficulty);
 
-        public async Task UpdateBoard(string userId, int col, string username)
+        public async Task<string> UpdateBoard(string userId, int col, string username)
         {
             var room = await roomService.GetRoomByUserId(userId);
             int row = -1;
@@ -42,6 +42,7 @@ namespace OnlineGames.Services
                 throw new ArgumentException();
             }
             await roomService.UpdateBoard(room);
+            return room.BoardString;
         }
 
         public async Task UpdateBoardAI(string userId, int col)

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using OnlineGames.Data;
 using OnlineGames.Data.Models;
+using OnlineGames.Logic.TicTacToe;
 using OnlineGames.Services;
 using OnlineGames.Services.Contracts;
 using OnlineGames.Web.Hubs;
@@ -68,6 +69,7 @@ namespace OnlineGames.Web.Infrastructure
         public static void AddServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            builder.Services.AddSingleton<ITicTacToe, TicTacToe>();
             builder.Services.AddTransient<ITicTacToeService, TicTacToeService>();
             builder.Services.AddTransient<IConnect4Service, Connect4Service>();
             builder.Services.AddTransient<IIdentityService, IdentityService>();
