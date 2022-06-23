@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OnlineGames.Logic.Connect4.Helper
+﻿namespace OnlineGames.Logic.Connect4.Helper
 {
     public class Board
     {
@@ -28,14 +22,6 @@ namespace OnlineGames.Logic.Connect4.Helper
                 }
             }
         }
-        public Board(int y, int x)
-        {
-            this.Matrix = new int[y, x];
-        }
-        public Board(int[,] matrix)
-        {
-            this.Matrix = matrix.Clone() as int[,];
-        }
         public int MakeAMove(int player, int x)
         {
             for (int i = this.DimesionY; i >= 0; i--)
@@ -47,7 +33,6 @@ namespace OnlineGames.Logic.Connect4.Helper
                 }
             }
             return -1;
-
         }
         public void UndoMove(int y, int x)
         {

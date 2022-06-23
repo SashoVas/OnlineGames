@@ -1,87 +1,24 @@
 ﻿using OnlineGames.Logic.Connect4.Helper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineGames.Logic.Connect4
 {
-    public static class Connect4
+    public class Connect4:IConnect4
     {
-        public static int Player1 { get; set; } = 1;
-        public static int Player2 { get; set; } = -1;
-        public static int Depth { get; set; } = 6;
-        public static int[] TurnsOrder { get; set; } = new int[] { 3, 2, 4, 1, 5, 0, 6 };
-        public static Dictionary<string, CellCoordinates> Solver { get; set; }= new Dictionary<string, CellCoordinates>();
-        public static int GetBestMove(string boardString,int player,int difficulty)
+        public int Player1 { get; set; } = 1;
+        public int Player2 { get; set; } = -1;
+        public int Depth { get; set; } = 6;
+        public int[] TurnsOrder { get; set; } = new int[] { 3, 2, 4, 1, 5, 0, 6 };
+        public Dictionary<string, CellCoordinates> Solver { get; set; }= new Dictionary<string, CellCoordinates>();
+        public int GetMove(string boardString,int player,int difficulty)
         {
             Depth = difficulty;
             var board = new Board(boardString, 6, 7);
+            Solver=new Dictionary<string, CellCoordinates>();
             boardString = board.ToString();
             var bestMove = FillSolver(board,player, 0, -999999999, 999999999, 0, -1, -1);
             return Solver[boardString].Col;
         }
-        public static void TestWithBoard(int[,] boardArr)
-        {
-            var board = new Board(boardArr);
-            Print(board.Matrix, board.DimesionX, board.DimesionY);
-            Solver = new Dictionary<string, CellCoordinates>();
-            var score = FillSolver(board, 1, 0, -999999999, 999999999, 0, -1, -1);
-            var solverOutput = Solver[board.ToString()];
-            Console.WriteLine(score);
-            board.MakeAMove(1, solverOutput.Col);
-            Print(board.Matrix, board.DimesionX, board.DimesionY);
-        }
-        public static void PlayVsBot(Func<int> inputFunc, int player)
-        {
-            var board = new Board(6, 7);
-            int currentPlayer = player;
-            Print(board.Matrix, board.DimesionX, board.DimesionY);
-            do
-            {
-                currentPlayer = -currentPlayer;
-                if (currentPlayer == 1)
-                {
-                    int position = inputFunc();
-                    board.MakeAMove(currentPlayer, position);
-                }
-                else
-                {
-                    Solver = new Dictionary<string, CellCoordinates>();
-                    var score = FillSolver(board, currentPlayer, 0, -999999999, 999999999, 0, -1, -1);
-                    var solverOutput = Solver[board.ToString()].Col;
-                    Console.WriteLine(Solver[board.ToString()].Score);
-                    board.MakeAMove(currentPlayer, solverOutput);
-                }
-                Print(board.Matrix, board.DimesionX, board.DimesionY);
-            } while (true);
-        }
-        public static void Print(int[,] board, int boardX, int boardY)
-        {
-            var result1 = "|";
-            for (int i = 1; i < 8; i++)
-            {
-                result1 += i + "|";
-            }
-            Console.WriteLine(result1);
-            var result = "|";
-            for (int i = 0; i <= boardY; i++)
-            {
-                for (int j = 0; j <= boardX; j++)
-                {
-                    if (board[i, j] == 0)
-                    {
-                        result += "-|";
-                        continue;
-                    }
-                    result += (board[i, j] == 1 ? "O" : "X") + "|";
-                }
-                result += "\n|";
-            }
-            Console.WriteLine(result);
-        }
-        private static int FillSolver(Board board, int player, int turnCount, int alpha, int beta, int oldScore, int oldRow, int oldCol)
+        private int FillSolver(Board board, int player, int turnCount, int alpha, int beta, int oldScore, int oldRow, int oldCol)
         {
             var boardString = board.ToString();
             if (Solver.ContainsKey(boardString))
@@ -164,6 +101,5 @@ namespace OnlineGames.Logic.Connect4
             }
             return Solver[boardString].Score;
         }
-
     }
 }

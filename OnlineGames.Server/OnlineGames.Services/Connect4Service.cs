@@ -6,10 +6,15 @@ namespace OnlineGames.Services
     public class Connect4Service : IConnect4Service
     {
         private readonly IRoomService roomService;
-        public Connect4Service(IRoomService roomService) 
-            => this.roomService = roomService;
+        private readonly IConnect4 connect4;
+        public Connect4Service(IRoomService roomService, IConnect4 connect4)
+        {
+            this.roomService = roomService;
+            this.connect4 = connect4;
+        }
+
         public async Task<int> MakeMove(string boardSring, int currentPlayer, int difficulty) 
-            => Connect4.GetBestMove(boardSring, currentPlayer, difficulty);
+            => connect4.GetMove(boardSring, currentPlayer, difficulty);
 
         public async Task<string> UpdateBoard(string userId, int col, string username)
         {
