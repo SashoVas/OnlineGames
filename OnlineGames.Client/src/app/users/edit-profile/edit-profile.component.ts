@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AccountService } from 'src/app/core/services/account.service';
 import { UserService } from '../services/user.service';
 
 @Component({
@@ -13,7 +14,7 @@ export class EditProfileComponent implements OnInit {
   @Input()description!:string;
   @Input()imgUrl!:string;
   @Output()updateUserEventEmitter=new EventEmitter<any>();
-  constructor(private fb:FormBuilder,private userService:UserService) { }
+  constructor(private fb:FormBuilder,private userService:UserService,private accountService:AccountService) { }
 
   ngOnInit(): void {
     this.editForm=this.fb.group({
@@ -26,6 +27,9 @@ export class EditProfileComponent implements OnInit {
     let userName=this.editForm.get('userName')?.value==''?null:this.editForm.get('userName')?.value;
     let description=this.editForm.get('description')?.value==''?null:this.editForm.get('description')?.value;
     let imgUrl=this.editForm.get('imgUrl')?.value==''?null:this.editForm.get('imgUrl')?.value;
-    this.userService.updateUser(userName,description,imgUrl).subscribe((user)=>this.updateUserEventEmitter.emit({user}));
+    this.userService.updateUser(userName,description,imgUrl).subscribe((user)=>{
+      this.updateUserEventEmitter.emit({username:user.username,imgUrl:user.imgUrl,description:user.description})
+      this.accountService.saveToken(user.token)
+    });
   }
 }

@@ -1,0 +1,14 @@
+.exit{
+    background-color: rgb(13, 14, 15);
+    text-align: right;
+    width: 30%;
+    padding: 1%;
+    padding-right: 3%;
+    border:3px solid #383636;
+    border-left: 0px;
+    border-radius: 2px;
+    transition: width 0.3s;
+}
+.exit:hover{
+    width: 40%;
+}

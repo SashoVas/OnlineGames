@@ -9,6 +9,7 @@
     font-size: 30px;
     background-color: rgb(43,47,51);
     transition: transform .2s;
+    border-radius: 1px;
 }
 .grid-item:hover {
     -ms-transform: scale(1.05); 

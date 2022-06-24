@@ -9,8 +9,13 @@ namespace OnlineGames.Services
     public class UserService : IUserService
     {
         private readonly IRepository<User> repo;
-        public UserService(IRepository<User> repo) 
-            => this.repo = repo;
+        private readonly IIdentityService identityService;
+        public UserService(IRepository<User> repo, IIdentityService identityService)
+        {
+            this.repo = repo;
+            this.identityService = identityService;
+        }
+
         public async Task<UserServiceModel> GetUser(string name) 
             => await repo.GetAll()
                 .Where(u => u.UserName == name)
@@ -22,7 +27,7 @@ namespace OnlineGames.Services
                 })
                 .FirstOrDefaultAsync();
 
-        public async Task<UserServiceModel> UpdateUser(string id, string descripiton, string imgUrl, string userName)
+        public async Task<UpdateUserServiceModel> UpdateUser(string id, string descripiton, string imgUrl, string userName,string secret)
         {
             var user =await repo.GetAll()
                 .Where(u => u.Id == id)
@@ -30,14 +35,17 @@ namespace OnlineGames.Services
             user.UserName = userName;
             user.Description = descripiton;
             user.ImgUrl = imgUrl;
+            user.NormalizedUserName = user.UserName.ToUpper();
             repo.Update(user);
             await repo.SaveChangesAsync();
-            return new UserServiceModel
+
+            return new UpdateUserServiceModel
             {
                 ImgUrl = user.ImgUrl,
-                IsMe=true,
-                Description=user.Description,
-                Username=user.UserName
+                IsMe = true,
+                Description = user.Description,
+                Username = user.UserName,
+                Token = identityService.GetJwt(user, secret)
             };
         }
 

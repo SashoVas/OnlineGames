@@ -13,7 +13,6 @@ namespace OnlineGames.Logic.Connect4
         {
             Depth = difficulty;
             var board = new Board(boardString, 6, 7);
-            Solver=new Dictionary<string, CellCoordinates>();
             boardString = board.ToString();
             var bestMove = FillSolver(board,player, 0, -999999999, 999999999, 0, -1, -1);
             return Solver[boardString].Col;

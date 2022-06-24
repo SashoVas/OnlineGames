@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { IUpdateUser } from 'src/app/core/interfaces/IUpdateUser';
 import { IUser } from 'src/app/core/interfaces/IUser';
 import { environment } from 'src/environments/environment';
 
@@ -21,6 +22,6 @@ export class UserService {
   }
   updateUser(userName:string,description:string,imgUrl:string):Observable<any>
   {
-    return this.http.put(environment.apiUrl+'/User',{userName,description,imgUrl})
+    return this.http.put<IUpdateUser>(environment.apiUrl+'/User',{userName,description,imgUrl})
   }
 }

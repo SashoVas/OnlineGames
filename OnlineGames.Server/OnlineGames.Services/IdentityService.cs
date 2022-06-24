@@ -14,7 +14,7 @@ namespace OnlineGames.Services
         public IdentityService(UserManager<User> userManager) 
             => this.userManager = userManager;
 
-        private string GetJwt(User user,string Secret)
+        public string GetJwt(User user,string Secret)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Secret);

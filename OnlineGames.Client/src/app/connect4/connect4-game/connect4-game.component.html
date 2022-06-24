@@ -1,16 +1,20 @@
 
 <div class="row">
-    <div class="text-center">
-        <h1>Connect4</h1>
-        <div *ngIf="!roomId">
-            <label>Difficulty</label>
-            <br>
-            <input #difficulty type="number"[min]="1"[max]="12" [value]="6">
+    <div class="col-lg-3">
+        <div class="exit pointer" routerLink="/games/modes">
+            <h2 class="m-0">Exit</h2>
         </div>
-        <h1>{{oponentTurn==true?"Oponent Turn":"My turn"}}</h1>
     </div>
-    <div class="col-lg-3"></div>
     <div class="col-lg-6">
+        <div class="text-center">
+            <h1>Connect4</h1>
+            <div *ngIf="!roomId">
+                <label>Difficulty</label>
+                <br>
+                <input #difficulty type="number"[min]="1"[max]="12" [value]="6">
+            </div>
+            <h1>{{oponentTurn==true?"Oponent Turn":"My turn"}}</h1>
+        </div>
         <div class="text-center">
             <div >
                 <div class="row" *ngFor="let rowval of board;let row=index">

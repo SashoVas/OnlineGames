@@ -13,9 +13,9 @@ namespace OnlineGames.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<object>> AddFriend(SendFriendRequestInputModel input)
         {
-            if (!ModelState.IsValid ||await friendService.FriendExist(GetUserId(),input.FriendUserName))
+            if (await friendService.FriendExist(GetUserId(),input.FriendUserName))
             {
-                return BadRequest();
+                return NotFound();
             }
             try
             {
@@ -30,9 +30,9 @@ namespace OnlineGames.Web.Controllers
         [HttpPut]
         public async Task<ActionResult> AcceptFriendRequest(FriendIdInputModel input)
         {
-            if (!ModelState.IsValid || !await friendService.AcceptFriendRequest(GetUserId(), input.Id))
+            if (!await friendService.AcceptFriendRequest(GetUserId(), input.Id))
             {
-                return BadRequest();
+                return NotFound();
             }
             return Ok();
         }
@@ -44,7 +44,7 @@ namespace OnlineGames.Web.Controllers
         {
             if ( !await friendService.DeleteFriend(GetUserId(),id))
             {
-                throw new ArgumentException();
+                return NotFound();
             }
             return Ok();
         }

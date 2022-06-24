@@ -16,7 +16,9 @@ export class ProfileComponent implements OnInit {
     this.activatedRoute.data.subscribe(data=>this.user=data[0])
   }
   updateUser($event:any){
-    this.user=$event['user']
+    this.user.username=$event['username']
+    this.user.imgUrl=$event['imgUrl']
+    this.user.description=$event['description']
   }
   searchUser(){
     this.userService.getUser(this.username.nativeElement.value).subscribe(data=>this.user=data)
