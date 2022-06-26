@@ -6,17 +6,19 @@ namespace OnlineGames.Logic.TicTacToe
     {
         int currentPlayer = 1;
         int otherPlayer = 2;
-        public Dictionary<string, CellCoordinates> Solver { get; set; } = new Dictionary<string, CellCoordinates>();
-
+        private Dictionary<long, CellCoordinates> Solver { get; set; } = new Dictionary<long, CellCoordinates>();
+        private Board Board { get; set; }
         public TicTacToe()
         {
-            FillSolver(new Board(3, 3));
+            Board = new Board(3, 3);
+            FillSolver(Board);
             SwapPlayers();
-            FillSolver(new Board(3, 3));
+            Board.Hash = 0;
+            FillSolver(Board);
         }
 
         public CellCoordinates GetMove(string boardString) 
-            => Solver[boardString];
+            => Solver[Board.GetBoardHash(boardString)];
         private void SwapPlayers()
         {
             int temp = currentPlayer;
@@ -46,10 +48,10 @@ namespace OnlineGames.Logic.TicTacToe
         }
         private CellCoordinates FillSolver(Board board)
         {
-            var boardString = board.ToString();
-            if (Solver.ContainsKey(boardString))
+            var boardId = board.Hash;
+            if (Solver.ContainsKey(boardId))
             {
-                return Solver[board.ToString()];
+                return Solver[boardId];
             }
             var currentPosition = board.CurrentGameState(currentPlayer, otherPlayer);
             if (currentPosition != GameState.StillPlaing)
@@ -71,8 +73,8 @@ namespace OnlineGames.Logic.TicTacToe
                 }
 
             }
-            Solver[boardString] = new CellCoordinates();
-            Solver[boardString].GameState = GameState.StillPlaing;
+            Solver[boardId] = new CellCoordinates();
+            Solver[boardId].GameState = GameState.StillPlaing;
             int wins = 0;
             int loses = 0;
             int nextWins = 0;
@@ -81,30 +83,30 @@ namespace OnlineGames.Logic.TicTacToe
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    var nextBoard = board.ReturnCopy();
-                    if (nextBoard.MakeAMove(currentPlayer, i, j))
+                    if (board.MakeAMove(currentPlayer, i, j))
                     {
                         SwapPlayers();
-                        var outcome = TransformState(FillSolver(nextBoard));
+                        var outcome = TransformState(FillSolver(board));
                         SwapPlayers();
-                        var currentOutcome = Solver[boardString].GameState;
+                        var currentOutcome = Solver[boardId].GameState;
                         if ((int)outcome.GameState > (int)currentOutcome)
                         {
-                            Solver[boardString].GameState = outcome.GameState;
-                            Solver[boardString].X = i;
-                            Solver[boardString].Y = j;
+                            Solver[boardId].GameState = outcome.GameState;
+                            Solver[boardId].X = i;
+                            Solver[boardId].Y = j;
                             nextWins = outcome.Wins;
 
                         }
                         else if ((int)outcome.GameState == (int)currentOutcome && outcome.Wins > nextWins)
                         {
-                            Solver[boardString].GameState = outcome.GameState;
-                            Solver[boardString].X = i;
-                            Solver[boardString].Y = j;
+                            Solver[boardId].GameState = outcome.GameState;
+                            Solver[boardId].X = i;
+                            Solver[boardId].Y = j;
                             nextWins = outcome.Wins;
                         }
                         wins += outcome.Wins;
                         loses += outcome.Loses;
+                        board.UndoMove(i,j, currentPlayer);
                     }
                     else
                     {
@@ -112,7 +114,7 @@ namespace OnlineGames.Logic.TicTacToe
                     }
                 }
             }
-            return Solver[board.ToString()];
+            return Solver[boardId];
         }
     }
 }

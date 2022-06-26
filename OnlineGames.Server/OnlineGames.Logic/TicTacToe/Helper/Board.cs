@@ -3,9 +3,43 @@
     public class Board
     {
         public int[,] Matrix { get; set; }
-        public Board(int x, int y) => this.Matrix = new int[x, y];
-        public Board(int[,] matrix) => this.Matrix = matrix.Clone() as int[,];
-        public Board ReturnCopy() => new Board(this.Matrix);
+        public List<long> PlayerOneNums { get; set; } = new List<long>();
+        public List<long> PlayerTwoNums { get; set; } = new List<long>();
+        public long Hash { get; set; }
+        public Board(int x, int y)
+        {
+            this.Matrix = new int[x, y];
+            GenerateHashValues();
+        }
+        public long GetBoardHash(string boardString)
+        {
+            long hash = 0;
+            for (int i = 0; i < boardString.Length; i++)
+            {
+                if (boardString[i]=='0')
+                {
+                    continue;
+                }
+                if (boardString[i]=='1')
+                {
+                    hash = hash ^ PlayerOneNums[i];
+                }
+                else
+                {
+                    hash = hash ^ PlayerTwoNums[i];
+                }
+            }
+            return hash;
+        }
+        private void GenerateHashValues()
+        {
+            var r = new Random();
+            for (int i = 0; i < 3*3; i++)
+            {
+                PlayerOneNums.Add(r.NextInt64());
+                PlayerTwoNums.Add(r.NextInt64());
+            }
+        }
         public bool MakeAMove(int player, int x, int y)
         {
             if (this.Matrix[x, y] != 0)
@@ -13,7 +47,27 @@
                 return false;
             }
             this.Matrix[x, y] = player;
+            if (player == 1)
+            {
+                Hash = Hash ^ PlayerOneNums[(x * 3) + y];
+            }
+            else
+            {
+                Hash = Hash ^ PlayerTwoNums[(x * 3) + y];
+            }
             return true;
+        }
+        public void UndoMove(int x,int y,int player)
+        {
+            this.Matrix[x, y] = 0;
+            if (player == 1)
+            {
+                Hash = Hash ^ PlayerOneNums[(x * 3) + y];
+            }
+            else
+            {
+                Hash = Hash ^ PlayerTwoNums[(x * 3) + y];
+            }
         }
         public GameState CurrentGameState(int player,int otherPlayer)
         {
@@ -67,7 +121,5 @@
             }
             return GameState.Draw;
         }
-        public override string ToString() =>
-            String.Join("", Array.ConvertAll(this.Matrix.Cast<int>().ToArray(), el => el.ToString()));
     }
 }

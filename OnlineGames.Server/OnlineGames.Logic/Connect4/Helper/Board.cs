@@ -7,6 +7,9 @@
         public int DimesionY { get => Matrix.GetLength(0) - 1; }
         public bool Win { get; set; } = false;
         public bool Lose { get; set; } = false;
+        public List<long> PlayerOneNums { get; set; } = new List<long>();
+        public List<long> PlayerTwoNums { get; set; } = new List<long>();
+        public long Hash { get; set; }
         public Board(string boardString, int x, int y)
         {
             this.Matrix = new int[x, y];
@@ -21,6 +24,12 @@
                     this.Matrix[i, j] = boardString[(i * 7) + j] == '1' ? 1 : -1;
                 }
             }
+            var r = new Random();
+            for (int i = 0; i < 6 * 7; i++)
+            {
+                PlayerOneNums.Add(r.NextInt64());
+                PlayerTwoNums.Add(r.NextInt64());
+            }
         }
         public int MakeAMove(int player, int x)
         {
@@ -29,14 +38,30 @@
                 if (this.Matrix[i, x] == 0)
                 {
                     this.Matrix[i, x] = player;
+                    if (player == 1)
+                    {
+                        Hash = Hash ^ PlayerOneNums[(i * 7) + x];
+                    }
+                    else
+                    {
+                        Hash = Hash ^ PlayerTwoNums[(i * 7) + x];
+                    }
                     return i;
                 }
             }
             return -1;
         }
-        public void UndoMove(int y, int x)
+        public void UndoMove(int y, int x,int player)
         {
             this.Matrix[y, x] = 0;
+            if (player == 1)
+            {
+                Hash = Hash ^ PlayerOneNums[(y * 7) + x];
+            }
+            else
+            {
+                Hash = Hash ^ PlayerTwoNums[(y * 7) + x];
+            }
         }
         private int EvaluetePosition(int[] arr)
         {
@@ -119,10 +144,6 @@
             }
 
             return currentValue;
-        }
-        public override string ToString()
-        {
-            return String.Join("", Array.ConvertAll(this.Matrix.Cast<int>().ToArray(), el => el.ToString()));
         }
     }
 }
