@@ -87,7 +87,7 @@ namespace OnlineGames.Services
         {
             var friendId=await userService.GetUserIdFromName(friendUserName);
             if (friendId == null)
-                throw new ArgumentException();
+                throw new ArgumentException("No such user");
             
             var friend = new Friend 
             { 

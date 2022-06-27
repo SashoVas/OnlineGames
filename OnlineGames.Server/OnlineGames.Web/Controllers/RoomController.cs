@@ -42,9 +42,9 @@ namespace OnlineGames.Web.Controllers
                 await this.roomService.SetRoomToUser(GetUserId(), input.RoomId,User.Identity.Name);
                 return Ok(new {RoomId=input.RoomId });
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return this.NotFound();
+                return this.NotFound(e.Message);
             }
             
         }

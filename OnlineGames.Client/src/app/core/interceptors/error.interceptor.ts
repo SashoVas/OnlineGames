@@ -16,18 +16,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((err)=>{
-        let message="";
-        if(err.status === 400)
-        {
-          message='Invalid parameters';
-        }
-        if(err.status===401)
-        {
-          message='Please login';
-        }
-        this.toastr.error(message);
-        
-        
+        this.toastr.error(err.error);
         return throwError(err);
       })
       );

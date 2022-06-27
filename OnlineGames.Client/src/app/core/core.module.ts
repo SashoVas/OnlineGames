@@ -6,7 +6,6 @@ import { BoardCellComponent } from './board-cell/board-cell.component';
 import { ChatComponent } from './chat/chat.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
-
 @NgModule({
   declarations: [
     NavigationComponent,

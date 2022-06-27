@@ -24,13 +24,13 @@ namespace OnlineGames.Web.Hubs
                 var group = await friendService.GetFriendId(GetUserId(), input.Id);
                 if (group == null)
                 {
-                    throw new ArgumentException();
+                    throw new ArgumentException("No such friend");
                 }
                 input.Id = group;
             }
             else if (!await userService.IsUserInRoom(GetUserId(), input.Id))
             {
-                throw new ArgumentException();
+                throw new ArgumentException("User is not in room");
             }
         }
 

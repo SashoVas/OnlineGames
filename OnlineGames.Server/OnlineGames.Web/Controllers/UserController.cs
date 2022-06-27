@@ -22,11 +22,11 @@ namespace OnlineGames.Web.Controllers
         public async Task<ActionResult<UserServiceModel>> GetUser(string? name)
         {
             var user= await userService.GetUser(name??this.User.Identity.Name);
-            user.IsMe = (name == null)||name==(User.Identity.Name);
             if (user==null)
             {
-                return NotFound();
+                return NotFound("No such user");
             }
+            user.IsMe = (name == null)||name==(User.Identity.Name);
             return Ok(user);
         }
         [HttpPut]

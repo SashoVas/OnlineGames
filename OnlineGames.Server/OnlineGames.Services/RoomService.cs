@@ -79,7 +79,10 @@ namespace OnlineGames.Services
         {
             var room = await repo.GetAll()
                 .FirstOrDefaultAsync(r => r.Id == roomId);
-
+            if (room==null)
+            {
+                throw new ArgumentException("Room doesn't exist");
+            }
             if (room.Player1Id == null)
             {
                 room.Player1Id = userId;
@@ -90,8 +93,7 @@ namespace OnlineGames.Services
             }
             else
             {
-                //Room is full or does not exist
-                throw new ArgumentException();
+                throw new ArgumentException("Room is full");
             }
             if (room.FirstPlayerName==null)
             {

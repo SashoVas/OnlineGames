@@ -37,7 +37,7 @@ namespace OnlineGames.Services
             var isValidPassword = await userManager.CheckPasswordAsync(user,password);
             if (!isValidPassword)
             {
-                throw new UnauthorizedAccessException();
+                throw new UnauthorizedAccessException("Invalid username or password");
             }
             return GetJwt(user,secret);
         }
@@ -51,7 +51,7 @@ namespace OnlineGames.Services
             var result = await this.userManager.CreateAsync(user, password);
             if (!result.Succeeded)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Invalid data");
             }
             return user.Id;
         }

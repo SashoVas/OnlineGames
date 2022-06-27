@@ -30,7 +30,7 @@ namespace OnlineGames.Services
             }
             if (row == -1)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("The position is alredy taken");
             }
             if (room.FirstPlayerTurn && room.FirstPlayerName == username)
             {
@@ -44,7 +44,7 @@ namespace OnlineGames.Services
             }
             else
             {
-                throw new ArgumentException();
+                throw new ArgumentException("Its not user turn");
             }
             await roomService.UpdateBoard(room);
             return room.BoardString;
@@ -64,7 +64,7 @@ namespace OnlineGames.Services
             }
             if (row == -1)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("The position is alredy taken");
             }
             if (room.FirstPlayerTurn)
             {

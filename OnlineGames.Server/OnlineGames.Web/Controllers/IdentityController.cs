@@ -28,9 +28,9 @@ namespace OnlineGames.Web.Controllers
                     Token =await identityService.Login(input.UserName, input.Password, this.appSettings.Secret)
                 };
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return this.BadRequest("Invalid password");
+                return this.BadRequest(e.Message);
             }
             
         }
@@ -44,9 +44,9 @@ namespace OnlineGames.Web.Controllers
                     Id =  await this.identityService.Register(input.UserName, input.Password, input.ConfirmPassword)
                 };
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return this.BadRequest("Invalid data");
+                return this.BadRequest(e.Message);
             }
         }
     }
