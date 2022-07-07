@@ -16,8 +16,8 @@ namespace OnlineGames.Services
             this.identityService = identityService;
         }
 
-        public async Task<UserServiceModel> GetUser(string name) 
-            => await repo.GetAll()
+        public Task<UserServiceModel> GetUser(string name) 
+            =>repo.GetAll()
                 .Where(u => u.UserName == name)
                 .Select(u => new UserServiceModel
                 {
@@ -49,18 +49,18 @@ namespace OnlineGames.Services
             };
         }
 
-        public async Task<bool> IsUserInRoom(string userId, string roomId)
-            => await repo.GetAll()
+        public Task<bool> IsUserInRoom(string userId, string roomId)
+            => repo.GetAll()
                 .AnyAsync(u => u.Id == userId && (u.Room1!=null || u.Room2!=null));
 
-        public async Task<string> GetUserIdFromName(string name) 
-            => await repo.GetAll()
+        public Task<string> GetUserIdFromName(string name) 
+            =>repo.GetAll()
                 .Where(u => u.UserName == name)
                 .Select(u => u.Id)
                 .FirstOrDefaultAsync();
 
-        public async Task<UserCardServiceModel> GetUserCard(string userId) 
-            => await repo.GetAll()
+        public Task<UserCardServiceModel> GetUserCard(string userId) 
+            =>repo.GetAll()
                 .Where(u => u.Id == userId)
                 .Select(u => new UserCardServiceModel
                 {

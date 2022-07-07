@@ -48,7 +48,10 @@ export class ChatComponent implements OnInit {
   getMessages(){
     return this.messageService.getMessages(this.page,this.roomId).subscribe(data=>{
       this.messages=this.messages.concat(data)
-      this.messageSignalRService.readMessage(this.messages[0]['messageId']);
+      if (this.messages.length>0)
+      {
+        this.messageSignalRService.readMessage(this.messages[0]['messageId']);
+      }
     });
   }
   sendMessage(){

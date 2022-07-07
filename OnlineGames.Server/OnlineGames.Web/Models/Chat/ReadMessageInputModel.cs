@@ -5,6 +5,6 @@ namespace OnlineGames.Web.Models.Chat
     public class ReadMessageInputModel
     {
         [Required]
-        public string MessageId { get; set; }
+        public int MessageId { get; set; }
     }
 }

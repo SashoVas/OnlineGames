@@ -78,7 +78,8 @@ namespace OnlineGames.Services
         public async Task SetRoomToUser(string userId, string roomId,string username)
         {
             var room = await repo.GetAll()
-                .FirstOrDefaultAsync(r => r.Id == roomId);
+                .Where(r => r.Id == roomId)
+                .FirstOrDefaultAsync();
             if (room==null)
             {
                 throw new ArgumentException("Room doesn't exist");
@@ -127,8 +128,8 @@ namespace OnlineGames.Services
             await repo.SaveChangesAsync();
         }
 
-        public async Task<string> GetUserBoard(string userId) 
-            => await repo.GetAll()
+        public Task<string> GetUserBoard(string userId) 
+            =>repo.GetAll()
             .Where(r => r.Player1Id == userId || r.Player2Id == userId)
             .Select(r=>r.BoardString)
             .FirstOrDefaultAsync();
@@ -140,7 +141,7 @@ namespace OnlineGames.Services
             .FirstOrDefaultAsync() ? 1 : -1;
 
         public async Task<IEnumerable<RoomsServiceModel>> GetAvailableRooms(string game, int count, int page) 
-            => await repo.GetAll()
+            =>await repo.GetAll()
                 .Include(r=>r.Player1)
                 .Include(r=>r.Player2)
                 .Where(r => !r.Private && (game != null ? game == r.GameName : true) && (r.Player1Id == null || r.Player2Id == null))//&& (r.Player1Id==null || r.Player2Id == null)
@@ -156,8 +157,8 @@ namespace OnlineGames.Services
                     First = r.FirstPlayerName == null
                 }).ToListAsync();
 
-        public async Task<string> GetRoomId(string userId) 
-            =>await repo.GetAll()
+        public Task<string> GetRoomId(string userId) 
+            =>repo.GetAll()
             .Where(r => r.Player1Id == userId || r.Player2Id == userId)
             .Select(r=>r.Id)
             .FirstOrDefaultAsync();

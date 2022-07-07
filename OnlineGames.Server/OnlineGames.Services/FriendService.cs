@@ -49,13 +49,13 @@ namespace OnlineGames.Services
             return true;
         }
 
-        public async Task<bool> FriendExist(string userId, string friendUserName)
-        => await repo.GetAll()
+        public Task<bool> FriendExist(string userId, string friendUserName)
+        =>repo.GetAll()
             .AnyAsync(f => (f.User1Id == userId && f.User2.UserName == friendUserName)
             || (f.User2Id == userId && f.User1.UserName == friendUserName));
 
-        public async Task<string> GetFriendId(string userId, string friendId)
-        => await repo.GetAll()
+        public Task<string> GetFriendId(string userId, string friendId)
+        =>repo.GetAll()
             .Where(f => (f.User1Id == userId && f.User2Id==friendId)
             || (f.User2Id == userId && f.User1Id==friendId))
             .Select(f => f.Id)
@@ -69,7 +69,8 @@ namespace OnlineGames.Services
                 {
                     Accepted = f.Accepted,
                     UserName = f.User1Id == userId ? f.User2.UserName : f.User1.UserName,
-                    Id= f.User1Id == userId ? f.User2Id : f.User1Id,
+                    Id = f.User1Id == userId ? f.User2Id : f.User1Id,
+                    HaveMessage = f.Messages.OrderBy(m => m.PostedOn).Last().SenderId!=userId && !f.Messages.OrderBy(m => m.PostedOn).Last().Seen
                 })
                 .ToListAsync();
 

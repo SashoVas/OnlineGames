@@ -19,8 +19,8 @@
             <a class="btn btn-secondary mt-1 mb-1"  data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-controls="multiCollapseExample2">Messages <span class="badge bg-danger rounded-pill">{{notifications!.messages!.length}}</span></a>
             <div class="collapse multi-collapse text-center" id="multiCollapseExample2">
                 <div class="d-flex flex-column text-center">
-                    <a *ngFor="let i of notifications!.messages!" class="p-3 btn btn-outline-primary text-white border-0">
-                        {{i.contents}}
+                    <a routerLink="/users/friends" *ngFor="let i of notifications!.messages!" class="p-3 btn btn-outline-primary text-white border-0">
+                        <b>{{i.userName}}</b> : {{i.contents}}
                     </a>
                 </div>
                 <a *ngIf="notifications!.messages!.length==0">No messages</a>

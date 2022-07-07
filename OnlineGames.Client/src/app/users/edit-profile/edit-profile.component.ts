@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { IUser } from 'src/app/core/interfaces/IUser';
 import { AccountService } from 'src/app/core/services/account.service';
 import { UserService } from '../services/user.service';
 

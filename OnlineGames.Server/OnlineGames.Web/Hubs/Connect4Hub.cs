@@ -32,7 +32,7 @@ namespace OnlineGames.Web.Hubs
                     boardString = await roomService.GetUserBoard(GetUserId());
                 }
                 var currentPlayer = await roomService.GetTurn(GetUserId());
-                var output = await this.connect4Service.MakeMove(boardString, currentPlayer, input.Difficulty);
+                var output =this.connect4Service.MakeMove(boardString, currentPlayer, input.Difficulty);
                 await connect4Service.UpdateBoardAI(GetUserId(), output);
                 await this.Clients.Caller.SendAsync("OponentMove", output);
             }

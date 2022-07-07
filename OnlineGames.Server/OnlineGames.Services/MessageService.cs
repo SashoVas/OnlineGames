@@ -38,7 +38,7 @@ namespace OnlineGames.Services
                     UserName = m.Sender.UserName,
                 }).ToListAsync();
 
-        public async Task<bool> ReadMessage(string userId,string messageId)
+        public async Task<bool> ReadMessage(string userId, int messageId)
         {
             var friend = await repo.GetAll()
                 .Where(m => m.Id == messageId && m.SenderId!=userId)
@@ -57,7 +57,6 @@ namespace OnlineGames.Services
         {
             var message = new Message
             {
-                Id = Guid.NewGuid().ToString(),
                 Contents = contents,
                 SenderId=userId,
                 RoomChatId=!isName?roomId:null,

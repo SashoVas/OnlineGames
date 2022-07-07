@@ -42,7 +42,7 @@ export class MessageSignalRService {
   public changeGroup(friendName:string,oldFriendName:string){
     this.hubConnection.invoke("ChangeGroup",{friendName,oldFriendName});
   }
-  public readMessage(messageId:string){
+  public readMessage(messageId:number){
     this.hubConnection.invoke("ReadMessage",{messageId});
   }
 }

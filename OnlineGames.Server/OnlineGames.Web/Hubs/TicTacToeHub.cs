@@ -32,7 +32,7 @@ namespace OnlineGames.Web.Hubs
                     //Skip update board if the ai is first
                     boardString = await roomService.GetUserBoard(GetUserId());
                 }
-                var output =await this.ticTacToeService.MakeMove(boardString);
+                var output =this.ticTacToeService.MakeMove(boardString);
                 await ticTacToeService.UpdateBoardAI(GetUserId(), output.Row,output.Col);
                 await this.Clients.Caller.SendAsync("OponentMove", output);
             }

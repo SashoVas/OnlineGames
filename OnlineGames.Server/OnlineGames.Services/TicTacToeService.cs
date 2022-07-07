@@ -14,7 +14,7 @@ namespace OnlineGames.Services
             this.ticTacToe = ticTacToe;
         }
 
-        public async Task<BoardCoordinates> MakeMove(string boardSring)
+        public BoardCoordinates MakeMove(string boardSring)
         {
             var output=ticTacToe.GetMove(boardSring);
             return new BoardCoordinates 

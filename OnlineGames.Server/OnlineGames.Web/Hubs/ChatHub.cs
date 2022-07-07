@@ -63,7 +63,7 @@ namespace OnlineGames.Web.Hubs
         }
 
         //Here when user see new message
-        public async Task ReadMessage(ReadMessageInputModel input) 
-            => await messageService.ReadMessage(GetUserId(), input.MessageId);
+        public Task ReadMessage(ReadMessageInputModel input) 
+            =>messageService.ReadMessage(GetUserId(), input.MessageId);
     }
 }
