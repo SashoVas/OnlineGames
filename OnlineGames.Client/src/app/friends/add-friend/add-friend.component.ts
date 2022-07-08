@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FriendService } from '../services/friend.service';
+import { FriendService } from '../../users/services/friend.service';
 @Component({
   selector: 'app-add-friend',
   templateUrl: './add-friend.component.html',

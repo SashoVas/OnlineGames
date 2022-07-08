@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { IFriend } from 'src/app/core/interfaces/IFriend';
 import { MessageService } from 'src/app/core/services/message.service';
-import { FriendService } from '../services/friend.service';
+import { FriendService } from '../../users/services/friend.service';
 
 @Component({
   selector: 'app-friend-list',

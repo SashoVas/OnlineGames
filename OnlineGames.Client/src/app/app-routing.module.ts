@@ -13,6 +13,10 @@ const routes: Routes = [
     loadChildren:()=>import("./home/home.module").then(h=>h.HomeModule)
   },
   {
+    path:"friends",
+    loadChildren:()=>import("./friends/friends.module").then(f=>f.FriendsModule)
+  },
+  {
     path:"identity",
     loadChildren:()=>import("./identity/identity.module").then(i=>i.IdentityModule),
     canActivate:[IdentityGuard]
