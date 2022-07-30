@@ -13,7 +13,6 @@ namespace OnlineGames.Web.Controllers
         [HttpPost]
         public async Task<ActionResult<object>> CreateRoom(CreateRoomInputModel input)
         {
-            string roomId;
             int board;
             switch (input.Game)
             {
@@ -26,7 +25,7 @@ namespace OnlineGames.Web.Controllers
                 default:
                     return this.NotFound();
             }
-            roomId = await this.roomService.CreateRoom(this.User.Identity.Name, false, input.Game, board);
+            var roomId = await this.roomService.CreateRoom(this.User.Identity.Name, false, input.Game, board);
             await this.roomService.SetRoomToUser(GetUserId(), roomId,User.Identity.Name);
             return Created(nameof(this.Created),new
             {

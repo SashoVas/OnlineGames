@@ -13,6 +13,7 @@ namespace OnlineGames.Web.Hubs
         private readonly ITicTacToeService ticTacToeService;
         public TicTacToeHub(IRoomService roomService, ITicTacToeService ticTacToeService) : base(roomService) 
             => this.ticTacToeService = ticTacToeService;
+        protected override string GetNameOfGame() => "TicTacToe";
         public async Task MakeMoveAI(TicTacToeMoveInput input)
         {
             try

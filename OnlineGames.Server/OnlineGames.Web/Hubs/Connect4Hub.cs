@@ -12,6 +12,7 @@ namespace OnlineGames.Web.Hubs
         private readonly IConnect4Service connect4Service;
         public Connect4Hub(IRoomService roomService, IConnect4Service connect4Service) : base(roomService) 
             => this.connect4Service = connect4Service;
+        protected override string GetNameOfGame() => "Connect4";
         public async Task MakeMoveAI(Connect4MoveAIInput input)
         {
             try
@@ -55,5 +56,6 @@ namespace OnlineGames.Web.Hubs
             }
             
         }
+
     }
 }

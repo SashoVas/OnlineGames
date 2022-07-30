@@ -15,7 +15,7 @@ namespace OnlineGames.Web.Hubs
 
         protected string GetUserName() 
             => this.Context.User.Identity.Name;
-
+        protected abstract string GetNameOfGame();
         public override async Task OnDisconnectedAsync(Exception exception)
         {
             await this.ClearBoard();
@@ -31,18 +31,7 @@ namespace OnlineGames.Web.Hubs
         {
             if (groupName == null )
             {
-                //Here if the oponent is ai and we dont want our room id to be exposed
-                switch (this.GetType().Name)
-                {
-                    case ("TicTacToeHub"):
-                        groupName = await this.roomService.CreateRoom(GetUserName(), true, "TicTacToe",3*3);
-                        break;
-                    case ("Connect4Hub"):
-                        groupName = await this.roomService.CreateRoom(GetUserName(), true, "Connect4", 6*7);
-                    break;
-                    default:
-                        throw new ArgumentException();
-                }
+                groupName = await this.roomService.CreateRoom(GetUserName(), true, GetNameOfGame(), 6 * 7);
                 await this.roomService.SetRoomToUser(GetUserId(), groupName,GetUserName());
             }
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);
