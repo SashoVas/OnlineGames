@@ -59,7 +59,7 @@ https://github.com/SashoVas/OnlineGames/assets/98760930/bb0d3adb-295f-4cc1-8a22-
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/tictactoe-connect4-platform.git
+git clone https://github.com/SashoVas/OnlineGames.git
 cd OnlineGames
 ```
 2. Backend Setup:
