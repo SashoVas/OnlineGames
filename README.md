@@ -14,6 +14,10 @@ This project is an online gaming platform built with ASP.NET Core as the backend
 * Notifications: Receive notifications for game invites, friend requests, and other activities.
 * User Profiles: Create and manage user profiles.
 
+## Menu Preview
+
+https://github.com/SashoVas/OnlineGames/assets/98760930/369bcc8b-8e81-4c5d-a654-bf739e2c2320
+
 ## Game Algorithms
 ### Tic-Tac-Toe Minimax
 The Minimax algorithm for Tic-Tac-Toe is a recursive method that evaluates all possible moves and chooses the best one by maximizing the minimum gain. It is straightforward due to the small size of the game board (3x3).
@@ -33,7 +37,11 @@ The Connect4 AI is more complex due to the larger board (7x6). It uses the follo
   * Method: The game board is encoded as a series of bits in an integer. Each position on the board is represented by a bit, and the entire board state can be stored in a small number of integers. This representation allows for fast bitwise operations to check for wins, possible moves, and other game state evaluations.
 #### Position Scoring Algorithm
 In both games, an additional algorithm is used to evaluate and score each possible move. This scoring algorithm is crucial for the AI to determine the most strategic moves by assigning a score to every position on the board. The scoring takes into account various factors such as potential wins, blocks, and strategic advantages.
-  
+
+## Game Preview
+
+https://github.com/SashoVas/OnlineGames/assets/98760930/bb0d3adb-295f-4cc1-8a22-4a58e4e81f98
+
 ## Technologies Used
 * Backend: ASP.NET Core
   * Handles game logic, user management, WebSocket communication, notifications, and chat functionality.
