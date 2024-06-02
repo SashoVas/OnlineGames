@@ -90,9 +90,3 @@ Open your web browser and navigate to http://localhost:4200 to start playing.
 
 ## Contributing
 Contributions are welcome! Please open an issue or submit a pull request with your changes.
-
-
-## Contact
-For questions or feedback, please contact your-email@example.com.
-
-Enjoy playing Tic-Tac-Toe and Connect4!
