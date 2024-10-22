@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  webapi:
+    image: online_games_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - mssql
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=mssql;Database=OnlineGamesDb;User Id=sa;Password=r00t.R00T;
+    networks:
+      - apinetwork
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=r00t.R00T
+    ports:
+      - "1433:1433"
+    networks:
+      - apinetwork
+    volumes:
+      - sqlvolume:/var/opt/mssql
+
+networks:
+  apinetwork:
+
+volumes:
+  sqlvolume:
