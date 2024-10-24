@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineGames.Web", "OnlineGa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineGames.Data", "OnlineGames.Data\OnlineGames.Data.csproj", "{2EDD3584-342E-4643-8181-AE6768670FC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineGames.Logic", "OnlineGames.Logic\OnlineGames.Logic.csproj", "{DE849B25-E8FD-4097-9304-2A14E82257E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineGames.Logic", "OnlineGames.Logic\OnlineGames.Logic.csproj", "{DE849B25-E8FD-4097-9304-2A14E82257E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineGames.Services", "OnlineGames.Services\OnlineGames.Services.csproj", "{2FACF6AF-7046-46CA-807E-615A699DBE9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineGames.Services", "OnlineGames.Services\OnlineGames.Services.csproj", "{2FACF6AF-7046-46CA-807E-615A699DBE9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineGames.Tests", "OnlineGames.Tests\OnlineGames.Tests.csproj", "{88D50CA5-69B5-4D4A-90E6-95A89A94CA6A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{2FACF6AF-7046-46CA-807E-615A699DBE9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FACF6AF-7046-46CA-807E-615A699DBE9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FACF6AF-7046-46CA-807E-615A699DBE9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88D50CA5-69B5-4D4A-90E6-95A89A94CA6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88D50CA5-69B5-4D4A-90E6-95A89A94CA6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88D50CA5-69B5-4D4A-90E6-95A89A94CA6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88D50CA5-69B5-4D4A-90E6-95A89A94CA6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
