@@ -1,10 +1,11 @@
 version: '3.4'
 
 services:
+
   webapi:
     image: online_games_app
     build:
-      context: .
+      context: OnlineGames.Server/
       dockerfile: Dockerfile
     ports:
       - "8080:80"
@@ -27,6 +28,16 @@ services:
       - apinetwork
     volumes:
       - sqlvolume:/var/opt/mssql
+
+  frontend:
+    image: online_games_frontend
+    build:
+      context: OnlineGames.Client/
+      dockerfile: Dockerfile
+    ports:
+      - "4200:4200"
+    networks:
+      - apinetwork
 
 networks:
   apinetwork:
