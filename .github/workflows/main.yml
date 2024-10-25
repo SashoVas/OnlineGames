@@ -42,6 +42,9 @@ jobs:
     needs: [Build]
     permissions:
       packages: write
+      contents: read
+      attestations: write
+      id-token: write
     steps: 
       - name: Download artifact
         uses: actions/download-artifact@v4
