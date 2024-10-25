@@ -17,6 +17,8 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
+    - name: ListFiles
+      run: ls -lh
     - name: ChangeDir
       run: cd OnlineGames.Server
     - name: Restore dependencies
