@@ -62,8 +62,15 @@ jobs:
           username: sashovas
           password: ${{ secrets.GITHUB_TOKEN }}
           
-      - name: Docker Build 
-        run: docker compose build
-        
-      - name: Docker Push
-        run: docker compose push
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./OnlineGames.Server/Dockerfile # Update path if Dockerfile is located elsewhere
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/your-image-name:latest
+
+      - name: Verify Image is Pushed
+        run: echo "Image successfully pushed to ghcr.io/${{ github.repository_owner }}/your-image-name:latest"
+
+
