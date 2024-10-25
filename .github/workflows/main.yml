@@ -17,15 +17,12 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
-    - name: ListFiles
-      run: ls -lh
-    - name: ChangeDir
-      run: cd OnlineGames.Server
-    - name: ListFilesAfterCd
-      run: ls -lh
     - name: Restore dependencies
+      working-directory: ./OnlineGames.Server
       run: dotnet restore
     - name: Build
+      working-directory: ./OnlineGames.Server
       run: dotnet build --no-restore
     - name: Test
+      working-directory: ./OnlineGames.Server
       run: dotnet test --no-build --verbosity normal
