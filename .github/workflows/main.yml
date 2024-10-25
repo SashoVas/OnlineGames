@@ -60,7 +60,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           
       - name: Docker Build 
-        run: docker-compose build
+        run: docker compose build
         
       - name: Docker Push
-        run: docker-compose push
+        run: docker compose push
