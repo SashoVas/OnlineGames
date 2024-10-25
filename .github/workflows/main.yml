@@ -7,22 +7,60 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
 
+  Build:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
+    
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 6.0.x
+        
     - name: Restore dependencies
       working-directory: ./OnlineGames.Server
       run: dotnet restore
+      
     - name: Build
       working-directory: ./OnlineGames.Server
       run: dotnet build --no-restore
+      
     - name: Test
       working-directory: ./OnlineGames.Server
       run: dotnet test --no-build --verbosity normal
+      
+    - name : Upload repo
+      uses: actions/upload-artifact@v4
+      with:
+        name: code
+        path: .
+
+  Docker-image:
+    runs-on: ubuntu-latest
+    needs: [Build]
+    permissions:
+      packages: write
+    steps: 
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with: 
+          name: code
+          path: .
+          
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: sashovas
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Docker Build 
+        run: docker-compose build
+        
+      - name: Docker Push
+        run: docker-compose push
