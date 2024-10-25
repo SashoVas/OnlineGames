@@ -65,8 +65,8 @@ jobs:
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: ./OnlineGames.Server/Dockerfile 
+          context: ./OnlineGames.Server
+          file: Dockerfile 
           push: true
           tags: ghcr.io/sashovas/online_games_api:latest
 
