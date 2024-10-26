@@ -36,10 +36,11 @@ namespace OnlineGames.Services
             var friend= await repo.GetAll()
                 .Where(f => (f.User1Id == userId && f.User2Id == friendId)
                 || (f.User2Id == userId && f.User1Id == friendId))
-                .Select(f => new Friend
-                {
-                    Id = f.Id
-                }).FirstOrDefaultAsync();
+                //.Select(f => new Friend
+                //{
+                //    Id = f.Id
+                //})
+                .FirstOrDefaultAsync();
             if (friend==null)
             {
                 return false;
@@ -70,7 +71,7 @@ namespace OnlineGames.Services
                     Accepted = f.Accepted,
                     UserName = f.User1Id == userId ? f.User2.UserName : f.User1.UserName,
                     Id = f.User1Id == userId ? f.User2Id : f.User1Id,
-                    HaveMessage = f.Messages.OrderBy(m => m.PostedOn).Last().SenderId!=userId && !f.Messages.OrderBy(m => m.PostedOn).Last().Seen
+                    HaveMessage = f.Messages.Count() != 0 && f.Messages.OrderBy(m => m.PostedOn).Last().SenderId!=userId && !f.Messages.OrderBy(m => m.PostedOn).Last().Seen
                 })
                 .ToListAsync();
 
