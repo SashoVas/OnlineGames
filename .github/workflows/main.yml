@@ -135,6 +135,9 @@ jobs:
             sudo apt-get update
             sudo apt-get install trivy
             
+      - name: Fix permission for Trivy binary
+        run: chmod +x ~/.local/bin/trivy 
+        
       - name: Run Trivy
         run: ./trivy image --severity HIGH,CRITICAL ghcr.io/sashovas/online_games_api:latest
         
