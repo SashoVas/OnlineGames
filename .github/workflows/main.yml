@@ -31,7 +31,8 @@ jobs:
         run: snyk auth $SNYK_TOKEN
 
       - name: Run Snyk test on .NET project
-        run: snyk test --all-projects --file=./OnlineGames.Server/OnlineGames.Server.sln
+        working-directory: ./OnlineGames.Server
+        run: snyk test --all-projects #--file=./OnlineGames.Server/OnlineGames.Server.sln
           
   Build:
     runs-on: ubuntu-latest
