@@ -35,6 +35,13 @@ jobs:
         run: snyk test --all-projects --severity-threshold=high #--file=./OnlineGames.Server/OnlineGames.Server.sln
         continue-on-error: true
 
+      - name: Monitor in Snyk for high-severity issues
+        working-directory: ./OnlineGames.Server
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk monitor --all-projects --severity-threshold=high 
+        #continue-on-error: true
+
   Build:
     runs-on: ubuntu-latest
     needs: [Security]
