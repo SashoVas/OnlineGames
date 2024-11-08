@@ -72,7 +72,7 @@ jobs:
         name: code
         path: .
 
-  Docker-image:
+  BuildDocker-image:
     runs-on: ubuntu-latest
     needs: [Build]
     permissions:
@@ -106,10 +106,36 @@ jobs:
           tags: ghcr.io/sashovas/online_games_api:latest
           outputs: type=docker
           
-      - name:  Push Docker Image
+      - name: Export image as a tarball
+        run: docker save ghcr.io/sashovas/online_games_api:latest -o image.tar
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-image
+          path: image.tar
+          
+  PushDocker-image:
+    runs-on: ubuntu-latest
+    needs: [BuildDocker-image]  
+
+    steps:
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: built-image
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Load Docker image from tarball
+        run: docker load -i image.tar
+
+      - name: Push Docker image
         run: docker push ghcr.io/sashovas/online_games_api:latest
-        
-      - name: Verify Image is Pushed
-        run: echo "Image successfully pushed to ghcr.io/sashovas/online_games_api:latest"
 
 
