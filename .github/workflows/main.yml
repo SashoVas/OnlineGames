@@ -136,7 +136,7 @@ jobs:
             sudo apt-get install trivy
             
       - name: Run Trivy
-        run: trivy image ghcr.io/sashovas/online_games_api:latest
+        run: ./trivy image --severity HIGH,CRITICAL ghcr.io/sashovas/online_games_api:latest
         
   PushDocker-image:
     runs-on: ubuntu-latest
