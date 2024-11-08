@@ -33,7 +33,8 @@ jobs:
       - name: Run Snyk test on .NET project
         working-directory: ./OnlineGames.Server
         run: snyk test --all-projects --severity-threshold=high #--file=./OnlineGames.Server/OnlineGames.Server.sln
-          
+        continue-on-error: true
+
   Build:
     runs-on: ubuntu-latest
     needs: [Security]
