@@ -14,6 +14,8 @@ jobs:
       - uses: actions/checkout@master
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
+        with:
+         dotnet-version: 6.0.x
       - name: Restore dependencies
         run: dotnet restore ./OnlineGames.Server/OnlineGames.Server.sln
       - name: Run Snyk to check for vulnerabilities
