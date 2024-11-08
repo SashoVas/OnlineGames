@@ -11,19 +11,27 @@ jobs:
   Security:
     runs-on: ubuntu-latest
     steps:
+    
       - uses: actions/checkout@master
+      
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
          dotnet-version: 6.0.x
+         
       - name: Restore dependencies
         run: dotnet restore ./OnlineGames.Server/OnlineGames.Server.sln
-      - name: ChangeDir
-        run: cd ./OnlineGames.Server/OnlineGames.Web
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/dotnet@master
+        
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
+      - name: Authenticate Snyk
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        run: snyk auth $SNYK_TOKEN
+
+      - name: Run Snyk test on .NET project
+        run: snyk test --all-projects --file=./OnlineGames.Server/OnlineGames.Server.sln
           
   Build:
     runs-on: ubuntu-latest
