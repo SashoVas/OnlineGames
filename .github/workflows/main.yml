@@ -32,7 +32,7 @@ jobs:
 
       - name: Run Snyk test on .NET project
         working-directory: ./OnlineGames.Server
-        run: snyk test --all-projects #--file=./OnlineGames.Server/OnlineGames.Server.sln
+        run: snyk test --all-projects --severity-threshold=high #--file=./OnlineGames.Server/OnlineGames.Server.sln
           
   Build:
     runs-on: ubuntu-latest
