@@ -44,7 +44,7 @@ jobs:
 
   Build:
     runs-on: ubuntu-latest
-    #needs: [Security]
+    needs: [Security]
 
     steps:
     - uses: actions/checkout@v4
