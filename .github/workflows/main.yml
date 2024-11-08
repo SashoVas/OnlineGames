@@ -134,12 +134,6 @@ jobs:
             echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
             sudo apt-get update
             sudo apt-get install trivy
-            
-      - name: Fix permissions for Trivy binary
-        run: |
-          TRIVY_PATH=$(which trivy)  
-          echo "Trivy binary found at: $TRIVY_PATH"
-          sudo chmod +x $TRIVY_PATH 
         
       - name: Run Trivy
         run: ./trivy image --severity HIGH,CRITICAL ghcr.io/sashovas/online_games_api:latest
