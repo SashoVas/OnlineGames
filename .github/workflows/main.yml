@@ -134,7 +134,8 @@ jobs:
             echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
             sudo apt-get update
             sudo apt-get install trivy
-        
+            sudo chmod +x /usr/bin/trivy
+
       - name: Run Trivy
         run: ./trivy image --severity HIGH,CRITICAL ghcr.io/sashovas/online_games_api:latest
         
