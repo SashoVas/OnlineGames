@@ -104,15 +104,11 @@ jobs:
           file: ./OnlineGames.Server/Dockerfile 
           push: false
           tags: ghcr.io/sashovas/online_games_api:latest
+          outputs: type=docker
           
       - name:  Push Docker Image
-        uses: docker/build-push-action@v4
-        with:
-          context: ./OnlineGames.Server
-          file: ./OnlineGames.Server/Dockerfile 
-          push: true
-          tags: ghcr.io/sashovas/online_games_api:latest
-
+        run: docker push ghcr.io/sashovas/online_games_api:latest
+        
       - name: Verify Image is Pushed
         run: echo "Image successfully pushed to ghcr.io/sashovas/online_games_api:latest"
 
