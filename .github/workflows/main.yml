@@ -96,8 +96,16 @@ jobs:
           registry: ghcr.io
           username: sashovas
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build  Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./OnlineGames.Server
+          file: ./OnlineGames.Server/Dockerfile 
+          push: false
+          tags: ghcr.io/sashovas/online_games_api:latest
           
-      - name: Build and Push Docker Image
+      - name:  Push Docker Image
         uses: docker/build-push-action@v4
         with:
           context: ./OnlineGames.Server
