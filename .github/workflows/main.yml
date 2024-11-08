@@ -17,6 +17,8 @@ jobs:
       - name: Restore dependencies
         working-directory: ./OnlineGames.Server
         run: dotnet restore
+      - name: ChangeDir
+        run: cd OnlineGames.Server
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/dotnet@master
         env:
