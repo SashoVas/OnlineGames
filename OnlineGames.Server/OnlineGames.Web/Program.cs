@@ -9,7 +9,16 @@ builder.Services.AddDbContext<OnlineGamesDbContext>(options =>options.UseSqlServ
 var appSettigns = builder.ConfigureAppSettings();
 builder.AddIdentity();
 builder.AddAuthenticationWithJWT(appSettigns);
-builder.AddCors();
+//builder.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()  
+              .AllowAnyMethod()  
+              .AllowAnyHeader(); 
+    });
+});
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSignalR();
@@ -32,6 +41,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 //app.UseCors("CorsPolicy");
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 app.AddHubs();
