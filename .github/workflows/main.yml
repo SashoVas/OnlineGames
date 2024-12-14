@@ -116,16 +116,22 @@ jobs:
           outputs: type=docker
           
       - name: Export backend image as a tarball
-        run: docker save ghcr.io/sashovas/online_games_api:latest -o image.tar
+        run: docker save ghcr.io/sashovas/online_games_api:latest -o image_backend.tar
         
       - name: Export frontend image as a tarball
-        run: docker save ghcr.io/sashovas/online_games_frontend:latest -o image.tar
+        run: docker save ghcr.io/sashovas/online_games_frontend:latest -o image_frontend.tar
         
-      - name: Upload Docker image artifact
+      - name: Upload Docker backend image artifact
         uses: actions/upload-artifact@v3
         with:
           name: built-image
-          path: image.tar
+          path: image_backend.tar
+
+      - name: Upload Docker frontend image artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: built-image
+          path: image_frontend.tar
           
   ScanDocker-imageWithTrivy:
     runs-on: ubuntu-latest
@@ -138,7 +144,7 @@ jobs:
           name: built-image
 
       - name: Load Docker image from tarball
-        run: docker load -i image.tar
+        run: docker load -i image_backend.tar
 
       - name: Download Trivy
         run: |
@@ -169,12 +175,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Load Docker image from tarball
-        run: docker load -i image.tar
+      - name: Load Docker backend image from tarball
+        run: docker load -i image_backend.tar
 
       - name: Push backend Docker image
         run: docker push ghcr.io/sashovas/online_games_api:latest
 
+      - name: Load Docker frontend image from tarball
+        run: docker load -i image_frontend.tar
+        
       - name: Push frontend Docker image
         run: docker push ghcr.io/sashovas/online_games_frontend:latest
 
