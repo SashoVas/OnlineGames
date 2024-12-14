@@ -97,7 +97,7 @@ jobs:
           username: sashovas
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build  Docker Image
+      - name: Build  Docker Image Backend
         uses: docker/build-push-action@v4
         with:
           context: ./OnlineGames.Server
@@ -106,9 +106,21 @@ jobs:
           tags: ghcr.io/sashovas/online_games_api:latest
           outputs: type=docker
           
-      - name: Export image as a tarball
+      - name: Build  Docker Image Frontend
+        uses: docker/build-push-action@v4
+        with:
+          context: ./OnlineGames.Client
+          file: ./OnlineGames.Client/Dockerfile 
+          push: false
+          tags: ghcr.io/sashovas/online_games_frontend:latest
+          outputs: type=docker
+          
+      - name: Export backend image as a tarball
         run: docker save ghcr.io/sashovas/online_games_api:latest -o image.tar
-
+        
+      - name: Export frontend image as a tarball
+        run: docker save ghcr.io/sashovas/online_games_frontend:latest -o image.tar
+        
       - name: Upload Docker image artifact
         uses: actions/upload-artifact@v3
         with:
@@ -160,7 +172,10 @@ jobs:
       - name: Load Docker image from tarball
         run: docker load -i image.tar
 
-      - name: Push Docker image
+      - name: Push backend Docker image
         run: docker push ghcr.io/sashovas/online_games_api:latest
+
+      - name: Push frontend Docker image
+        run: docker push ghcr.io/sashovas/online_games_frontend:latest
 
 
