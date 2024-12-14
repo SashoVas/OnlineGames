@@ -10,13 +10,26 @@ var appSettigns = builder.ConfigureAppSettings();
 builder.AddIdentity();
 builder.AddAuthenticationWithJWT(appSettigns);
 //builder.AddCors();
+//builder.Services.AddCors(options =>
+//{
+//    options.AddDefaultPolicy(policy =>
+//    {
+//        policy.AllowAnyOrigin()  
+//              .AllowAnyMethod()  
+//              .AllowAnyHeader(); 
+//    });
+//});
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.AllowAnyOrigin()  
-              .AllowAnyMethod()  
-              .AllowAnyHeader(); 
+        policy.SetIsOriginAllowed(origin =>
+        {
+            return origin != null && (origin.StartsWith("http://localhost") || origin.StartsWith("https://localhost") || origin.StartsWith("http://127.0.0.1") || origin.StartsWith("https://127.0.0.1"))  ;
+        })
+        .AllowAnyMethod()  
+        .AllowAnyHeader()  
+        .AllowCredentials();
     });
 });
 builder.Services.AddControllers();
