@@ -5,7 +5,7 @@ using OnlineGames.Web.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<OnlineGamesDbContext>(options =>options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<OnlineGamesDbContext>(options => options.UseSqlServer(connectionString));
 var appSettigns = builder.ConfigureAppSettings();
 builder.AddIdentity();
 builder.AddAuthenticationWithJWT(appSettigns);
@@ -25,10 +25,10 @@ builder.Services.AddCors(options =>
     {
         policy.SetIsOriginAllowed(origin =>
         {
-            return origin != null && (origin.StartsWith("http://localhost") || origin.StartsWith("https://localhost") || origin.StartsWith("http://127.0.0.1") || origin.StartsWith("https://127.0.0.1"))  ;
+            return origin != null && (origin.StartsWith("http://localhost") || origin.StartsWith("https://localhost") || origin.StartsWith("http://127.0.0.1") || origin.StartsWith("https://127.0.0.1"));
         })
-        .AllowAnyMethod()  
-        .AllowAnyHeader()  
+        .AllowAnyMethod()
+        .AllowAnyHeader()
         .AllowCredentials();
     });
 });

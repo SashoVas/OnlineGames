@@ -13,7 +13,7 @@ namespace OnlineGames.Services
             this.connect4 = connect4;
         }
 
-        public int MakeMove(string boardSring, int currentPlayer, int difficulty) 
+        public int MakeMove(string boardSring, int currentPlayer, int difficulty)
             => connect4.GetMove(boardSring, currentPlayer, difficulty);
 
         public async Task<string> UpdateBoard(string userId, int col, string username)

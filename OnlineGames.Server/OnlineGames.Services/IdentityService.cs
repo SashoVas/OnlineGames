@@ -11,10 +11,10 @@ namespace OnlineGames.Services
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<User> userManager;
-        public IdentityService(UserManager<User> userManager) 
+        public IdentityService(UserManager<User> userManager)
             => this.userManager = userManager;
 
-        public string GetJwt(User user,string Secret)
+        public string GetJwt(User user, string Secret)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Secret);
@@ -30,19 +30,19 @@ namespace OnlineGames.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-        public async Task<string> Login(string userName,string password,string secret)
+        public async Task<string> Login(string userName, string password, string secret)
         {
             var user = await userManager.FindByNameAsync(userName);
-            
-            var isValidPassword = await userManager.CheckPasswordAsync(user,password);
+
+            var isValidPassword = await userManager.CheckPasswordAsync(user, password);
             if (!isValidPassword)
             {
                 throw new UnauthorizedAccessException("Invalid username or password");
             }
-            return GetJwt(user,secret);
+            return GetJwt(user, secret);
         }
 
-        public async Task<string> Register(string username,string password,string confirmPassword)
+        public async Task<string> Register(string username, string password, string confirmPassword)
         {
             var user = new User
             {

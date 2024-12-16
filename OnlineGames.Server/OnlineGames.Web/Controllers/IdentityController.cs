@@ -17,7 +17,7 @@ namespace OnlineGames.Web.Controllers
             this.identityService = identityService;
             this.appSettings = appSettings.Value;
         }
-        
+
         [HttpPost("Login")]
         public async Task<ActionResult<LoginReturnModel>> Login(LoginInputModel input)
         {
@@ -25,14 +25,14 @@ namespace OnlineGames.Web.Controllers
             {
                 return new LoginReturnModel
                 {
-                    Token =await identityService.Login(input.UserName, input.Password, this.appSettings.Secret)
+                    Token = await identityService.Login(input.UserName, input.Password, this.appSettings.Secret)
                 };
             }
             catch (Exception e)
             {
                 return this.BadRequest(e.Message);
             }
-            
+
         }
         [HttpPost("Register")]
         public async Task<ActionResult<object>> Register([FromBody] RegisterInputModel input)
@@ -41,7 +41,7 @@ namespace OnlineGames.Web.Controllers
             {
                 return new
                 {
-                    Id =  await this.identityService.Register(input.UserName, input.Password, input.ConfirmPassword)
+                    Id = await this.identityService.Register(input.UserName, input.Password, input.ConfirmPassword)
                 };
             }
             catch (Exception e)

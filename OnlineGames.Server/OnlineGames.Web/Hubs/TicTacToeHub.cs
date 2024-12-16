@@ -8,10 +8,10 @@ using OnlineGames.Web.Models.TicTacToe;
 namespace OnlineGames.Web.Hubs
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class TicTacToeHub: GameHub
+    public class TicTacToeHub : GameHub
     {
         private readonly ITicTacToeService ticTacToeService;
-        public TicTacToeHub(IRoomService roomService, ITicTacToeService ticTacToeService) : base(roomService) 
+        public TicTacToeHub(IRoomService roomService, ITicTacToeService ticTacToeService) : base(roomService)
             => this.ticTacToeService = ticTacToeService;
         protected override string GetNameOfGame() => "TicTacToe";
         public async Task MakeMoveAI(TicTacToeMoveInput input)
@@ -19,9 +19,9 @@ namespace OnlineGames.Web.Hubs
             try
             {
                 string boardString;
-                if (input.Row!=-1 && input.Col!=-1)
+                if (input.Row != -1 && input.Col != -1)
                 {
-                    boardString=await ticTacToeService.UpdateBoard(GetUserId(), input.Row, input.Col,GetUserName());
+                    boardString = await ticTacToeService.UpdateBoard(GetUserId(), input.Row, input.Col, GetUserName());
                     if (!boardString.Contains("0"))
                     {
                         //The board is full
@@ -33,8 +33,8 @@ namespace OnlineGames.Web.Hubs
                     //Skip update board if the ai is first
                     boardString = await roomService.GetUserBoard(GetUserId());
                 }
-                var output =this.ticTacToeService.MakeMove(boardString);
-                await ticTacToeService.UpdateBoardAI(GetUserId(), output.Row,output.Col);
+                var output = this.ticTacToeService.MakeMove(boardString);
+                await ticTacToeService.UpdateBoardAI(GetUserId(), output.Row, output.Col);
                 await this.Clients.Caller.SendAsync("OponentMove", output);
             }
             catch (Exception)
@@ -46,7 +46,7 @@ namespace OnlineGames.Web.Hubs
         {
             try
             {
-                await ticTacToeService.UpdateBoard(GetUserId(), input.Row, input.Col,GetUserName());
+                await ticTacToeService.UpdateBoard(GetUserId(), input.Row, input.Col, GetUserName());
                 await this.Clients.OthersInGroup(await this.roomService.GetRoomId(GetUserId())).SendAsync("OponentMove",
                 new BoardCoordinates
                 {

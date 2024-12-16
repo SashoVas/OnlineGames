@@ -51,7 +51,7 @@
             }
             return -1;
         }
-        public void UndoMove(int y, int x,int player)
+        public void UndoMove(int y, int x, int player)
         {
             this.Matrix[y, x] = 0;
             if (player == 1)

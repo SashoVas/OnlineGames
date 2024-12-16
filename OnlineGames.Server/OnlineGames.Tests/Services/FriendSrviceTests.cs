@@ -41,10 +41,10 @@ namespace OnlineGames.Tests.Services
             var context = OnlineGamesDbContextFactory.InitializeContext();
             await SeedData(context);
             var repo = new Repository<Friend>(context);
-            var friendService = new FriendService(repo,null);
+            var friendService = new FriendService(repo, null);
 
             //Act
-            bool first=await friendService.FriendExist("user1", "user2");
+            bool first = await friendService.FriendExist("user1", "user2");
             bool second = await friendService.FriendExist("user1", "user3");
             bool third = await friendService.FriendExist("user3", "user1");
             bool fourth = await friendService.FriendExist("user2", "user1");
@@ -66,7 +66,7 @@ namespace OnlineGames.Tests.Services
 
             //Act
 
-            var result= await friendService.AcceptFriendRequest("user2","user3");
+            var result = await friendService.AcceptFriendRequest("user2", "user3");
 
             //Assert
 
@@ -84,11 +84,11 @@ namespace OnlineGames.Tests.Services
             var friendService = new FriendService(repo, null);
 
             //Act
-            var result = await friendService.DeleteFriend("user1","user2");
+            var result = await friendService.DeleteFriend("user1", "user2");
 
             //Assert
             Assert.True(result);
-            Assert.Equal(1,repo.GetAll().Count());
+            Assert.Equal(1, repo.GetAll().Count());
             Assert.Null(repo.GetAll().FirstOrDefault(f => f.User1Id == "user1" && f.User2Id == "user2"));
         }
 
@@ -103,9 +103,9 @@ namespace OnlineGames.Tests.Services
             //Act
 
             var result = await friendService.GetFriends("user1");
-            
+
             //Assert
-            
+
             Assert.Single(result);
             Assert.Equal("user2", result.First().Id);
         }

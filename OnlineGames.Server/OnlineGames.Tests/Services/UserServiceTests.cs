@@ -43,10 +43,10 @@ namespace OnlineGames.Tests.Services
             var context = OnlineGamesDbContextFactory.InitializeContext();
             await SeedData(context);
             var repo = new Repository<User>(context);
-            var userService = new UserService(repo,null);
+            var userService = new UserService(repo, null);
             //Act
 
-            var result1 =await userService.GetUser("user1");
+            var result1 = await userService.GetUser("user1");
             var result2 = await userService.GetUser("user2");
             var result3 = await userService.GetUser("user3");
 
@@ -63,12 +63,12 @@ namespace OnlineGames.Tests.Services
             var context = OnlineGamesDbContextFactory.InitializeContext();
             await SeedData(context);
             var repo = new Repository<User>(context);
-            var mock =new Mock<IIdentityService>();
+            var mock = new Mock<IIdentityService>();
             var real = repo.GetAll().Where(u => u.Id == "user1").FirstOrDefault();
             mock.Setup(m => m.GetJwt(real, "smt")).Returns("yes");
             var userService = new UserService(repo, mock.Object);
             //Act
-            var result = await userService.UpdateUser("user1","description","not url","username","smt");
+            var result = await userService.UpdateUser("user1", "description", "not url", "username", "smt");
 
             //Assert
             Assert.Equal("username", result.Username);
@@ -84,7 +84,7 @@ namespace OnlineGames.Tests.Services
         }
 
         [Fact]
-        public async Task TestGetUserIdFromName() 
+        public async Task TestGetUserIdFromName()
         {
             //Arange
             var context = OnlineGamesDbContextFactory.InitializeContext();

@@ -21,19 +21,19 @@ namespace OnlineGames.Web.Controllers
         [HttpGet("{name?}")]
         public async Task<ActionResult<UserServiceModel>> GetUser(string? name)
         {
-            var user= await userService.GetUser(name??this.User.Identity.Name);
-            if (user==null)
+            var user = await userService.GetUser(name ?? this.User.Identity.Name);
+            if (user == null)
             {
                 return NotFound("No such user");
             }
-            user.IsMe = (name == null)||name==(User.Identity.Name);
+            user.IsMe = (name == null) || name == (User.Identity.Name);
             return Ok(user);
         }
         [HttpPut]
-        public async Task<ActionResult<UpdateUserServiceModel>> Update(UpdateUserInputModel input) 
+        public async Task<ActionResult<UpdateUserServiceModel>> Update(UpdateUserInputModel input)
             => Ok(await this.userService.UpdateUser(GetUserId(), input.Description, input.ImgUrl, input.UserName, appSettings.Secret));
         [HttpGet("GetUserCard")]
-        public async Task<ActionResult<UserCardServiceModel>> GetUserCard() 
+        public async Task<ActionResult<UserCardServiceModel>> GetUserCard()
             => Ok(await userService.GetUserCard(GetUserId()));
     }
 }

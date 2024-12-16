@@ -9,25 +9,25 @@ namespace OnlineGames.Services
     public class MessageService : IMessageService
     {
         private readonly IRepository<Message> repo;
-        public MessageService(IRepository<Message> messageRepository) 
+        public MessageService(IRepository<Message> messageRepository)
             => this.repo = messageRepository;
 
-        public async Task<IEnumerable<MessageServiceModel>> GetMessages(string userId, string friendId,int page)
+        public async Task<IEnumerable<MessageServiceModel>> GetMessages(string userId, string friendId, int page)
             => await repo.GetAll()
-                .Where(m => (m.FriendChat.User1Id == userId && m.FriendChat.User2Id==friendId)
-                ||(m.FriendChat.User2Id == userId && m.FriendChat.User1Id == friendId))
-                .OrderByDescending(m=>m.PostedOn)
-                .Skip(page*20)
+                .Where(m => (m.FriendChat.User1Id == userId && m.FriendChat.User2Id == friendId)
+                || (m.FriendChat.User2Id == userId && m.FriendChat.User1Id == friendId))
+                .OrderByDescending(m => m.PostedOn)
+                .Skip(page * 20)
                 .Take(20)
                 .Select(m => new MessageServiceModel
                 {
                     Contents = m.Contents,
                     PostedOn = m.PostedOn.ToString("dd/MM,yyyy"),
-                    UserName=m.Sender.UserName,
-                    MessageId=m.Id
+                    UserName = m.Sender.UserName,
+                    MessageId = m.Id
                 }).ToListAsync();
 
-        public async Task<IEnumerable<MessageServiceModel>> GetMessagesUnread(string userId) 
+        public async Task<IEnumerable<MessageServiceModel>> GetMessagesUnread(string userId)
             => await repo.GetAll()
                 .Where(m => !m.Seen && m.SenderId != userId && (m.FriendChat.User1Id == userId || m.FriendChat.User2Id == userId))
                 .Select(m => new MessageServiceModel
@@ -41,7 +41,7 @@ namespace OnlineGames.Services
         public async Task<bool> ReadMessage(string userId, int messageId)
         {
             var friend = await repo.GetAll()
-                .Where(m => m.Id == messageId && m.SenderId!=userId)
+                .Where(m => m.Id == messageId && m.SenderId != userId)
                 .FirstOrDefaultAsync();
             if (friend == null)
             {
@@ -53,22 +53,22 @@ namespace OnlineGames.Services
             return true;
         }
 
-        public async Task<MessageServiceModel> SendMessageToChat(string userId, string roomId, string contents,bool isName)
+        public async Task<MessageServiceModel> SendMessageToChat(string userId, string roomId, string contents, bool isName)
         {
             var message = new Message
             {
                 Contents = contents,
-                SenderId=userId,
-                RoomChatId=!isName?roomId:null,
-                FriendChatId=isName?roomId:null
+                SenderId = userId,
+                RoomChatId = !isName ? roomId : null,
+                FriendChatId = isName ? roomId : null
             };
             await repo.AddAsync(message);
             await repo.SaveChangesAsync();
             return new MessageServiceModel
             {
-                Contents=contents,
-                PostedOn=message.PostedOn.ToString("dd/MM/yyyy"),
-                MessageId=message.Id
+                Contents = contents,
+                PostedOn = message.PostedOn.ToString("dd/MM/yyyy"),
+                MessageId = message.Id
             };
         }
     }

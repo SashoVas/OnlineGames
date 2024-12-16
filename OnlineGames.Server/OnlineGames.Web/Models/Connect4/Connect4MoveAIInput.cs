@@ -2,10 +2,10 @@
 
 namespace OnlineGames.Web.Models.Connect4
 {
-    public class Connect4MoveAIInput: Connect4MoveInput
+    public class Connect4MoveAIInput : Connect4MoveInput
     {
         [Required]
-        [Range(1,12)]
+        [Range(1, 12)]
         public int Difficulty { get; set; }
     }
 }

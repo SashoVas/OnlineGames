@@ -1,7 +1,7 @@
 ﻿namespace OnlineGames.Data
 {
     public interface IRepository<T>
-        where T :class
+        where T : class
     {
         IQueryable<T> GetAll();
         Task AddAsync(T entity);

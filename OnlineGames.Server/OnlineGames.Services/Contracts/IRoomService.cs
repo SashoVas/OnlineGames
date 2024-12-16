@@ -7,7 +7,7 @@ namespace OnlineGames.Services.Contracts
     {
         Task<string> CreateRoom(string username, bool isPrivate, string gameName, int board);
         Task RemoveRoom(string userId);
-        Task SetRoomToUser(string userId,string roomId, string username);
+        Task SetRoomToUser(string userId, string roomId, string username);
         Task ClearBoard(string userId, string username);
         Task<string> GetUserBoard(string userId);
         Task<int> GetTurn(string userId);

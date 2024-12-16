@@ -14,7 +14,7 @@ namespace OnlineGames.Web.Controllers
             this.messageService = messageService;
         }
         [HttpGet]
-        public async Task<ActionResult<NotificationsModel>> GetNotifications() 
+        public async Task<ActionResult<NotificationsModel>> GetNotifications()
             => Ok(new NotificationsModel
             {
                 FriendRequests = await friendService.GetRequests(GetUserId()),

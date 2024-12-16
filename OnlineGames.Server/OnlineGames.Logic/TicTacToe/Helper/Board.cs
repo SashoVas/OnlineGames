@@ -16,11 +16,11 @@
             long hash = 0;
             for (int i = 0; i < boardString.Length; i++)
             {
-                if (boardString[i]=='0')
+                if (boardString[i] == '0')
                 {
                     continue;
                 }
-                if (boardString[i]=='1')
+                if (boardString[i] == '1')
                 {
                     hash = hash ^ PlayerOneNums[i];
                 }
@@ -34,7 +34,7 @@
         private void GenerateHashValues()
         {
             var r = new Random();
-            for (int i = 0; i < 3*3; i++)
+            for (int i = 0; i < 3 * 3; i++)
             {
                 PlayerOneNums.Add(r.NextInt64());
                 PlayerTwoNums.Add(r.NextInt64());
@@ -57,7 +57,7 @@
             }
             return true;
         }
-        public void UndoMove(int x,int y,int player)
+        public void UndoMove(int x, int y, int player)
         {
             this.Matrix[x, y] = 0;
             if (player == 1)
@@ -69,7 +69,7 @@
                 Hash = Hash ^ PlayerTwoNums[(x * 3) + y];
             }
         }
-        public GameState CurrentGameState(int player,int otherPlayer)
+        public GameState CurrentGameState(int player, int otherPlayer)
         {
             for (int i = 0; i < 3; i++)
             {

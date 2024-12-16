@@ -2,7 +2,7 @@
 {
     public interface IConnect4Service
     {
-        int MakeMove(string boardSring, int currentPlayer,int difficulty);
+        int MakeMove(string boardSring, int currentPlayer, int difficulty);
         Task<string> UpdateBoard(string userId, int col, string username);
         Task UpdateBoardAI(string userId, int col);
     }

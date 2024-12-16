@@ -34,7 +34,7 @@ namespace OnlineGames.Tests.Services
             // Arrange
             var context = OnlineGamesDbContextFactory.InitializeContext();
             await SeedData(context);
-            var repo = new Repository<Message>(context); 
+            var repo = new Repository<Message>(context);
             var messageService = new MessageService(repo);
 
             // Act
@@ -69,7 +69,7 @@ namespace OnlineGames.Tests.Services
         {
             // Arrange
             var context = OnlineGamesDbContextFactory.InitializeContext();
-            var data=await SeedData(context);
+            var data = await SeedData(context);
             var repo = new Repository<Message>(context);
             var messageService = new MessageService(repo);
 

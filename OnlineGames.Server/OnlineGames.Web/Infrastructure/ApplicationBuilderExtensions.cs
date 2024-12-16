@@ -17,7 +17,8 @@ namespace OnlineGames.Web.Infrastructure
     {
         public static void AddIdentity(this WebApplicationBuilder builder)
         {
-            builder.Services.AddIdentity<User, IdentityRole>(options => {
+            builder.Services.AddIdentity<User, IdentityRole>(options =>
+            {
                 options.SignIn.RequireConfirmedEmail = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequireDigit = false;
@@ -29,7 +30,7 @@ namespace OnlineGames.Web.Infrastructure
             .AddEntityFrameworkStores<OnlineGamesDbContext>()
             .AddDefaultTokenProviders();
         }
-        public static void AddAuthenticationWithJWT(this WebApplicationBuilder builder,AppSettings appSettigns)
+        public static void AddAuthenticationWithJWT(this WebApplicationBuilder builder, AppSettings appSettigns)
         {
             var key = Encoding.ASCII.GetBytes(appSettigns.Secret);
             builder.Services.AddAuthentication(options =>

@@ -2,7 +2,7 @@
 
 namespace OnlineGames.Web.Models.Chat
 {
-    public class SendMessageInputModel: MessageJoinGroupInputModel
+    public class SendMessageInputModel : MessageJoinGroupInputModel
     {
         [Required]
         [MaxLength(300)]

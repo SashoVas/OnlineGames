@@ -16,20 +16,20 @@ namespace OnlineGames.Services
             this.identityService = identityService;
         }
 
-        public Task<UserServiceModel> GetUser(string name) 
-            =>repo.GetAll()
+        public Task<UserServiceModel> GetUser(string name)
+            => repo.GetAll()
                 .Where(u => u.UserName == name)
                 .Select(u => new UserServiceModel
                 {
                     Username = u.UserName,
-                    Description=u.Description,
+                    Description = u.Description,
                     ImgUrl = u.ImgUrl,
                 })
                 .FirstOrDefaultAsync();
 
-        public async Task<UpdateUserServiceModel> UpdateUser(string id, string descripiton, string imgUrl, string userName,string secret)
+        public async Task<UpdateUserServiceModel> UpdateUser(string id, string descripiton, string imgUrl, string userName, string secret)
         {
-            var user =await repo.GetAll()
+            var user = await repo.GetAll()
                 .Where(u => u.Id == id)
                 .FirstOrDefaultAsync();
             user.UserName = userName;
@@ -51,16 +51,16 @@ namespace OnlineGames.Services
 
         public Task<bool> IsUserInRoom(string userId, string roomId)
             => repo.GetAll()
-                .AnyAsync(u => u.Id == userId && (u.Room1!=null || u.Room2!=null));
+                .AnyAsync(u => u.Id == userId && (u.Room1 != null || u.Room2 != null));
 
-        public Task<string> GetUserIdFromName(string name) 
-            =>repo.GetAll()
+        public Task<string> GetUserIdFromName(string name)
+            => repo.GetAll()
                 .Where(u => u.UserName == name)
                 .Select(u => u.Id)
                 .FirstOrDefaultAsync();
 
-        public Task<UserCardServiceModel> GetUserCard(string userId) 
-            =>repo.GetAll()
+        public Task<UserCardServiceModel> GetUserCard(string userId)
+            => repo.GetAll()
                 .Where(u => u.Id == userId)
                 .Select(u => new UserCardServiceModel
                 {

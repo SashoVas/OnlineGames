@@ -12,7 +12,7 @@ namespace OnlineGames.Tests.Infrasturcture
             var options = new DbContextOptionsBuilder<OnlineGamesDbContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
-            
+
             var context = new OnlineGamesDbContext(options);
             return context;
         }

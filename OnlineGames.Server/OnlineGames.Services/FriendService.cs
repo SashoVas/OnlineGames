@@ -18,8 +18,8 @@ namespace OnlineGames.Services
 
         public async Task<bool> AcceptFriendRequest(string userId, string friendId)
         {
-            var friend =await repo.GetAll()
-                .Where(f => f.User1Id==friendId && f.User2Id == userId)
+            var friend = await repo.GetAll()
+                .Where(f => f.User1Id == friendId && f.User2Id == userId)
                 .FirstOrDefaultAsync();
 
             if (friend == null)
@@ -33,7 +33,7 @@ namespace OnlineGames.Services
 
         public async Task<bool> DeleteFriend(string userId, string friendId)
         {
-            var friend= await repo.GetAll()
+            var friend = await repo.GetAll()
                 .Where(f => (f.User1Id == userId && f.User2Id == friendId)
                 || (f.User2Id == userId && f.User1Id == friendId))
                 //.Select(f => new Friend
@@ -41,7 +41,7 @@ namespace OnlineGames.Services
                 //    Id = f.Id
                 //})
                 .FirstOrDefaultAsync();
-            if (friend==null)
+            if (friend == null)
             {
                 return false;
             }
@@ -51,31 +51,31 @@ namespace OnlineGames.Services
         }
 
         public Task<bool> FriendExist(string userId, string friendUserName)
-        =>repo.GetAll()
+        => repo.GetAll()
             .AnyAsync(f => (f.User1Id == userId && f.User2.UserName == friendUserName)
             || (f.User2Id == userId && f.User1.UserName == friendUserName));
 
         public Task<string> GetFriendId(string userId, string friendId)
-        =>repo.GetAll()
-            .Where(f => (f.User1Id == userId && f.User2Id==friendId)
-            || (f.User2Id == userId && f.User1Id==friendId))
+        => repo.GetAll()
+            .Where(f => (f.User1Id == userId && f.User2Id == friendId)
+            || (f.User2Id == userId && f.User1Id == friendId))
             .Select(f => f.Id)
             .FirstOrDefaultAsync();
 
-        public async Task<IEnumerable<FriendServiceModel>> GetFriends(string userId) 
+        public async Task<IEnumerable<FriendServiceModel>> GetFriends(string userId)
             => await repo.GetAll()
                 .Where(f => (f.User1Id == userId && f.Accepted) || f.User2Id == userId)
-                .OrderByDescending(f=>f.Accepted)
+                .OrderByDescending(f => f.Accepted)
                 .Select(f => new FriendServiceModel
                 {
                     Accepted = f.Accepted,
                     UserName = f.User1Id == userId ? f.User2.UserName : f.User1.UserName,
                     Id = f.User1Id == userId ? f.User2Id : f.User1Id,
-                    HaveMessage = f.Messages.Count() != 0 && f.Messages.OrderBy(m => m.PostedOn).Last().SenderId!=userId && !f.Messages.OrderBy(m => m.PostedOn).Last().Seen
+                    HaveMessage = f.Messages.Count() != 0 && f.Messages.OrderBy(m => m.PostedOn).Last().SenderId != userId && !f.Messages.OrderBy(m => m.PostedOn).Last().Seen
                 })
                 .ToListAsync();
 
-        public async Task<IEnumerable<FriendServiceModel>> GetRequests(string userId) 
+        public async Task<IEnumerable<FriendServiceModel>> GetRequests(string userId)
             => await repo.GetAll()
                 .Where(f => !f.Accepted && (f.User1Id == userId || f.User2Id == userId))
                 .Select(f => new FriendServiceModel
@@ -85,15 +85,15 @@ namespace OnlineGames.Services
                     UserName = f.User1Id == userId ? f.User2.UserName : f.User1.UserName
                 }).ToListAsync();
 
-        public async Task<string> SendFriendRequest(string userId,string friendUserName)
+        public async Task<string> SendFriendRequest(string userId, string friendUserName)
         {
-            var friendId=await userService.GetUserIdFromName(friendUserName);
+            var friendId = await userService.GetUserIdFromName(friendUserName);
             if (friendId == null)
                 throw new ArgumentException("No such user");
-            
-            var friend = new Friend 
-            { 
-                Id=Guid.NewGuid().ToString(),
+
+            var friend = new Friend
+            {
+                Id = Guid.NewGuid().ToString(),
                 User1Id = userId,
                 User2Id = friendId,
                 Accepted = false,

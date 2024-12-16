@@ -2,7 +2,7 @@
 
 namespace OnlineGames.Logic.TicTacToe
 {
-    public  class TicTacToe:ITicTacToe
+    public class TicTacToe : ITicTacToe
     {
         int currentPlayer = 1;
         int otherPlayer = 2;
@@ -17,7 +17,7 @@ namespace OnlineGames.Logic.TicTacToe
             FillSolver(Board);
         }
 
-        public CellCoordinates GetMove(string boardString) 
+        public CellCoordinates GetMove(string boardString)
             => Solver[Board.GetBoardHash(boardString)];
         private void SwapPlayers()
         {
@@ -106,7 +106,7 @@ namespace OnlineGames.Logic.TicTacToe
                         }
                         wins += outcome.Wins;
                         loses += outcome.Loses;
-                        board.UndoMove(i,j, currentPlayer);
+                        board.UndoMove(i, j, currentPlayer);
                     }
                     else
                     {

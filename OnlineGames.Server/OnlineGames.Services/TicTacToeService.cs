@@ -16,11 +16,11 @@ namespace OnlineGames.Services
 
         public BoardCoordinates MakeMove(string boardSring)
         {
-            var output=ticTacToe.GetMove(boardSring);
-            return new BoardCoordinates 
+            var output = ticTacToe.GetMove(boardSring);
+            return new BoardCoordinates
             {
-                Row= output.X,
-                Col= output.Y,
+                Row = output.X,
+                Col = output.Y,
             };
         }
 

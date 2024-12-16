@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OnlineGames.Data.Models
 {
-    public class User:IdentityUser
+    public class User : IdentityUser
     {
         public User()
         {

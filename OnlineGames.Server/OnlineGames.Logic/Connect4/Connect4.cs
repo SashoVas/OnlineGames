@@ -2,16 +2,16 @@
 
 namespace OnlineGames.Logic.Connect4
 {
-    public class Connect4:IConnect4
+    public class Connect4 : IConnect4
     {
         private int Depth { get; set; } = 6;
         private int[] TurnsOrder { get; set; } = new int[] { 3, 2, 4, 1, 5, 0, 6 };
-        private Dictionary<long, CellCoordinates> Solver { get; set; }= new Dictionary<long, CellCoordinates>();
-        public int GetMove(string boardString,int player,int difficulty)
+        private Dictionary<long, CellCoordinates> Solver { get; set; } = new Dictionary<long, CellCoordinates>();
+        public int GetMove(string boardString, int player, int difficulty)
         {
             Depth = difficulty;
             var board = new Board(boardString, 6, 7);
-            var bestMove = FillSolver(board,player, 0, -999999999, 999999999, 0, -1, -1);
+            var bestMove = FillSolver(board, player, 0, -999999999, 999999999, 0, -1, -1);
             return Solver[board.Hash].Col;
         }
         private int FillSolver(Board board, int player, int turnCount, int alpha, int beta, int oldScore, int oldRow, int oldCol)
@@ -45,7 +45,7 @@ namespace OnlineGames.Logic.Connect4
             {
                 Score = player == 1 ? -999999999 : 999999999
             };
-            var newTurnOrder = GetOrderArr(board,player);
+            var newTurnOrder = GetOrderArr(board, player);
             foreach (var element in newTurnOrder)
             {
                 int move = element.move;
@@ -66,7 +66,7 @@ namespace OnlineGames.Logic.Connect4
                         if (alpha >= beta)
                         {
                             //Pruning
-                            board.UndoMove(newY, move,player);
+                            board.UndoMove(newY, move, player);
                             Solver.Remove(boardId);
                             return 1000;
                         }
@@ -83,12 +83,12 @@ namespace OnlineGames.Logic.Connect4
                         if (alpha >= beta)
                         {
                             //Pruning
-                            board.UndoMove(newY, move,player);
+                            board.UndoMove(newY, move, player);
                             Solver.Remove(boardId);
                             return -1000;
                         }
                     }
-                    board.UndoMove(newY, move,player);
+                    board.UndoMove(newY, move, player);
                 }
             }
             return Solver[boardId].Score;

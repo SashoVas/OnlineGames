@@ -5,7 +5,7 @@ using System.Security.Claims;
 
 namespace OnlineGames.Web.Hubs
 {
-    public class ChatHub:Hub
+    public class ChatHub : Hub
     {
         private readonly IMessageService messageService;
         private readonly IUserService userService;
@@ -47,23 +47,23 @@ namespace OnlineGames.Web.Hubs
         {
             var odlGroup = await friendService.GetFriendId(GetUserId(), input.OldFriendName);
             await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, odlGroup);
-            await this.JoinGroup(new MessageJoinGroupInputModel 
-            { 
-                Id=input.FriendName,
-                IsName=true
+            await this.JoinGroup(new MessageJoinGroupInputModel
+            {
+                Id = input.FriendName,
+                IsName = true
             });
         }
 
         public async Task SendMessage(SendMessageInputModel input)
         {
             await ValidateInput(input);
-            var message =await this.messageService.SendMessageToChat(GetUserId(), input.Id, input.Contents,input.IsName);
+            var message = await this.messageService.SendMessageToChat(GetUserId(), input.Id, input.Contents, input.IsName);
             message.UserName = this.Context.User.Identity.Name;
-            await this.Clients.Group(input.Id).SendAsync("ReceiveMessage",message);
+            await this.Clients.Group(input.Id).SendAsync("ReceiveMessage", message);
         }
 
         //Here when user see new message
-        public Task ReadMessage(ReadMessageInputModel input) 
-            =>messageService.ReadMessage(GetUserId(), input.MessageId);
+        public Task ReadMessage(ReadMessageInputModel input)
+            => messageService.ReadMessage(GetUserId(), input.MessageId);
     }
 }
