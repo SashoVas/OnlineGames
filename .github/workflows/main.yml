@@ -67,7 +67,7 @@ jobs:
 
   BuildDocker-image:
     runs-on: ubuntu-latest
-    needs: [BuildAndTest]
+    needs: [BuildAndTest,Security]
     permissions:
       packages: write
       contents: read
