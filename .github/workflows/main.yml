@@ -8,7 +8,7 @@ on:
   workflow_dispatch :
 jobs:
 
-  BuildAndTest:
+  Build:
       runs-on: ubuntu-latest  
       steps:
       - uses: actions/checkout@v4
@@ -25,14 +25,6 @@ jobs:
       - name: Build
         working-directory: ./OnlineGames.Server
         run: dotnet build --no-restore
-
-      - name: Check Formating
-        working-directory: ./OnlineGames.Server
-        run: dotnet format --verify-no-changes
-        
-      - name: Test
-        working-directory: ./OnlineGames.Server
-        run: dotnet test --no-build --verbosity normal
         
       - name : Upload repo
         uses: actions/upload-artifact@v4
@@ -40,12 +32,42 @@ jobs:
           name: code
           path: .
           
-  
-  Security:
+  Test:
     runs-on: ubuntu-latest
+    needs: [Build]
+
     steps:
     
-      - uses: actions/checkout@v4
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with: 
+          name: code
+          path: .
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 6.0.x
+          
+      - name: Check Formating
+        working-directory: ./OnlineGames.Server
+        run: dotnet format --verify-no-changes
+        
+      - name: Test
+        working-directory: ./OnlineGames.Server
+        run: dotnet test --no-build --verbosity normal
+
+  Security:
+    runs-on: ubuntu-latest
+    needs: [Build]
+
+    steps:
+    
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with: 
+          name: code
+          path: .
 
       - name: Install Snyk CLI
         run: npm install -g snyk
@@ -69,7 +91,7 @@ jobs:
 
   BuildDocker-image:
     runs-on: ubuntu-latest
-    needs: [BuildAndTest,Security]
+    needs: [Test,Security]
     permissions:
       packages: write
       contents: read
