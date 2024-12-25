@@ -217,6 +217,6 @@ jobs:
         
     - name: Wait to start
       run:
-        kubectl wait --for=condition=Ready pod/frontend
+        kubectl wait --for=condition=ready pod -l app=frontend
 
 
