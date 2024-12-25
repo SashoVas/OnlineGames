@@ -219,4 +219,4 @@ jobs:
         
     - name: Wait to start
       run:
-        kubectl wait --for=condition=ready pod -l app=frontend
+        kubectl wait --for=condition=ready pod -l app=frontend --timeout=120s
