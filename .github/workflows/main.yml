@@ -200,6 +200,8 @@ jobs:
 
   DeployToMiniKube:
     runs-on: ubuntu-latest
+    needs: [PushDocker-image]  
+
     name: build example and deploy to minikube
     steps:
     
@@ -218,5 +220,3 @@ jobs:
     - name: Wait to start
       run:
         kubectl wait --for=condition=ready pod -l app=frontend
-
-
