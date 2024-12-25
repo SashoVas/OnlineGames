@@ -198,4 +198,22 @@ jobs:
       - name: Push frontend Docker image
         run: docker push ghcr.io/sashovas/online_games_frontend:latest
 
+  DeployToMiniKube:
+    runs-on: ubuntu-latest
+    name: build example and deploy to minikube
+    steps:
+    
+    - uses: actions/checkout@v4
+        
+    - name: Start minikube
+      uses: medyagh/setup-minikube@latest
+      
+    - name: Try the cluster!
+      run: kubectl get pods -A
+
+    - name: Deploy to minikube
+      run:
+        kubectl apply -f deployment.yaml
+        kubectl wait --for=condition=Ready pod/frontend
+
 
