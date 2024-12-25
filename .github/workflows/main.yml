@@ -214,6 +214,9 @@ jobs:
     - name: Deploy to minikube
       run:
         kubectl apply -f deployment.yaml
+        
+    - name: Wait to start
+      run:
         kubectl wait --for=condition=Ready pod/frontend
 
 
