@@ -202,7 +202,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [PushDocker-image]  
 
-    name: build example and deploy to minikube
+    name: DeployToMiniKube
     steps:
     
     - uses: actions/checkout@v4
