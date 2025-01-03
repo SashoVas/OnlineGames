@@ -76,6 +76,7 @@ jobs:
       - name: Check Formating
         working-directory: ./OnlineGames.Server
         run: dotnet format --verify-no-changes
+        #run: dotnet format style --verify-no-changes
         
       - name: Test
         working-directory: ./OnlineGames.Server
