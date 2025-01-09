@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: code
-          path: .
+          path: ./OnlineGames.Server
           
   Test:
     runs-on: ubuntu-latest
